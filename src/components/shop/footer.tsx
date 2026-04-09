@@ -78,8 +78,19 @@ export function ShopFooter() {
           </div>
         </div>
 
-        <div className="border-t border-gray-800 mt-8 pt-8 text-center text-xs text-gray-500">
-          &copy; {new Date().getFullYear()} Modaco. כל הזכויות שמורות.
+        <div className="border-t border-gray-800 mt-8 pt-5 pb-3 flex flex-col items-center gap-3">
+          <p className="text-[11px] text-gray-600">
+            &copy; {new Date().getFullYear()} Modaco. כל הזכויות שמורות.
+          </p>
+          <a
+            href="https://ozkabala.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="opacity-60 hover:opacity-90 transition-opacity duration-300"
+          >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/ozkabala-logo.svg" alt="OzKabala" className="h-5 inline-block" />
+          </a>
         </div>
       </div>
     </footer>
