@@ -1,79 +1,41 @@
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
-import { ProductCard } from "@/components/shop/product-card";
 
-const featuredCategories = [
+const categories = [
   {
     slug: "hinges",
-    name: "צירים Blum",
-    description: "צירים מתקדמים לכל סוגי הארונות",
-    image: null,
+    name: "צירים",
+    brand: "Blum",
+    description: "צירים מתקדמים לכל סוגי הארונות והמטבחים",
   },
   {
     slug: "slides",
     name: "מסילות מובנטו",
-    description: "מסילות שקטות וחלקות",
-    image: null,
+    brand: "Blum",
+    description: "מסילות שקטות וחלקות עם טכנולוגיית בלומושן",
   },
   {
     slug: "faucets",
     name: "ברזי מטבח",
-    description: "ברזים מעוצבים מ-Blanco ו-Delta",
-    image: null,
+    brand: "Blanco & Delta",
+    description: "ברזים מעוצבים בסטנדרט הגבוה ביותר",
   },
   {
     slug: "handles",
     name: "ידיות",
-    description: "ידיות מעוצבות למטבח ולריהוט",
-    image: null,
+    brand: "Domicile",
+    description: "ידיות מעוצבות למטבחים ולריהוט",
   },
   {
     slug: "accessories",
     name: "אקססוריז לבית",
-    description: "אגרטלים, מראות, כלי בישול ועוד",
-    image: null,
+    brand: "Floralis",
+    description: "אגרטלים, מראות, כלי בישול ומעמדים",
   },
   {
     slug: "lift-systems",
     name: "מנגנוני הרמה",
-    description: "פתרונות הרמה לקלפות ומיקרו",
-    image: null,
-  },
-];
-
-// TODO: Replace with real data
-const featuredProducts = [
-  {
-    id: "1",
-    name: 'ציר קליפ-טופ 110 מעלות "Blum"',
-    slug: "clip-top-110-blum",
-    price: 45,
-    image: null,
-    category: "צירים",
-  },
-  {
-    id: "2",
-    name: "ברז מטבח דגם לינוס Blanco",
-    slug: "linus-blanco-faucet",
-    price: 890,
-    image: null,
-    category: "ברזי מטבח",
-  },
-  {
-    id: "3",
-    name: "מובנטו בלומושן עומק 50",
-    slug: "movento-blumotion-50",
-    price: 320,
-    image: null,
-    category: "מסילות",
-  },
-  {
-    id: "4",
-    name: "ידית למטבח מודרני",
-    slug: "modern-kitchen-handle",
-    price: 65,
-    image: null,
-    category: "ידיות",
+    brand: "Blum",
+    description: "פתרונות הרמה חכמים לקלפות ולמיקרו",
   },
 ];
 
@@ -81,90 +43,154 @@ export default function HomePage() {
   return (
     <div>
       {/* Hero */}
-      <section className="bg-gradient-to-bl from-gray-900 to-gray-800 text-white">
-        <div className="max-w-7xl mx-auto px-4 py-16 lg:py-24">
-          <div className="max-w-2xl">
-            <h1 className="text-4xl lg:text-5xl font-bold leading-tight">
+      <section className="relative overflow-hidden">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-24 lg:py-36">
+          <div className="max-w-3xl">
+            <div className="text-sm text-gray-500 tracking-[0.2em] uppercase mb-6">
+              למעלה מ-40 שנה של מומחיות
+            </div>
+            <h1 className="text-5xl lg:text-7xl font-bold leading-[1.1] mb-6">
               פרזול ואקססוריז
               <br />
-              ברמה אחרת
+              <span className="text-gray-500">ברמה אחרת</span>
             </h1>
-            <p className="mt-4 text-lg text-gray-300 leading-relaxed">
-              למעלה מ-40 שנה של מומחיות. המותגים המובילים בעולם, ישירות אליכם.
-              לבית, למטבח, לכל חלל.
+            <p className="text-lg text-gray-400 leading-relaxed max-w-xl mb-10">
+              המותגים המובילים בעולם. איכות ללא פשרות. ישירות מהיבואן אליכם — לבית, למטבח, לכל חלל.
             </p>
-            <div className="mt-8 flex gap-4">
-              <Link href="/categories">
-                <Button size="lg" className="bg-white text-black hover:bg-gray-100">
-                  לקטלוג המלא
-                </Button>
+            <div className="flex gap-4">
+              <Link
+                href="/categories/hinges"
+                className="px-8 py-3 bg-white text-black font-medium rounded-sm hover:bg-gray-200 transition-colors"
+              >
+                לקטלוג המלא
               </Link>
-              <Link href="/about">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-                  אודות Modaco
-                </Button>
+              <Link
+                href="/contact"
+                className="px-8 py-3 border border-gray-700 text-gray-300 font-medium rounded-sm hover:border-gray-500 hover:text-white transition-colors"
+              >
+                צרו קשר
               </Link>
+            </div>
+          </div>
+        </div>
+        {/* Decorative gradient */}
+        <div className="absolute top-0 left-0 w-1/2 h-full bg-gradient-to-r from-transparent to-gray-900/20 pointer-events-none" />
+      </section>
+
+      {/* Trust bar */}
+      <section className="border-y border-gray-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+            <div>
+              <div className="text-2xl font-bold">40+</div>
+              <div className="text-xs text-gray-500 mt-1">שנות ניסיון</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold">Blum</div>
+              <div className="text-xs text-gray-500 mt-1">יבואן רשמי</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold">B2B</div>
+              <div className="text-xs text-gray-500 mt-1">מחירים לאנשי מקצוע</div>
+            </div>
+            <div>
+              <div className="text-2xl font-bold">1,000+</div>
+              <div className="text-xs text-gray-500 mt-1">מוצרים בקטלוג</div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Categories Grid */}
-      <section className="max-w-7xl mx-auto px-4 py-12">
-        <h2 className="text-2xl font-bold mb-8">קטגוריות</h2>
-        <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-          {featuredCategories.map((cat) => (
+      {/* Categories */}
+      <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20">
+        <div className="text-sm text-gray-500 tracking-[0.2em] uppercase mb-3">
+          הקטגוריות שלנו
+        </div>
+        <h2 className="text-3xl font-bold mb-12">מה אנחנו מציעים</h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {categories.map((cat) => (
             <Link
               key={cat.slug}
               href={`/categories/${cat.slug}`}
-              className="group relative bg-gray-100 rounded-xl p-6 hover:bg-gray-200 transition-colors min-h-[140px] flex flex-col justify-end"
+              className="group border border-gray-800 rounded-sm p-8 hover:border-gray-600 transition-all"
             >
-              <h3 className="font-bold text-lg">{cat.name}</h3>
-              <p className="text-sm text-gray-600 mt-1">{cat.description}</p>
+              <div className="text-xs text-gray-600 uppercase tracking-wider mb-3">
+                {cat.brand}
+              </div>
+              <h3 className="text-xl font-bold mb-2 group-hover:text-gray-300 transition-colors">
+                {cat.name}
+              </h3>
+              <p className="text-sm text-gray-500">{cat.description}</p>
+              <div className="mt-6 text-sm text-gray-600 group-hover:text-gray-400 transition-colors">
+                לצפייה בקטגוריה &larr;
+              </div>
             </Link>
           ))}
         </div>
       </section>
 
-      {/* Featured Products */}
-      <section className="max-w-7xl mx-auto px-4 py-12">
-        <div className="flex items-center justify-between mb-8">
-          <h2 className="text-2xl font-bold">מוצרים מובילים</h2>
-          <Link
-            href="/products"
-            className="text-sm text-blue-600 hover:underline"
-          >
-            לכל המוצרים
-          </Link>
-        </div>
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {featuredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
-          ))}
+      {/* About section */}
+      <section className="border-t border-gray-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-20">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <div>
+              <div className="text-sm text-gray-500 tracking-[0.2em] uppercase mb-3">
+                אודות Modaco
+              </div>
+              <h2 className="text-3xl font-bold mb-6">
+                ההבדל בין חלל טוב לחלל
+                <br />
+                יוצא דופן טמון בפרטים
+              </h2>
+              <p className="text-gray-400 leading-relaxed mb-4">
+                אנו בוחרים בקפידה כל פריט — מתוך ראייה רחבה של עמידות לאורך זמן, נוחות שימוש יומיומית, עיצוב מתקדם והתאמה מושלמת לסטנדרטים הגבוהים ביותר של המטבח והבית המודרני.
+              </p>
+              <p className="text-gray-400 leading-relaxed mb-8">
+                אנו מלווים את לקוחותינו, מעצבים ואנשי מקצוע מתוך גישה של שירות אישי, מקצועיות ושקיפות מלאה.
+              </p>
+              <Link
+                href="/about"
+                className="text-sm text-white border-b border-gray-600 pb-1 hover:border-white transition-colors"
+              >
+                קראו עוד אודותינו
+              </Link>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="bg-gray-900 rounded-sm p-8 text-center">
+                <div className="text-3xl font-bold mb-2">40+</div>
+                <div className="text-xs text-gray-500">שנות ניסיון</div>
+              </div>
+              <div className="bg-gray-900 rounded-sm p-8 text-center">
+                <div className="text-3xl font-bold mb-2">B2B</div>
+                <div className="text-xs text-gray-500">תנאים לאנשי מקצוע</div>
+              </div>
+              <div className="bg-gray-900 rounded-sm p-8 text-center">
+                <div className="text-3xl font-bold mb-2">Blum</div>
+                <div className="text-xs text-gray-500">שותף רשמי</div>
+              </div>
+              <div className="bg-gray-900 rounded-sm p-8 text-center">
+                <div className="text-3xl font-bold mb-2">IL</div>
+                <div className="text-xs text-gray-500">משלוח לכל הארץ</div>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* Trust banner */}
-      <section className="bg-gray-50 border-y border-gray-200">
-        <div className="max-w-7xl mx-auto px-4 py-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
-            <div>
-              <div className="text-2xl font-bold">40+</div>
-              <div className="text-sm text-gray-600">שנות ניסיון</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold">Blum</div>
-              <div className="text-sm text-gray-600">מותגים מובילים</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold">B2B</div>
-              <div className="text-sm text-gray-600">מחירים לאנשי מקצוע</div>
-            </div>
-            <div>
-              <div className="text-2xl font-bold">24/7</div>
-              <div className="text-sm text-gray-600">חנות מקוונת</div>
-            </div>
-          </div>
+      {/* CTA */}
+      <section className="border-t border-gray-800">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-20 text-center">
+          <h2 className="text-3xl font-bold mb-4">אדריכלים, מעצבים וקבלנים?</h2>
+          <p className="text-gray-400 mb-8 max-w-lg mx-auto">
+            צרו קשר לקבלת מחירון מיוחד, תנאי תשלום מותאמים וגישה למערכת B2B.
+          </p>
+          <Link
+            href="/contact"
+            className="inline-block px-8 py-3 bg-white text-black font-medium rounded-sm hover:bg-gray-200 transition-colors"
+          >
+            לפרטים נוספים
+          </Link>
         </div>
       </section>
     </div>
