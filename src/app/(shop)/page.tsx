@@ -46,7 +46,7 @@ export default function HomePage() {
       <section className="relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-24 lg:py-36">
           <div className="max-w-3xl">
-            <div className="text-sm text-gray-400 dark:text-gray-500 tracking-[0.2em] uppercase mb-6">
+            <div className="text-sm text-gray-500 dark:text-gray-500 tracking-[0.2em] uppercase mb-6">
               למעלה מ-40 שנה של מומחיות
             </div>
             <h1 className="text-5xl lg:text-7xl font-bold leading-[1.1] mb-6">
@@ -54,7 +54,7 @@ export default function HomePage() {
               <br />
               <span className="text-gray-400 dark:text-gray-500">ברמה אחרת</span>
             </h1>
-            <p className="text-lg text-gray-500 dark:text-gray-400 leading-relaxed max-w-xl mb-10">
+            <p className="text-lg text-gray-700 dark:text-gray-400 leading-relaxed max-w-xl mb-10">
               המותגים המובילים בעולם. איכות ללא פשרות. ישירות מהיבואן אליכם — לבית, למטבח, לכל חלל.
             </p>
             <div className="flex gap-4">
@@ -101,7 +101,7 @@ export default function HomePage() {
 
       {/* Categories */}
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20">
-        <div className="text-sm text-gray-400 dark:text-gray-500 tracking-[0.2em] uppercase mb-3">
+        <div className="text-sm text-gray-500 dark:text-gray-500 tracking-[0.2em] uppercase mb-3">
           הקטגוריות שלנו
         </div>
         <h2 className="text-3xl font-bold mb-12">מה אנחנו מציעים</h2>
@@ -119,7 +119,7 @@ export default function HomePage() {
               <h3 className="text-xl font-bold mb-2 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors">
                 {cat.name}
               </h3>
-              <p className="text-sm text-gray-500">{cat.description}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-500">{cat.description}</p>
               <div className="mt-6 text-sm text-gray-400 dark:text-gray-600 group-hover:text-gray-600 dark:group-hover:text-gray-400 transition-colors">
                 לצפייה בקטגוריה &larr;
               </div>
@@ -133,7 +133,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-20">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div>
-              <div className="text-sm text-gray-400 dark:text-gray-500 tracking-[0.2em] uppercase mb-3">
+              <div className="text-sm text-gray-500 dark:text-gray-500 tracking-[0.2em] uppercase mb-3">
                 אודות Modaco
               </div>
               <h2 className="text-3xl font-bold mb-6">
@@ -141,10 +141,10 @@ export default function HomePage() {
                 <br />
                 יוצא דופן טמון בפרטים
               </h2>
-              <p className="text-gray-500 dark:text-gray-400 leading-relaxed mb-4">
+              <p className="text-gray-700 dark:text-gray-400 leading-relaxed mb-4">
                 אנו בוחרים בקפידה כל פריט — מתוך ראייה רחבה של עמידות לאורך זמן, נוחות שימוש יומיומית, עיצוב מתקדם והתאמה מושלמת לסטנדרטים הגבוהים ביותר של המטבח והבית המודרני.
               </p>
-              <p className="text-gray-500 dark:text-gray-400 leading-relaxed mb-8">
+              <p className="text-gray-700 dark:text-gray-400 leading-relaxed mb-8">
                 אנו מלווים את לקוחותינו, מעצבים ואנשי מקצוע מתוך גישה של שירות אישי, מקצועיות ושקיפות מלאה.
               </p>
               <Link
@@ -180,7 +180,7 @@ export default function HomePage() {
       <section className="border-t border-gray-200 dark:border-gray-800 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-20 text-center">
           <h2 className="text-3xl font-bold mb-4">אדריכלים, מעצבים וקבלנים?</h2>
-          <p className="text-gray-500 dark:text-gray-400 mb-8 max-w-lg mx-auto">
+          <p className="text-gray-700 dark:text-gray-400 mb-8 max-w-lg mx-auto">
             צרו קשר לקבלת מחירון מיוחד, תנאי תשלום מותאמים וגישה למערכת B2B.
           </p>
           <Link

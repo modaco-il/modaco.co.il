@@ -17,8 +17,6 @@ export default function RootLayout({
     <html lang="he" dir="rtl" className="dark h-full antialiased" suppressHydrationWarning>
       <head>
         <meta name="theme-color" content="#000000" />
-        <meta name="msapplication-navbutton-color" content="#000000" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
         <link
           href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap"
           rel="stylesheet"
