@@ -44,8 +44,8 @@ export default function HomePage() {
     <div>
       {/* Hero */}
       <section className="relative overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-24 lg:py-36">
-          <div className="max-w-3xl">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-24 lg:py-36 text-center">
+          <div className="max-w-3xl mx-auto">
             <div className="text-sm text-gray-500 dark:text-gray-500 tracking-[0.2em] uppercase mb-6">
               למעלה מ-40 שנה של מומחיות
             </div>
@@ -54,22 +54,24 @@ export default function HomePage() {
               <br />
               <span className="text-gray-400 dark:text-gray-500">ברמה אחרת</span>
             </h1>
-            <p className="text-lg text-gray-700 dark:text-gray-400 leading-relaxed max-w-xl mb-10">
+            <p className="text-lg text-gray-700 dark:text-gray-400 leading-relaxed max-w-xl mx-auto mb-10">
               המותגים המובילים בעולם. איכות ללא פשרות. ישירות מהיבואן אליכם — לבית, למטבח, לכל חלל.
             </p>
-            <div className="flex gap-4">
+            <div className="flex gap-4 justify-center">
               <Link
                 href="/categories/hinges"
                 className="px-8 py-3 bg-black dark:bg-white text-white dark:text-black font-medium rounded-sm hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors"
               >
                 לקטלוג המלא
               </Link>
-              <Link
-                href="/contact"
+              <a
+                href="https://wa.me/972526804945"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="px-8 py-3 border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-300 font-medium rounded-sm hover:border-gray-500 hover:text-black dark:hover:text-white transition-colors"
               >
                 צרו קשר
-              </Link>
+              </a>
             </div>
           </div>
         </div>
@@ -183,12 +185,14 @@ export default function HomePage() {
           <p className="text-gray-700 dark:text-gray-400 mb-8 max-w-lg mx-auto">
             צרו קשר לקבלת מחירון מיוחד, תנאי תשלום מותאמים וגישה למערכת B2B.
           </p>
-          <Link
-            href="/contact"
+          <a
+            href="https://wa.me/972526804945"
+            target="_blank"
+            rel="noopener noreferrer"
             className="inline-block px-8 py-3 bg-black dark:bg-white text-white dark:text-black font-medium rounded-sm hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors"
           >
             לפרטים נוספים
-          </Link>
+          </a>
         </div>
       </section>
     </div>
