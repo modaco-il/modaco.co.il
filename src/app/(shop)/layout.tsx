@@ -1,5 +1,4 @@
 import Link from "next/link";
-import { User } from "lucide-react";
 
 const navItems = [
   { href: "/", label: "ראשי" },
@@ -50,7 +49,7 @@ export default function ShopLayout({
               href="/login"
               className="w-10 h-10 rounded-full border border-gray-700 flex items-center justify-center text-gray-400 hover:text-white hover:border-gray-500 transition-colors"
             >
-              <User className="w-5 h-5" />
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             </Link>
           </div>
         </div>
