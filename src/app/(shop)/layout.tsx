@@ -92,8 +92,14 @@ export default function ShopLayout({
               </ul>
             </div>
           </div>
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-xs text-gray-600">
-            &copy; {new Date().getFullYear()} Modaco. כל הזכויות שמורות.
+          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-xs text-gray-600 space-y-1">
+            <div>&copy; {new Date().getFullYear()} Modaco. כל הזכויות שמורות.</div>
+            <div dir="ltr">
+              Built by{" "}
+              <a href="https://ozkabala.com" target="_blank" rel="noopener noreferrer" className="hover:text-gray-400 transition-colors underline underline-offset-2">
+                Oz Kabala
+              </a>
+            </div>
           </div>
         </div>
       </footer>
