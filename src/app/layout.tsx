@@ -37,10 +37,12 @@ function ComingSoon() {
   return (
     <div className="min-h-screen bg-gray-950 flex flex-col items-center justify-center text-center px-6">
       <div className="max-w-lg">
-        {/* Logo text */}
-        <h1 className="text-5xl font-bold text-white tracking-tight mb-2">
-          Modaco
-        </h1>
+        {/* Logo */}
+        <img
+          src="/logo.png"
+          alt="Modaco"
+          className="h-24 mx-auto mb-4 invert"
+        />
         <div className="text-gray-400 text-sm tracking-[0.3em] uppercase mb-12">
           פרזול ואקססוריז לבית
         </div>
