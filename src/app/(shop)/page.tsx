@@ -37,6 +37,18 @@ const categories = [
     brand: "Blum",
     description: "פתרונות הרמה חכמים לקלפות ולמיקרו",
   },
+  {
+    slug: "aluminum",
+    name: "אלומיניום וזכוכית",
+    brand: "Modaco",
+    description: "פרופילים, מסגרות ופתרונות אלומיניום וזכוכית",
+  },
+  {
+    slug: "carpentry",
+    name: "נגרות",
+    brand: "Modaco Premium",
+    description: "מטבחי יוקרה ונגרות בהתאמה אישית מוחלטת",
+  },
 ];
 
 export default function HomePage() {
@@ -127,6 +139,83 @@ export default function HomePage() {
               </div>
             </Link>
           ))}
+        </div>
+      </section>
+
+      {/* Profile 19 — Aluminum banner */}
+      <section className="border-t border-gray-200 dark:border-gray-800 transition-colors">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
+          <div className="relative border border-gray-200 dark:border-gray-800 rounded-sm overflow-hidden">
+            <div className="grid grid-cols-1 lg:grid-cols-2">
+              <div className="p-10 lg:p-14 flex flex-col justify-center">
+                <div className="text-xs text-gray-400 dark:text-gray-600 uppercase tracking-wider mb-3">
+                  פרופיל 19 &bull; אלומיניום וזכוכית
+                </div>
+                <h2 className="text-3xl lg:text-4xl font-bold mb-4">
+                  הזמנה בהתאמה אישית
+                </h2>
+                <p className="text-gray-700 dark:text-gray-400 leading-relaxed mb-6">
+                  פרופילי אלומיניום וזכוכית בחיתוך מדויק, מותאמים בדיוק למידות ולדרישות שלכם. פרופיל 19 לארונות, ויטרינות, מחיצות ועוד — ישירות מהמפעל אליכם.
+                </p>
+                <div className="flex gap-4">
+                  <a
+                    href="https://wa.me/972526804945?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%20%D7%91%D7%A4%D7%A8%D7%95%D7%A4%D7%99%D7%9C%2019%20%D7%91%D7%94%D7%AA%D7%90%D7%9E%D7%94%20%D7%90%D7%99%D7%A9%D7%99%D7%AA"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-6 py-3 bg-black dark:bg-white text-white dark:text-black font-medium rounded-sm hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors text-sm"
+                  >
+                    הזמינו עכשיו
+                  </a>
+                  <Link
+                    href="/categories/aluminum"
+                    className="px-6 py-3 border border-gray-300 dark:border-gray-700 text-gray-600 dark:text-gray-300 font-medium rounded-sm hover:border-gray-500 hover:text-black dark:hover:text-white transition-colors text-sm"
+                  >
+                    לקטגוריית אלומיניום
+                  </Link>
+                </div>
+              </div>
+              <div className="bg-gray-100 dark:bg-gray-900 p-10 lg:p-14 flex items-center justify-center transition-colors">
+                <div className="text-center">
+                  <div className="text-6xl font-bold text-gray-300 dark:text-gray-700 mb-2">19</div>
+                  <div className="text-sm text-gray-500">Profile</div>
+                  <div className="mt-6 space-y-2 text-sm text-gray-600 dark:text-gray-500">
+                    <div>חיתוך מדויק למידה</div>
+                    <div>אלומיניום + זכוכית</div>
+                    <div>ארונות &bull; ויטרינות &bull; מחיצות</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Carpentry — Premium kitchens */}
+      <section className="border-t border-gray-200 dark:border-gray-800 transition-colors">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-16">
+          <div className="bg-gray-950 dark:bg-gray-900 rounded-sm p-10 lg:p-16 text-center text-white transition-colors">
+            <div className="text-xs text-gray-400 uppercase tracking-wider mb-4">
+              Modaco Premium
+            </div>
+            <h2 className="text-3xl lg:text-4xl font-bold mb-4">
+              מטבחי יוקרה בהתאמה אישית
+            </h2>
+            <p className="text-gray-400 leading-relaxed max-w-2xl mx-auto mb-4">
+              למעלה מ-40 שנה של מומחיות בתכנון וייצור מטבחי יוקרה.
+              שילוב של נגרות איכותית עם פרזול מתקדם מהמותגים המובילים בעולם — לתוצאה מושלמת עד הפרט האחרון.
+            </p>
+            <p className="text-gray-500 text-sm max-w-xl mx-auto mb-8">
+              כל מטבח מתוכנן ומיוצר בהתאמה אישית מוחלטת, עם ליווי מקצועי מהשלב הראשון ועד ההתקנה.
+            </p>
+            <a
+              href="https://wa.me/972526804945?text=%D7%94%D7%99%D7%99%2C%20%D7%90%D7%A0%D7%99%20%D7%9E%D7%AA%D7%A2%D7%A0%D7%99%D7%99%D7%9F%20%D7%91%D7%9E%D7%98%D7%91%D7%97%20%D7%91%D7%94%D7%AA%D7%90%D7%9E%D7%94%20%D7%90%D7%99%D7%A9%D7%99%D7%AA"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block px-8 py-3 bg-white text-black font-medium rounded-sm hover:bg-gray-200 transition-colors"
+            >
+              לתיאום פגישת ייעוץ
+            </a>
+          </div>
         </div>
       </section>
 

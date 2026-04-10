@@ -12,6 +12,8 @@ const navItems = [
   { href: "/categories/handles", label: "ידיות" },
   { href: "/categories/accessories", label: "אקססוריז" },
   { href: "/categories/lift-systems", label: "מנגנוני הרמה" },
+  { href: "/categories/aluminum", label: "אלומיניום" },
+  { href: "/categories/carpentry", label: "נגרות" },
   { href: "/about", label: "אודות" },
   { href: "/contact", label: "צרו קשר" },
 ];
