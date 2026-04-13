@@ -17,11 +17,11 @@ export default function CarpentryPage() {
           alt="מטבח Modaco Premium"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/60 to-ink/30" />
+        <div className="absolute inset-0 hero-overlay" />
 
         <div className="relative z-10 h-full flex items-end pb-24 lg:pb-32">
           <div className="max-w-[1400px] mx-auto px-6 lg:px-12 w-full">
-            <div className="max-w-2xl">
+            <div className="max-w-2xl hero-text">
               <div className="eyebrow text-mocha-soft mb-6">Modaco Premium</div>
               <h1 className="font-display text-5xl lg:text-7xl text-cream leading-[1.05] mb-8">
                 מטבחי יוקרה<br />

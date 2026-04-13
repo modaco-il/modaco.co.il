@@ -19,17 +19,17 @@ export default function HomePage() {
           alt="מטבח Modaco"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-ink via-ink/50 to-ink/20" />
+        <div className="absolute inset-0 hero-overlay" />
 
         <div className="relative z-10 h-full flex flex-col justify-end pb-24 lg:pb-32">
           <div className="max-w-[1400px] mx-auto px-6 lg:px-12 w-full">
-            <div className="max-w-2xl">
+            <div className="max-w-2xl hero-text">
               <div className="eyebrow text-mocha-soft mb-6">למעלה מ-40 שנה</div>
               <h1 className="font-display text-cream text-5xl lg:text-7xl leading-[1.05] mb-8">
                 פרזול ואקססוריז<br />
                 <span className="italic text-mocha-soft">ברמה אחרת</span>
               </h1>
-              <p className="text-cream/80 text-lg lg:text-xl font-light leading-relaxed max-w-xl mb-10">
+              <p className="text-cream/90 text-lg lg:text-xl font-light leading-relaxed max-w-xl mb-10">
                 המותגים המובילים בעולם, נבחרים בקפידה — לבית, למטבח ולכל חלל שמגיע לו את הטוב ביותר.
               </p>
               <div className="flex gap-4 flex-wrap">
@@ -147,10 +147,10 @@ export default function HomePage() {
           alt="מטבח יוקרה Modaco"
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-ink via-ink/80 to-ink/30" />
+        <div className="absolute inset-0 hero-overlay-side" />
 
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12 py-24 w-full">
-          <div className="max-w-xl">
+          <div className="max-w-xl hero-text">
             <div className="eyebrow text-mocha-soft mb-6">Modaco Premium &middot; נגרות</div>
             <h2 className="font-display text-4xl lg:text-6xl text-cream mb-8 leading-[1.05]">
               מטבחי יוקרה.<br />
