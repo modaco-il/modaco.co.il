@@ -1,10 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { ShoppingCart, Minus, Plus, Truck, Shield, Phone } from "lucide-react";
 import Link from "next/link";
 import { ProductCard } from "./product-card";
 
@@ -48,11 +44,11 @@ interface ProductDetailProps {
   };
 }
 
-const stockStatusLabels: Record<string, { label: string; color: string }> = {
-  IN_STOCK: { label: "במלאי — משלוח מהיר", color: "text-green-600" },
-  AT_SUPPLIER: { label: "במלאי הספק — 3-5 ימי עסקים", color: "text-blue-600" },
-  ON_ORDER: { label: "בהזמנה — צרו קשר לזמן אספקה", color: "text-yellow-600" },
-  OUT_OF_STOCK: { label: "אזל מהמלאי", color: "text-red-600" },
+const stockStatus: Record<string, { label: string; color: string }> = {
+  IN_STOCK: { label: "במלאי — משלוח מהיר", color: "text-emerald-700" },
+  AT_SUPPLIER: { label: "במלאי הספק — 3-5 ימי עסקים", color: "text-mocha" },
+  ON_ORDER: { label: "בהזמנה — צרו קשר לזמן אספקה", color: "text-amber-700" },
+  OUT_OF_STOCK: { label: "אזל מהמלאי", color: "text-red-700" },
 };
 
 export function ProductDetail({ product }: ProductDetailProps) {
@@ -61,17 +57,14 @@ export function ProductDetail({ product }: ProductDetailProps) {
   );
   const [quantity, setQuantity] = useState(1);
 
-  const currentPrice =
-    selectedVariant?.priceOverride ?? product.basePrice;
-  const stockInfo = selectedVariant
-    ? stockStatusLabels[selectedVariant.stockStatus]
-    : null;
+  const currentPrice = selectedVariant?.priceOverride ?? product.basePrice;
+  const stock = selectedVariant ? stockStatus[selectedVariant.stockStatus] : null;
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
+    <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-12 lg:py-16">
       {/* Breadcrumb */}
-      <div className="flex items-center gap-2 text-sm text-gray-500 mb-6">
-        <Link href="/" className="hover:text-black">
+      <nav className="flex items-center gap-2 text-xs tracking-wider text-ink-soft/60 mb-12 uppercase">
+        <Link href="/" className="hover:text-mocha transition-colors">
           ראשי
         </Link>
         <span>/</span>
@@ -79,41 +72,45 @@ export function ProductDetail({ product }: ProductDetailProps) {
           <>
             <Link
               href={`/categories/${product.category.slug}`}
-              className="hover:text-black"
+              className="hover:text-mocha transition-colors"
             >
               {product.category.name}
             </Link>
             <span>/</span>
           </>
         )}
-        <span className="text-black">{product.name}</span>
-      </div>
+        <span className="text-ink truncate max-w-xs">{product.name}</span>
+      </nav>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
         {/* Images */}
         <div className="space-y-4">
-          <div className="aspect-square bg-gray-100 rounded-xl flex items-center justify-center text-gray-400">
+          <div className="aspect-square img-frame border border-bone overflow-hidden">
             {product.images.length > 0 ? (
+              /* eslint-disable-next-line @next/next/no-img-element */
               <img
                 src={product.images[0].url}
                 alt={product.images[0].altText || product.name}
-                className="w-full h-full object-contain rounded-xl"
+                className="w-full h-full object-contain p-12"
               />
             ) : (
-              <span className="text-lg">תמונת מוצר</span>
+              <div className="w-full h-full flex items-center justify-center text-ink-soft/30 text-xs tracking-widest uppercase">
+                ללא תמונה
+              </div>
             )}
           </div>
           {product.images.length > 1 && (
-            <div className="grid grid-cols-4 gap-2">
+            <div className="grid grid-cols-4 gap-3">
               {product.images.slice(1, 5).map((img) => (
                 <div
                   key={img.id}
-                  className="aspect-square bg-gray-100 rounded-lg overflow-hidden"
+                  className="aspect-square img-frame border border-bone overflow-hidden"
                 >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={img.url}
                     alt={img.altText || ""}
-                    className="w-full h-full object-contain"
+                    className="w-full h-full object-contain p-3"
                   />
                 </div>
               ))}
@@ -121,35 +118,38 @@ export function ProductDetail({ product }: ProductDetailProps) {
           )}
         </div>
 
-        {/* Product Info */}
-        <div className="space-y-6">
-          <div>
-            {product.category && (
-              <Badge variant="secondary" className="mb-2">
-                {product.category.name}
-              </Badge>
-            )}
-            <h1 className="text-3xl font-bold">{product.name}</h1>
-          </div>
+        {/* Info */}
+        <div className="lg:pt-8">
+          {product.category && (
+            <div className="eyebrow mb-5">{product.category.name}</div>
+          )}
+          <h1 className="font-display text-4xl lg:text-5xl text-ink leading-[1.1] mb-8">
+            {product.name}
+          </h1>
 
-          {/* Price */}
-          <div className="text-3xl font-bold">
+          <div className="text-3xl font-light text-ink mb-3">
             ₪{currentPrice.toLocaleString()}
           </div>
 
+          {stock && (
+            <p className={`text-sm font-light mb-10 ${stock.color}`}>
+              {stock.label}
+            </p>
+          )}
+
           {/* Variants */}
           {product.variants.length > 1 && (
-            <div className="space-y-2">
-              <Label>בחר גרסה:</Label>
+            <div className="mb-10">
+              <div className="eyebrow mb-4">בחירת גרסה</div>
               <div className="flex flex-wrap gap-2">
                 {product.variants.map((v) => (
                   <button
                     key={v.id}
                     onClick={() => setSelectedVariant(v)}
-                    className={`px-4 py-2 rounded-lg border text-sm transition-colors ${
+                    className={`px-5 py-2.5 border text-sm transition-all ${
                       selectedVariant?.id === v.id
-                        ? "border-black bg-black text-white"
-                        : "border-gray-300 hover:border-gray-500"
+                        ? "border-ink bg-ink text-cream"
+                        : "border-bone text-ink-soft hover:border-mocha hover:text-mocha"
                     }`}
                   >
                     {v.name}
@@ -159,47 +159,52 @@ export function ProductDetail({ product }: ProductDetailProps) {
             </div>
           )}
 
-          {/* Stock Status */}
-          {stockInfo && (
-            <p className={`text-sm font-medium ${stockInfo.color}`}>
-              {stockInfo.label}
-            </p>
-          )}
-
-          {/* Quantity + Add to Cart */}
-          <div className="flex items-center gap-4">
-            <div className="flex items-center border rounded-lg">
+          {/* Quantity + CTA */}
+          <div className="space-y-4 mb-12">
+            <div className="flex items-center gap-4">
+              <div className="flex items-center border border-bone">
+                <button
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  className="w-11 h-11 hover:bg-cream-deep transition-colors text-ink-soft"
+                  aria-label="פחות"
+                >
+                  −
+                </button>
+                <span className="w-12 text-center text-sm">{quantity}</span>
+                <button
+                  onClick={() => setQuantity(quantity + 1)}
+                  className="w-11 h-11 hover:bg-cream-deep transition-colors text-ink-soft"
+                  aria-label="עוד"
+                >
+                  +
+                </button>
+              </div>
               <button
-                onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                className="p-2 hover:bg-gray-100"
+                disabled={selectedVariant?.stockStatus === "OUT_OF_STOCK"}
+                className="flex-1 h-11 bg-ink text-cream text-sm tracking-wide hover:bg-mocha transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <Minus className="w-4 h-4" />
-              </button>
-              <span className="px-4 min-w-[3rem] text-center">{quantity}</span>
-              <button
-                onClick={() => setQuantity(quantity + 1)}
-                className="p-2 hover:bg-gray-100"
-              >
-                <Plus className="w-4 h-4" />
+                הוסף לסל — ₪{(currentPrice * quantity).toLocaleString()}
               </button>
             </div>
-            <Button
-              size="lg"
-              className="flex-1"
-              disabled={selectedVariant?.stockStatus === "OUT_OF_STOCK"}
+            <a
+              href={`https://wa.me/972526804945?text=${encodeURIComponent(
+                `היי, אני מתעניין ב-${product.name}`
+              )}`}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block w-full h-11 leading-[2.75rem] text-center border border-ink text-ink text-sm tracking-wide hover:bg-ink hover:text-cream transition-all"
             >
-              <ShoppingCart className="w-5 h-5 ml-2" />
-              הוסף לסל — ₪{(currentPrice * quantity).toLocaleString()}
-            </Button>
+              שיחה עם יועץ בוואטסאפ
+            </a>
           </div>
 
-          <Separator />
+          <div className="border-t border-bone pt-8 mb-8" />
 
           {/* Description */}
           {product.description && (
-            <div>
-              <h2 className="font-bold mb-2">תיאור המוצר</h2>
-              <div className="text-gray-600 text-sm leading-relaxed whitespace-pre-line">
+            <div className="mb-10">
+              <div className="eyebrow mb-4">פרטי המוצר</div>
+              <div className="text-ink-soft/80 font-light text-sm leading-loose whitespace-pre-line">
                 {product.description}
               </div>
             </div>
@@ -207,26 +212,26 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
           {/* SKU */}
           {selectedVariant && (
-            <p className="text-xs text-gray-400">
+            <p className="text-xs text-ink-soft/40 tracking-wider uppercase">
               מק&quot;ט: {selectedVariant.sku}
             </p>
           )}
 
-          <Separator />
+          <div className="border-t border-bone mt-12 pt-10" />
 
-          {/* Trust signals */}
-          <div className="grid grid-cols-3 gap-4 text-center text-xs text-gray-600">
-            <div className="flex flex-col items-center gap-1">
-              <Truck className="w-5 h-5" />
-              <span>משלוח לכל הארץ</span>
+          {/* Trust */}
+          <div className="grid grid-cols-3 gap-6 text-center text-xs text-ink-soft/70 font-light">
+            <div>
+              <div className="font-display text-lg text-ink mb-1">משלוח</div>
+              <div>לכל הארץ</div>
             </div>
-            <div className="flex flex-col items-center gap-1">
-              <Shield className="w-5 h-5" />
-              <span>אחריות יצרן</span>
+            <div>
+              <div className="font-display text-lg text-ink mb-1">אחריות</div>
+              <div>יצרן מלאה</div>
             </div>
-            <div className="flex flex-col items-center gap-1">
-              <Phone className="w-5 h-5" />
-              <span>ייעוץ מקצועי</span>
+            <div>
+              <div className="font-display text-lg text-ink mb-1">ייעוץ</div>
+              <div>אישי וללא עלות</div>
             </div>
           </div>
         </div>
@@ -234,9 +239,14 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
       {/* Cross-sell */}
       {product.crossSellFrom.length > 0 && (
-        <section className="mt-16">
-          <h2 className="text-2xl font-bold mb-6">משלימים את הסגנון</h2>
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <section className="mt-32 pt-16 border-t border-bone">
+          <div className="text-center mb-16">
+            <div className="eyebrow mb-4">גם בעניין</div>
+            <h2 className="font-display text-3xl lg:text-4xl text-ink">
+              משלימים את הסגנון
+            </h2>
+          </div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12 lg:gap-x-8">
             {product.crossSellFrom.map((rule) => (
               <ProductCard
                 key={rule.relatedProduct.id}
@@ -255,8 +265,4 @@ export function ProductDetail({ product }: ProductDetailProps) {
       )}
     </div>
   );
-}
-
-function Label({ children }: { children: React.ReactNode }) {
-  return <p className="text-sm font-medium text-gray-700">{children}</p>;
 }

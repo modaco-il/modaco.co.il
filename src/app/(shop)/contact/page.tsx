@@ -1,10 +1,4 @@
 import type { Metadata } from "next";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Phone, Mail, MapPin, Clock } from "lucide-react";
 
 export const metadata: Metadata = {
   title: "צרו קשר — Modaco",
@@ -13,128 +7,119 @@ export const metadata: Metadata = {
 
 export default function ContactPage() {
   return (
-    <div className="max-w-5xl mx-auto px-4 py-12">
-      <h1 className="text-4xl font-bold mb-8">צרו קשר</h1>
+    <div>
+      <section className="max-w-[1400px] mx-auto px-6 lg:px-12 pt-20 lg:pt-32 pb-12">
+        <div className="max-w-3xl">
+          <div className="eyebrow mb-6">צרו קשר</div>
+          <h1 className="font-display text-5xl lg:text-7xl text-ink leading-[1.05]">
+            נשמח לשמוע<br />
+            <span className="italic text-mocha">מכם</span>
+          </h1>
+        </div>
+      </section>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {/* Contact Form */}
-        <Card>
-          <CardHeader>
-            <CardTitle>השאירו פנייה</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <form className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="name">שם מלא *</Label>
-                  <Input id="name" name="name" required />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="phone">טלפון *</Label>
-                  <Input
-                    id="phone"
-                    name="phone"
-                    type="tel"
-                    required
-                    dir="ltr"
-                  />
-                </div>
+      <section className="max-w-[1400px] mx-auto px-6 lg:px-12 pb-32">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20">
+          {/* Form */}
+          <div className="lg:col-span-7">
+            <div className="eyebrow mb-6">השאירו פנייה</div>
+            <form className="space-y-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                <Field label="שם מלא" name="name" required />
+                <Field label="טלפון" name="phone" type="tel" dir="ltr" required />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">אימייל</Label>
-                <Input id="email" name="email" type="email" dir="ltr" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="subject">נושא</Label>
-                <Input id="subject" name="subject" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="message">הודעה *</Label>
-                <Textarea
+              <Field label="אימייל" name="email" type="email" dir="ltr" />
+              <Field label="נושא" name="subject" />
+              <div>
+                <label className="eyebrow block mb-3" htmlFor="message">
+                  הודעה *
+                </label>
+                <textarea
                   id="message"
                   name="message"
-                  rows={5}
+                  rows={6}
                   required
                   placeholder="במה נוכל לעזור?"
+                  className="w-full bg-cream-deep border border-bone px-5 py-4 text-ink placeholder:text-ink-soft/40 outline-none focus:border-mocha transition-colors font-light text-base resize-none"
                 />
               </div>
-              <Button type="submit" className="w-full">
+              <button
+                type="submit"
+                className="w-full h-12 bg-ink text-cream text-sm tracking-wide hover:bg-mocha transition-colors"
+              >
                 שלח פנייה
-              </Button>
+              </button>
             </form>
-          </CardContent>
-        </Card>
+          </div>
 
-        {/* Contact Info */}
-        <div className="space-y-6">
-          <Card>
-            <CardContent className="p-6">
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <Phone className="w-5 h-5 mt-1 text-blue-600" />
-                  <div>
-                    <div className="font-bold">טלפון</div>
-                    <a
-                      href="tel:0526804945"
-                      className="text-blue-600 text-lg"
-                      dir="ltr"
-                    >
-                      052-680-4945
-                    </a>
-                  </div>
+          {/* Info */}
+          <div className="lg:col-span-5 lg:pr-8">
+            <div className="border-t border-bone lg:border-t-0 pt-12 lg:pt-0 space-y-10">
+              <Info label="טלפון">
+                <a href="tel:0526804945" className="text-2xl font-light text-ink hover:text-mocha transition-colors" dir="ltr">
+                  052-680-4945
+                </a>
+              </Info>
+              <Info label="אימייל">
+                <a href="mailto:info@modaco.co.il" className="text-base text-ink hover:text-mocha transition-colors" dir="ltr">
+                  info@modaco.co.il
+                </a>
+              </Info>
+              <Info label="שעות פעילות">
+                <div className="text-base text-ink-soft font-light leading-relaxed">
+                  א׳–ה׳: 08:00–18:00<br />
+                  ו׳: 08:00–13:00
                 </div>
+              </Info>
+              <Info label="וואטסאפ">
+                <a
+                  href="https://wa.me/972526804945"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-block px-7 py-3 border border-ink text-ink text-sm tracking-wide hover:bg-ink hover:text-cream transition-all"
+                >
+                  פתיחת שיחה
+                </a>
+              </Info>
 
-                <div className="flex items-start gap-4">
-                  <Mail className="w-5 h-5 mt-1 text-blue-600" />
-                  <div>
-                    <div className="font-bold">אימייל</div>
-                    <a
-                      href="mailto:info@modaco.co.il"
-                      className="text-blue-600"
-                      dir="ltr"
-                    >
-                      info@modaco.co.il
-                    </a>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <Clock className="w-5 h-5 mt-1 text-blue-600" />
-                  <div>
-                    <div className="font-bold">שעות פעילות</div>
-                    <div className="text-gray-600">
-                      א׳–ה׳: 08:00–18:00
-                      <br />
-                      ו׳: 08:00–13:00
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex items-start gap-4">
-                  <MapPin className="w-5 h-5 mt-1 text-blue-600" />
-                  <div>
-                    <div className="font-bold">כתובת</div>
-                    <div className="text-gray-600">
-                      {/* TODO: להוסיף כתובת מירין */}
-                      ישראל
-                    </div>
-                  </div>
-                </div>
+              <div className="bg-ink text-cream p-8 mt-12">
+                <div className="eyebrow text-mocha-soft mb-3">B2B</div>
+                <h3 className="font-display text-2xl text-cream mb-3">אדריכלים ואנשי מקצוע</h3>
+                <p className="text-cream/70 font-light text-sm leading-loose">
+                  צרו קשר לקבלת מחירון מיוחד, 15% הנחה והרשמה לחשבון B2B עם תנאים מותאמים.
+                </p>
               </div>
-            </CardContent>
-          </Card>
-
-          <Card className="bg-gray-900 text-white">
-            <CardContent className="p-6">
-              <h3 className="font-bold text-lg mb-2">אדריכלים ואנשי מקצוע?</h3>
-              <p className="text-gray-300 text-sm">
-                צרו קשר לקבלת מחירון מיוחד והרשמה לחשבון B2B עם תנאים
-                מותאמים.
-              </p>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
-      </div>
+      </section>
+    </div>
+  );
+}
+
+function Field({ label, name, type = "text", required = false, dir }: { label: string; name: string; type?: string; required?: boolean; dir?: string }) {
+  return (
+    <div>
+      <label className="eyebrow block mb-3" htmlFor={name}>
+        {label} {required && "*"}
+      </label>
+      <input
+        id={name}
+        name={name}
+        type={type}
+        required={required}
+        dir={dir}
+        className="w-full h-12 bg-cream-deep border border-bone px-5 text-ink outline-none focus:border-mocha transition-colors font-light"
+      />
+    </div>
+  );
+}
+
+function Info({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div>
+      <div className="eyebrow mb-3">{label}</div>
+      {children}
     </div>
   );
 }

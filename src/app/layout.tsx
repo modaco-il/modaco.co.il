@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
 
 export const metadata: Metadata = {
   title: "Modaco — פרזול ואקססוריז לבית",
@@ -14,30 +13,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="he" dir="rtl" className="dark h-full antialiased" suppressHydrationWarning>
+    <html lang="he" dir="rtl" className="h-full antialiased">
       <head>
-        <meta name="theme-color" content="#000000" />
+        <meta name="theme-color" content="#FAF6F0" />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
         <link
-          href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&family=Frank+Ruhl+Libre:wght@300;400;500;700;900&display=swap"
           rel="stylesheet"
         />
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              try {
-                const t = localStorage.getItem('modaco-theme') || 'dark';
-                document.documentElement.classList.remove('dark','light');
-                document.documentElement.classList.add(t);
-              } catch(e) {}
-            `,
-          }}
-        />
       </head>
-      <body
-        className="min-h-full flex flex-col bg-white dark:bg-black text-gray-900 dark:text-white transition-colors duration-300"
-        style={{ fontFamily: "'Heebo', sans-serif" }}
-      >
-        <ThemeProvider>{children}</ThemeProvider>
+      <body className="min-h-full flex flex-col bg-cream text-ink">
+        {children}
       </body>
     </html>
   );

@@ -31,7 +31,6 @@ export default async function CategoryPage({ params }: Props) {
 
   if (!category) notFound();
 
-  // Get products in this category and all child categories
   const categoryIds = [category.id, ...category.children.map((c) => c.id)];
 
   const products = await db.product.findMany({
@@ -48,17 +47,26 @@ export default async function CategoryPage({ params }: Props) {
   });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-2">{category.name}</h1>
+    <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-20 lg:py-28">
+      {/* Category header */}
+      <div className="mb-16 lg:mb-20">
+        <div className="eyebrow mb-5">קטגוריה</div>
+        <h1 className="font-display text-5xl lg:text-6xl text-ink mb-4">
+          {category.name}
+        </h1>
+        <p className="text-ink-soft/70 font-light text-base">
+          {products.length} מוצרים בקטלוג
+        </p>
+      </div>
 
       {/* Subcategories */}
       {category.children.length > 0 && (
-        <div className="flex gap-2 mb-8 flex-wrap">
+        <div className="flex gap-3 mb-12 flex-wrap">
           {category.children.map((child) => (
             <a
               key={child.id}
               href={`/categories/${child.slug}`}
-              className="px-4 py-2 bg-gray-100 rounded-full text-sm hover:bg-gray-200 transition-colors"
+              className="px-5 py-2 border border-bone text-sm text-ink-soft hover:border-mocha hover:text-mocha transition-colors"
             >
               {child.name}
             </a>
@@ -68,7 +76,7 @@ export default async function CategoryPage({ params }: Props) {
 
       {/* Products Grid */}
       {products.length > 0 ? (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12 lg:gap-x-8 lg:gap-y-16">
           {products.map((product) => (
             <ProductCard
               key={product.id}
@@ -85,9 +93,9 @@ export default async function CategoryPage({ params }: Props) {
           ))}
         </div>
       ) : (
-        <div className="text-center py-20 text-gray-400">
+        <div className="text-center py-32 text-ink-soft/50 font-light">
           <p className="text-lg">עדיין אין מוצרים בקטגוריה זו</p>
-          <p className="text-sm mt-2">מוצרים חדשים מתווספים בקרוב!</p>
+          <p className="text-sm mt-2">מוצרים חדשים מתווספים בקרוב</p>
         </div>
       )}
     </div>
