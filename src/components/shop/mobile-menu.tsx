@@ -85,19 +85,7 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
 
       {/* Content */}
       <div className="relative h-full w-full flex flex-col" dir="rtl">
-        <div className="h-16 flex-shrink-0" />
-
-        {/* Eyebrow header */}
-        <div
-          className={`px-8 pt-2 pb-6 transition-all duration-700 ${
-            open ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"
-          }`}
-          style={{ transitionDelay: open ? "80ms" : "0ms" }}
-        >
-          <div className="text-[11px] tracking-[0.3em] uppercase text-mocha-soft font-medium">
-            הקולקציה
-          </div>
-        </div>
+        <div className="h-20 flex-shrink-0" />
 
         {/* Categories */}
         <nav
@@ -117,7 +105,7 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
                 href={item.href}
                 data-idx={i}
                 onClick={onClose}
-                className={`group flex items-baseline justify-between gap-4 py-4 border-b border-mocha-soft/15 transition-all duration-700 ${
+                className={`group flex items-baseline justify-between gap-4 py-3.5 border-b border-mocha-soft/15 transition-all duration-700 ${
                   open ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
                 }`}
                 style={{
