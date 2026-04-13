@@ -6,9 +6,14 @@ import { usePathname } from "next/navigation";
 import { MobileMenu } from "@/components/shop/mobile-menu";
 
 const navItems = [
+  { href: "/categories/hinges", label: "צירים" },
+  { href: "/categories/slides", label: "מסילות" },
+  { href: "/categories/lift-systems", label: "מנגנוני הרמה" },
+  { href: "/categories/accessories", label: "אקססוריז" },
+  { href: "/categories/aluminum", label: "אלומיניום" },
+  { href: "/categories/carpentry", label: "נגרות" },
   { href: "/catalog", label: "הקטלוג" },
   { href: "/about", label: "אודות" },
-  { href: "/contact", label: "צרו קשר" },
 ];
 
 function UserIcon() {
@@ -89,7 +94,7 @@ export default function ShopLayout({
               />
             </Link>
 
-            <nav className="hidden lg:flex items-center gap-9" dir="rtl">
+            <nav className="hidden lg:flex items-center gap-7" dir="rtl">
               {navItems.map((item) => (
                 <Link
                   key={item.href}
