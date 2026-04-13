@@ -20,6 +20,7 @@ const items: NavItem[] = [
 ];
 
 const secondaryItems = [
+  { href: "/catalog", label: "הקטלוג המלא" },
   { href: "/about", label: "אודות" },
   { href: "/contact", label: "צרו קשר" },
   { href: "/search", label: "חיפוש" },

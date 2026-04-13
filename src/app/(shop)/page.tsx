@@ -35,7 +35,7 @@ export default function HomePage() {
               </p>
               <div className="flex gap-4 flex-wrap">
                 <Link
-                  href="/categories/hinges"
+                  href="/catalog"
                   className="px-9 py-4 bg-cream text-ink text-sm tracking-wide hover:bg-mocha-soft transition-colors"
                 >
                   לקטלוג המוצרים
