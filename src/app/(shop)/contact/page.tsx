@@ -86,7 +86,7 @@ export default function ContactPage() {
                 <div className="eyebrow text-mocha-soft mb-3">B2B</div>
                 <h3 className="font-display text-2xl text-cream mb-3">אדריכלים ואנשי מקצוע</h3>
                 <p className="text-cream/70 font-light text-sm leading-loose">
-                  צרו קשר לקבלת מחירון מיוחד, 15% הנחה והרשמה לחשבון B2B עם תנאים מותאמים.
+                  צרו קשר לקבלת מחירון ייעודי לאנשי מקצוע והרשמה לחשבון B2B עם תנאים מותאמים.
                 </p>
               </div>
             </div>

@@ -30,7 +30,7 @@ export default function HomePage() {
                 פרזול ואקססוריז<br />
                 <span className="text-mocha-soft font-display-light">ברמה אחרת</span>
               </h1>
-              <p className="text-cream/90 text-lg lg:text-xl font-light leading-relaxed max-w-xl mb-10">
+              <p className="text-cream text-lg lg:text-xl font-light leading-relaxed max-w-xl mb-10">
                 המותגים המובילים בעולם, נבחרים בקפידה — לבית, למטבח ולכל חלל שמגיע לו את הטוב ביותר.
               </p>
               <div className="flex gap-4 flex-wrap">
@@ -61,7 +61,7 @@ export default function HomePage() {
             <Stat value="40+" label="שנות מומחיות" />
             <Stat value="Blum" label="אולם תצוגה רשמי" serif />
             <Stat value="200+" label="מוצרים בקטלוג" />
-            <Stat value="15%" label="הנחת אנשי מקצוע" />
+            <Stat value="B2B" label="ממשק לאנשי מקצוע" serif />
           </div>
         </div>
       </section>
@@ -86,7 +86,7 @@ export default function HomePage() {
               <h3 className="font-display text-2xl lg:text-3xl text-ink mb-3 group-hover:text-mocha transition-colors">
                 {cat.name}
               </h3>
-              <p className="text-sm text-ink-soft/70 font-light leading-relaxed mb-8">
+              <p className="text-sm text-ink-soft font-light leading-relaxed mb-8">
                 {cat.description}
               </p>
               <div className="text-xs tracking-[0.25em] uppercase text-mocha group-hover:text-mocha-hover transition-colors">
@@ -107,7 +107,7 @@ export default function HomePage() {
                 חיתוך מדויק.<br />
                 <span className="text-mocha font-display-light">למידות שלכם.</span>
               </h2>
-              <p className="text-ink-soft/80 font-light text-lg leading-loose mb-10">
+              <p className="text-ink-soft font-light text-lg leading-loose mb-10">
                 פרופילי אלומיניום וזכוכית בחיתוך מדויק, מותאמים בדיוק למידות
                 ולדרישות. לארונות, לויטרינות, למחיצות — ישירות מהמפעל אליכם,
                 ללא תיווך וללא פשרות.
@@ -135,7 +135,7 @@ export default function HomePage() {
                 alt="פרופיל 19 — אלומיניום וזכוכית"
                 className="w-full h-full object-cover"
               />
-              <div className="absolute bottom-6 left-6 text-7xl lg:text-9xl font-display text-cream/90 leading-none">19</div>
+              <div className="absolute bottom-6 left-6 text-7xl lg:text-9xl font-display text-cream leading-none">19</div>
             </div>
           </div>
         </div>
@@ -158,11 +158,11 @@ export default function HomePage() {
               מטבחי יוקרה.<br />
               <span className="text-mocha-soft font-display-light">בהתאמה מוחלטת.</span>
             </h2>
-            <p className="text-cream/80 font-light text-lg leading-loose mb-4">
+            <p className="text-cream font-light text-lg leading-loose mb-4">
               למעלה מ-40 שנות מומחיות בתכנון וייצור מטבחי יוקרה.
               שילוב של נגרות איכותית עם פרזול מתקדם מהמותגים המובילים בעולם.
             </p>
-            <p className="text-cream/50 font-light text-sm mb-10 leading-relaxed">
+            <p className="text-cream font-light text-sm mb-10 leading-relaxed">
               כל מטבח מתוכנן ומיוצר בהתאמה אישית מוחלטת,
               עם ליווי מקצועי מהשלב הראשון ועד ההתקנה.
             </p>
@@ -205,12 +205,12 @@ export default function HomePage() {
               לחלל יוצא דופן<br />
               <span className="text-mocha font-display-light">טמון בפרטים.</span>
             </h2>
-            <p className="text-ink-soft/80 font-light text-base leading-loose mb-6">
+            <p className="text-ink-soft font-light text-base leading-loose mb-6">
               אנחנו בוחרים בקפידה כל פריט — מתוך ראייה רחבה של עמידות לאורך זמן,
               נוחות שימוש יומיומית, עיצוב מתקדם והתאמה מושלמת לסטנדרטים הגבוהים
               ביותר של המטבח והבית המודרני.
             </p>
-            <p className="text-ink-soft/80 font-light text-base leading-loose mb-10">
+            <p className="text-ink-soft font-light text-base leading-loose mb-10">
               גישת השירות שלנו אישית, מקצועית ושקופה — לא רק עסקה,
               אלא ליווי לאורך כל הדרך.
             </p>
@@ -232,8 +232,8 @@ export default function HomePage() {
             אדריכלים, מעצבים<br />
             <span className="text-mocha-soft font-display-light">וקבלנים</span>
           </h2>
-          <p className="text-cream/70 font-light text-lg leading-loose max-w-xl mx-auto mb-12">
-            מחירון מיוחד, 15% הנחה על כל הקטלוג, וגישה לפלטפורמת B2B מלאה.
+          <p className="text-cream font-light text-lg leading-loose max-w-xl mx-auto mb-12">
+            תנאים מיוחדים לאנשי מקצוע, מחירון ייעודי וגישה לפלטפורמת B2B מלאה.
           </p>
           <a
             href="https://wa.me/972526804945"
@@ -255,7 +255,7 @@ function Stat({ value, label, serif = false }: { value: string; label: string; s
       <div className={`text-3xl lg:text-4xl text-ink mb-2 ${serif ? "font-display" : "font-light"}`}>
         {value}
       </div>
-      <div className="text-xs tracking-[0.2em] uppercase text-ink-soft/60">{label}</div>
+      <div className="text-xs tracking-[0.2em] uppercase text-ink-soft">{label}</div>
     </div>
   );
 }

@@ -28,7 +28,7 @@ export default function CarpentryPage() {
                 מטבחי יוקרה<br />
                 <span className="text-mocha-soft font-display-light">בהתאמה אישית</span>
               </h1>
-              <p className="text-cream/80 text-lg lg:text-xl font-light leading-relaxed max-w-xl">
+              <p className="text-cream text-lg lg:text-xl font-light leading-relaxed max-w-xl">
                 כל מטבח הוא עולם בפני עצמו. אנחנו מתכננים, מייצרים ומתקינים מטבחי יוקרה
                 שמשלבים נגרות ברמה הגבוהה ביותר עם פרזול מתקדם מהמותגים המובילים בעולם.
               </p>
@@ -47,7 +47,7 @@ export default function CarpentryPage() {
               מומחיות<br />
               <span className="text-mocha font-display-light">בנגרות</span>
             </h2>
-            <div className="space-y-5 text-ink-soft/80 font-light text-base leading-loose">
+            <div className="space-y-5 text-ink-soft font-light text-base leading-loose">
               <p>
                 Modaco נולדה מתוך אהבה לנגרות. לפני שהפכנו למומחי פרזול ואקססוריז,
                 בנינו מטבחים. ולמעשה, אנחנו עדיין בונים — למי שמחפש את הטוב ביותר.
@@ -71,7 +71,7 @@ export default function CarpentryPage() {
                 <div className={`text-4xl lg:text-5xl text-ink mb-3 ${s.serif ? "font-display" : "font-light"}`}>
                   {s.v}
                 </div>
-                <div className="text-xs tracking-[0.2em] uppercase text-ink-soft/60">{s.l}</div>
+                <div className="text-xs tracking-[0.2em] uppercase text-ink-soft">{s.l}</div>
               </div>
             ))}
           </div>
@@ -96,7 +96,7 @@ export default function CarpentryPage() {
               <div key={item.step} className="bg-cream-deep p-10 lg:p-12">
                 <div className="font-display text-5xl text-mocha/40 mb-6">{item.step}</div>
                 <h3 className="font-display text-xl text-ink mb-3">{item.title}</h3>
-                <p className="text-sm text-ink-soft/70 font-light leading-relaxed">{item.desc}</p>
+                <p className="text-sm text-ink-soft font-light leading-relaxed">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -119,7 +119,7 @@ export default function CarpentryPage() {
           ].map((item) => (
             <div key={item.title} className="bg-cream p-10 lg:p-12">
               <h3 className="font-display text-2xl text-ink mb-4">{item.title}</h3>
-              <p className="text-sm text-ink-soft/75 font-light leading-loose">{item.desc}</p>
+              <p className="text-sm text-ink-soft font-light leading-loose">{item.desc}</p>
             </div>
           ))}
         </div>
@@ -131,7 +131,7 @@ export default function CarpentryPage() {
           <div className="text-center mb-20">
             <div className="eyebrow mb-5">גלריה</div>
             <h2 className="font-display text-4xl lg:text-5xl text-ink mb-3">מהמטבחים שלנו</h2>
-            <p className="text-sm text-ink-soft/60 font-light tracking-wide">
+            <p className="text-sm text-ink-soft font-light tracking-wide">
               באדיבות Israelevitz Architects
             </p>
           </div>
@@ -157,7 +157,7 @@ export default function CarpentryPage() {
             מוכנים למטבח<br />
             <span className="text-mocha-soft font-display-light">החלומות?</span>
           </h2>
-          <p className="text-cream/70 font-light text-lg leading-loose max-w-xl mx-auto mb-12">
+          <p className="text-cream font-light text-lg leading-loose max-w-xl mx-auto mb-12">
             הצעד הראשון הוא שיחה. ספרו לנו על החלל, על הסגנון שאתם אוהבים ועל הצרכים —
             ואנחנו נעשה את השאר.
           </p>
@@ -169,7 +169,7 @@ export default function CarpentryPage() {
           >
             לתיאום פגישת ייעוץ
           </a>
-          <p className="text-cream/40 text-xs mt-5 tracking-wider">
+          <p className="text-cream text-xs mt-5 tracking-wider">
             הפגישה ללא עלות וללא התחייבות
           </p>
         </div>

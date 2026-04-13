@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { usePathname } from "next/navigation";
 
 const navItems = [
   { href: "/categories/hinges", label: "צירים" },
@@ -49,21 +50,46 @@ function SearchIcon({ className }: { className?: string }) {
   );
 }
 
+const HERO_PATHS = ["/", "/categories/aluminum", "/categories/carpentry"];
+
 export default function ShopLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const pathname = usePathname();
+  const hasHero = HERO_PATHS.includes(pathname || "/");
+  const transparent = hasHero && !scrolled && !menuOpen;
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  const headerBg = transparent
+    ? "bg-transparent border-transparent"
+    : "bg-cream/95 backdrop-blur-md border-bone";
+  const linkColor = transparent
+    ? "text-cream/90 hover:text-mocha-soft"
+    : "text-ink-soft hover:text-mocha";
+  const logoFilter = transparent ? "invert" : "";
 
   return (
     <div className="min-h-screen flex flex-col bg-cream">
       {/* Header */}
-      <header className="sticky top-0 z-50 bg-cream/95 backdrop-blur-md border-b border-bone">
+      <header className={`fixed top-0 left-0 right-0 z-50 border-b transition-colors duration-300 ${headerBg}`}>
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-          <div className="flex items-center justify-between h-20 lg:h-24" dir="ltr">
+          <div className="flex items-center justify-between h-16 lg:h-20" dir="ltr">
             <Link href="/" className="flex-shrink-0">
-              <img src="/logo.png" alt="Modaco" className="h-10 lg:h-11" />
+              <img
+                src="/logo.png"
+                alt="Modaco"
+                className={`h-9 lg:h-10 transition-all duration-300 ${logoFilter}`}
+              />
             </Link>
 
             <nav className="hidden lg:flex items-center gap-9" dir="rtl">
@@ -71,7 +97,7 @@ export default function ShopLayout({
                 <Link
                   key={item.href}
                   href={item.href}
-                  className="text-[13px] tracking-wide text-ink-soft hover:text-mocha transition-colors"
+                  className={`text-[13px] tracking-wide transition-colors ${linkColor}`}
                 >
                   {item.label}
                 </Link>
@@ -81,20 +107,20 @@ export default function ShopLayout({
             <div className="flex items-center gap-5">
               <Link
                 href="/search"
-                className="text-ink-soft hover:text-mocha transition-colors hidden lg:block"
+                className={`hidden lg:block transition-colors ${linkColor}`}
                 aria-label="חיפוש"
               >
                 <SearchIcon />
               </Link>
               <Link
                 href="/contact"
-                className="text-ink-soft hover:text-mocha transition-colors"
+                className={`transition-colors ${linkColor}`}
                 aria-label="צרו קשר"
               >
                 <UserIcon />
               </Link>
               <button
-                className="lg:hidden text-ink-soft hover:text-mocha transition-colors"
+                className={`lg:hidden transition-colors ${linkColor}`}
                 onClick={() => setMenuOpen(!menuOpen)}
                 aria-label="תפריט"
               >
@@ -113,9 +139,9 @@ export default function ShopLayout({
                   type="text"
                   name="q"
                   placeholder="חיפוש..."
-                  className="w-full bg-cream-deep text-ink placeholder:text-ink-soft/50 rounded-sm px-4 py-3 pr-10 text-sm outline-none focus:ring-1 focus:ring-mocha"
+                  className="w-full bg-cream-deep text-ink placeholder:text-ink-soft rounded-sm px-4 py-3 pr-10 text-sm outline-none focus:ring-1 focus:ring-mocha"
                 />
-                <SearchIcon className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-soft/60" />
+                <SearchIcon className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-soft" />
               </form>
             </div>
             <nav className="px-6 py-4">
@@ -141,8 +167,8 @@ export default function ShopLayout({
         )}
       </header>
 
-      {/* Main */}
-      <main className="flex-1">{children}</main>
+      {/* Main — no top padding on hero pages (image goes under header), padding on others */}
+      <main className={`flex-1 ${hasHero ? "" : "pt-16 lg:pt-20"}`}>{children}</main>
 
       {/* Footer */}
       <footer className="bg-ink text-cream mt-32" dir="rtl">
@@ -150,14 +176,14 @@ export default function ShopLayout({
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8">
             <div className="lg:col-span-5">
               <img src="/logo.png" alt="Modaco" className="h-10 mb-6 invert opacity-95" />
-              <p className="text-sm text-cream/60 leading-loose max-w-md font-light">
+              <p className="text-sm text-cream leading-loose max-w-md font-light">
                 למעלה מ-40 שנה של מומחיות בפרזול ואקססוריז לבית.
                 המותגים המובילים בעולם, בקפידה אישית — ישירות אליכם.
               </p>
             </div>
             <div className="lg:col-span-3">
               <div className="eyebrow text-mocha-soft mb-5">קטגוריות</div>
-              <ul className="space-y-3 text-sm text-cream/70 font-light">
+              <ul className="space-y-3 text-sm text-cream font-light">
                 <li><Link href="/categories/hinges" className="hover:text-mocha-soft transition-colors">צירים</Link></li>
                 <li><Link href="/categories/slides" className="hover:text-mocha-soft transition-colors">מסילות</Link></li>
                 <li><Link href="/categories/accessories" className="hover:text-mocha-soft transition-colors">אקססוריז</Link></li>
@@ -167,7 +193,7 @@ export default function ShopLayout({
             </div>
             <div className="lg:col-span-4">
               <div className="eyebrow text-mocha-soft mb-5">צרו קשר</div>
-              <ul className="space-y-3 text-sm text-cream/70 font-light">
+              <ul className="space-y-3 text-sm text-cream font-light">
                 <li>
                   <a href="tel:0526804945" className="hover:text-mocha-soft transition-colors text-base" dir="ltr">
                     052-680-4945
@@ -183,7 +209,7 @@ export default function ShopLayout({
               </ul>
             </div>
           </div>
-          <div className="border-t border-cream/10 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-cream/40 font-light">
+          <div className="border-t border-cream/10 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-cream font-light">
             <div>&copy; {new Date().getFullYear()} Modaco. כל הזכויות שמורות.</div>
             <div dir="ltr">
               Crafted by{" "}

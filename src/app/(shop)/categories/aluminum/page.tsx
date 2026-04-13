@@ -27,7 +27,7 @@ export default function AluminumPage() {
                 פרופיל 19<br />
                 <span className="text-mocha-soft font-display-light">בהתאמה אישית</span>
               </h1>
-              <p className="text-cream/80 text-lg lg:text-xl font-light leading-relaxed max-w-xl">
+              <p className="text-cream text-lg lg:text-xl font-light leading-relaxed max-w-xl">
                 חיתוך מדויק למידות שלכם. אלומיניום וזכוכית באיכות הגבוהה ביותר,
                 ישירות מהמפעל — לכל פרויקט, בכל גודל.
               </p>
@@ -46,7 +46,7 @@ export default function AluminumPage() {
               לארונות, ויטרינות<br />
               <span className="text-mocha font-display-light">ומחיצות</span>
             </h2>
-            <div className="space-y-5 text-ink-soft/80 font-light text-base leading-loose">
+            <div className="space-y-5 text-ink-soft font-light text-base leading-loose">
               <p>
                 פרופיל 19 הוא מערכת פרופילי אלומיניום בעובי 19 מ&quot;מ, המשלבת
                 מסגרות אלומיניום עם משטחי זכוכית. המערכת מאפשרת יצירת חזיתות
@@ -72,7 +72,7 @@ export default function AluminumPage() {
                 <div className={`text-4xl lg:text-5xl text-ink mb-3 ${s.serif ? "font-display" : "font-light"}`}>
                   {s.v}
                 </div>
-                <div className="text-xs tracking-[0.2em] uppercase text-ink-soft/60">{s.l}</div>
+                <div className="text-xs tracking-[0.2em] uppercase text-ink-soft">{s.l}</div>
               </div>
             ))}
           </div>
@@ -96,7 +96,7 @@ export default function AluminumPage() {
             ].map((item) => (
               <div key={item.title} className="bg-cream-deep p-10 lg:p-12">
                 <h3 className="font-display text-xl text-ink mb-4">{item.title}</h3>
-                <p className="text-sm text-ink-soft/75 font-light leading-loose">{item.desc}</p>
+                <p className="text-sm text-ink-soft font-light leading-loose">{item.desc}</p>
               </div>
             ))}
           </div>
@@ -118,7 +118,7 @@ export default function AluminumPage() {
           ].map((item) => (
             <div key={item.title} className="text-center">
               <h3 className="font-display text-2xl text-ink mb-4">{item.title}</h3>
-              <p className="text-sm text-ink-soft/75 font-light leading-loose">{item.desc}</p>
+              <p className="text-sm text-ink-soft font-light leading-loose">{item.desc}</p>
             </div>
           ))}
         </div>
@@ -132,7 +132,7 @@ export default function AluminumPage() {
             מעוניינים<br />
             <span className="text-mocha-soft font-display-light">בהצעת מחיר?</span>
           </h2>
-          <p className="text-cream/70 font-light text-lg leading-loose max-w-xl mx-auto mb-12">
+          <p className="text-cream font-light text-lg leading-loose max-w-xl mx-auto mb-12">
             שלחו לנו את המידות והדרישות — ונחזור אליכם עם הצעה מותאמת תוך 24 שעות.
           </p>
           <a
