@@ -8,7 +8,8 @@ interface Props {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const { slug: raw } = await params;
+  const slug = decodeURIComponent(raw);
   const product = await db.product.findUnique({
     where: { slug, status: "ACTIVE" },
   });
@@ -25,7 +26,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function ProductPage({ params }: Props) {
-  const { slug } = await params;
+  const { slug: raw } = await params;
+  const slug = decodeURIComponent(raw);
 
   const product = await db.product.findUnique({
     where: { slug, status: "ACTIVE" },
