@@ -151,7 +151,7 @@ export default function HomePage() {
               <div className="flex flex-col lg:flex-row gap-3 lg:justify-center">
                 <Link
                   href="/catalog"
-                  className="group flex items-center justify-center gap-3 px-6 py-4 text-sm tracking-wide transition-all hover:shadow-lg w-full lg:w-auto"
+                  className="group flex items-center justify-center gap-3 h-14 px-6 text-sm tracking-wide transition-all hover:shadow-lg w-full lg:w-auto whitespace-nowrap"
                   style={{ background: "#FAF6F0", color: "#0A0908" }}
                 >
                   <CatalogIcon />
@@ -167,7 +167,7 @@ export default function HomePage() {
                     href="https://wa.me/972526804945?text=%D7%94%D7%99%D7%99%20%D7%99%D7%A8%D7%99%D7%9F%2C%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%93%D7%A8%D7%9A%20%D7%94%D7%90%D7%AA%D7%A8%20%D7%A9%D7%9C%20Modaco%20%D7%95%D7%99%D7%A9%20%D7%9C%D7%99%20%D7%A9%D7%90%D7%9C%D7%94"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="group flex-1 lg:flex-initial flex items-center justify-center gap-2.5 px-5 py-4 text-sm tracking-wide transition-all"
+                    className="group flex-1 lg:flex-initial flex items-center justify-center gap-2 h-14 px-4 text-sm tracking-wide transition-all whitespace-nowrap"
                     style={{
                       border: "1px solid rgba(250,246,240,0.4)",
                       color: "#FAF6F0",
@@ -176,16 +176,16 @@ export default function HomePage() {
                     }}
                   >
                     <WhatsAppIcon />
-                    <span>שיחה עם יועץ</span>
+                    <span>ווטסאפ</span>
                     <span
-                      className="w-2 h-2 rounded-full animate-pulse"
+                      className="w-1.5 h-1.5 rounded-full animate-pulse"
                       style={{ background: "#25D366" }}
                       aria-hidden
                     />
                   </a>
                   <Link
                     href="/login"
-                    className="group flex-1 lg:flex-initial flex items-center justify-center gap-2.5 px-5 py-4 text-sm tracking-wide transition-all"
+                    className="group flex-1 lg:flex-initial flex items-center justify-center gap-2 h-14 px-4 text-sm tracking-wide transition-all whitespace-nowrap"
                     style={{
                       border: "1px solid rgba(250,246,240,0.4)",
                       color: "#FAF6F0",
