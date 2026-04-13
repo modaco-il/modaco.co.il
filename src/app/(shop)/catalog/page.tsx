@@ -188,11 +188,11 @@ export default async function CatalogPage() {
             className={isDark ? "bg-ink text-cream" : i % 3 === 2 ? "bg-cream-deep" : "bg-cream"}
           >
             <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-24 lg:py-32">
-              <div className={`grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center ${reversed ? "lg:[direction:ltr]" : ""}`}>
+              <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
                 {/* Image */}
                 <div
-                  className={`relative aspect-[4/5] lg:aspect-[5/6] overflow-hidden ${
-                    reversed ? "lg:col-start-7 lg:col-span-6" : "lg:col-span-6"
+                  className={`relative aspect-[4/5] lg:aspect-[5/6] overflow-hidden lg:col-span-6 ${
+                    reversed ? "lg:order-2" : "lg:order-1"
                   }`}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -203,7 +203,7 @@ export default async function CatalogPage() {
                   />
                   {/* Index overlay */}
                   <div
-                    className="absolute top-6 left-6 text-7xl lg:text-9xl font-display font-bold leading-none opacity-90"
+                    className="absolute top-6 right-6 text-7xl lg:text-9xl font-display font-bold leading-none opacity-90"
                     style={{ color: "#FAF6F0" }}
                   >
                     {entry.index}
@@ -212,7 +212,7 @@ export default async function CatalogPage() {
 
                 {/* Content */}
                 <div
-                  className={`lg:col-span-5 ${reversed ? "lg:col-start-1 lg:[direction:rtl]" : "lg:col-start-8 lg:[direction:rtl]"}`}
+                  className={`lg:col-span-5 ${reversed ? "lg:order-1 lg:col-start-2" : "lg:order-2"}`}
                   dir="rtl"
                 >
                   <div
