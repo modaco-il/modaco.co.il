@@ -75,7 +75,7 @@ export default function ShopLayout({
     ? "bg-transparent border-transparent"
     : "bg-cream/95 backdrop-blur-md border-bone";
   const linkColor = transparent
-    ? "text-cream/90 hover:text-mocha-soft"
+    ? "text-cream hover:text-mocha-soft"
     : "text-ink-soft hover:text-mocha";
   const logoFilter = transparent ? "invert" : "";
 

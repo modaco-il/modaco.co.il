@@ -26,7 +26,7 @@ const secondaryItems = [
 ];
 
 export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const [activeImg, setActiveImg] = useState<string | null>(null);
+  const [activeImg, setActiveImg] = useState<string>(items[0].img);
 
   // Lock body scroll
   useEffect(() => {
@@ -34,7 +34,7 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
-      setActiveImg(null);
+      setActiveImg(items[0].img);
     }
     return () => {
       document.body.style.overflow = "";
@@ -86,7 +86,7 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
               }`}
               style={{ transitionDelay: open ? `${120 + i * 60}ms` : "0ms" }}
             >
-              <div className="text-[10px] tracking-[0.32em] uppercase text-mocha-soft mb-1">
+              <div className="text-[11px] tracking-[0.3em] uppercase text-mocha-soft mb-1.5 font-medium">
                 {item.brand}
               </div>
               <div className="font-display font-bold text-3xl text-cream group-active:text-mocha-soft transition-colors">
@@ -98,10 +98,10 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
 
         {/* Secondary */}
         <div
-          className={`px-8 pb-12 pt-8 border-t border-cream/15 transition-all duration-700 ${
+          className={`px-8 pb-12 pt-8 border-t border-mocha-soft/20 transition-all duration-700 ${
             open ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
-          style={{ transitionDelay: open ? `${120 + items.length * 60 + 80}ms` : "0ms" }}
+          style={{ borderTopColor: "rgba(217, 195, 165, 0.2)", transitionDelay: open ? `${120 + items.length * 60 + 80}ms` : "0ms" }}
         >
           <div className="flex flex-wrap gap-x-8 gap-y-3 mb-6">
             {secondaryItems.map((item) => (
@@ -109,7 +109,7 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
                 key={item.href}
                 href={item.href}
                 onClick={onClose}
-                className="text-sm text-cream/70 hover:text-mocha-soft tracking-wide"
+                className="text-sm text-cream hover:text-mocha-soft tracking-wide opacity-80"
               >
                 {item.label}
               </Link>
