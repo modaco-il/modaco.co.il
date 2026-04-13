@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface NavItem {
   href: string;
@@ -26,90 +26,146 @@ const secondaryItems = [
 ];
 
 export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
-  const [activeImg, setActiveImg] = useState<string>(items[0].img);
+  const [activeIdx, setActiveIdx] = useState(0);
+  const navRef = useRef<HTMLElement>(null);
 
-  // Lock body scroll
+  // Lock body scroll while open
   useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
-      setActiveImg(items[0].img);
+      setActiveIdx(0);
     }
     return () => {
       document.body.style.overflow = "";
     };
   }, [open]);
 
+  // Track finger/pointer over the nav and switch image accordingly
+  const handlePointerMove = (clientX: number, clientY: number) => {
+    const el = document.elementFromPoint(clientX, clientY);
+    const item = el?.closest("[data-idx]") as HTMLElement | null;
+    if (item) {
+      const idx = Number(item.getAttribute("data-idx"));
+      if (!Number.isNaN(idx) && idx !== activeIdx) setActiveIdx(idx);
+    }
+  };
+
   return (
     <div
-      className={`lg:hidden fixed inset-0 z-40 transition-all duration-500 ${
+      className={`lg:hidden fixed inset-0 z-40 transition-opacity duration-500 ${
         open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
       }`}
       aria-hidden={!open}
     >
-      {/* Backdrop image — fades in based on hovered item */}
+      {/* Backdrop layer: ink + image (visible from open) + readable scrim */}
       <div className="absolute inset-0 bg-ink overflow-hidden">
-        {items.map((item) => (
+        {items.map((item, i) => (
           /* eslint-disable-next-line @next/next/no-img-element */
           <img
-            key={item.img}
+            key={item.img + i}
             src={item.img}
             alt=""
             aria-hidden
             className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
-              activeImg === item.img ? "opacity-25" : "opacity-0"
+              activeIdx === i ? "opacity-55" : "opacity-0"
             }`}
           />
         ))}
-        <div className="absolute inset-0 bg-gradient-to-b from-ink/40 via-ink/60 to-ink" />
+        {/* Readable scrim — keeps text area dark even with bright image */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "linear-gradient(to bottom, rgba(10,9,8,0.65) 0%, rgba(10,9,8,0.55) 30%, rgba(10,9,8,0.7) 100%)",
+          }}
+        />
       </div>
 
       {/* Content */}
       <div className="relative h-full w-full flex flex-col" dir="rtl">
         <div className="h-16 flex-shrink-0" />
 
+        {/* Eyebrow header */}
+        <div
+          className={`px-8 pt-2 pb-6 transition-all duration-700 ${
+            open ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2"
+          }`}
+          style={{ transitionDelay: open ? "80ms" : "0ms" }}
+        >
+          <div className="text-[11px] tracking-[0.3em] uppercase text-mocha-soft font-medium">
+            הקולקציה
+          </div>
+        </div>
+
         {/* Categories */}
-        <nav className="flex-1 px-8 flex flex-col justify-center gap-1">
-          {items.map((item, i) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={onClose}
-              onTouchStart={() => setActiveImg(item.img)}
-              onMouseEnter={() => setActiveImg(item.img)}
-              onMouseLeave={() => setActiveImg(null)}
-              className={`group block py-3 transition-all duration-700 ${
-                open
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-4"
-              }`}
-              style={{ transitionDelay: open ? `${120 + i * 60}ms` : "0ms" }}
-            >
-              <div className="text-[11px] tracking-[0.3em] uppercase text-mocha-soft mb-1.5 font-medium">
-                {item.brand}
-              </div>
-              <div className="font-display font-bold text-3xl text-cream group-active:text-mocha-soft transition-colors">
-                {item.label}
-              </div>
-            </Link>
-          ))}
+        <nav
+          ref={navRef}
+          className="flex-1 px-8 flex flex-col justify-start gap-1 overflow-y-auto"
+          onTouchMove={(e) => {
+            const t = e.touches[0];
+            handlePointerMove(t.clientX, t.clientY);
+          }}
+          onMouseMove={(e) => handlePointerMove(e.clientX, e.clientY)}
+        >
+          {items.map((item, i) => {
+            const active = activeIdx === i;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                data-idx={i}
+                onClick={onClose}
+                className={`group flex items-baseline justify-between gap-4 py-4 border-b border-mocha-soft/15 transition-all duration-700 ${
+                  open ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                }`}
+                style={{
+                  transitionDelay: open ? `${140 + i * 55}ms` : "0ms",
+                  borderBottomColor: "rgba(217, 195, 165, 0.15)",
+                }}
+              >
+                <div className="flex-1 min-w-0">
+                  <div className="text-[10px] tracking-[0.3em] uppercase text-mocha-soft mb-1 font-medium">
+                    <span className="opacity-50">{String(i + 1).padStart(2, "0")}</span>
+                    <span className="mx-2 opacity-30">/</span>
+                    <span>{item.brand}</span>
+                  </div>
+                  <div
+                    className={`font-display font-bold text-3xl transition-colors ${
+                      active ? "text-mocha-soft" : "text-cream"
+                    }`}
+                  >
+                    {item.label}
+                  </div>
+                </div>
+                <span
+                  className={`text-mocha-soft text-2xl flex-shrink-0 transition-all duration-300 ${
+                    active ? "opacity-100 -translate-x-1" : "opacity-30 translate-x-0"
+                  }`}
+                  aria-hidden
+                >
+                  ←
+                </span>
+              </Link>
+            );
+          })}
         </nav>
 
         {/* Secondary */}
         <div
-          className={`px-8 pb-12 pt-8 border-t border-mocha-soft/20 transition-all duration-700 ${
+          className={`px-8 pb-12 pt-6 transition-all duration-700 ${
             open ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
-          style={{ borderTopColor: "rgba(217, 195, 165, 0.2)", transitionDelay: open ? `${120 + items.length * 60 + 80}ms` : "0ms" }}
+          style={{ transitionDelay: open ? `${140 + items.length * 55 + 80}ms` : "0ms" }}
         >
-          <div className="flex flex-wrap gap-x-8 gap-y-3 mb-6">
+          <div className="flex flex-wrap gap-x-6 gap-y-2 mb-6">
             {secondaryItems.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
                 onClick={onClose}
-                className="text-sm text-cream hover:text-mocha-soft tracking-wide opacity-80"
+                className="text-sm text-cream hover:text-mocha-soft tracking-wide opacity-75"
               >
                 {item.label}
               </Link>
@@ -117,7 +173,7 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
           </div>
           <a
             href="tel:0526804945"
-            className="font-display text-2xl text-cream tracking-wide"
+            className="font-display text-2xl text-cream tracking-wide block"
             dir="ltr"
           >
             052-680-4945
