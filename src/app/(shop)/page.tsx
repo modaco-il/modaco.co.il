@@ -1,5 +1,86 @@
 import Link from "next/link";
 
+function BentoCard({
+  cat,
+  spanDesktop,
+  spanMobile,
+  size,
+}: {
+  cat: (typeof categories)[number];
+  spanDesktop: string;
+  spanMobile: string;
+  size: "xl" | "lg" | "md" | "sm";
+}) {
+  const titleSize =
+    size === "xl"
+      ? "text-3xl lg:text-5xl"
+      : size === "lg"
+      ? "text-2xl lg:text-4xl"
+      : size === "md"
+      ? "text-xl lg:text-2xl"
+      : "text-lg lg:text-xl";
+  const padding = size === "xl" || size === "lg" ? "p-6 lg:p-10" : "p-5 lg:p-7";
+
+  return (
+    <Link
+      href={`/categories/${cat.slug}`}
+      className={`group relative overflow-hidden ${spanMobile} ${spanDesktop}`}
+    >
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={cat.cover}
+        alt={cat.name}
+        className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.06] transition-transform duration-[1200ms] ease-out"
+      />
+      {/* gradient overlay — readable text always */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(to top, rgba(10,9,8,0.85) 0%, rgba(10,9,8,0.35) 55%, rgba(10,9,8,0.15) 100%)",
+        }}
+      />
+      {/* subtle hover vignette */}
+      <div className="absolute inset-0 bg-ink/0 group-hover:bg-ink/20 transition-colors duration-500" />
+
+      <div className={`relative h-full flex flex-col justify-end ${padding}`}>
+        <div
+          className="text-[10px] tracking-[0.3em] uppercase font-medium mb-2"
+          style={{ color: "#D9C3A5" }}
+        >
+          {cat.brand}
+        </div>
+        <h3
+          className={`font-display leading-[1.05] ${titleSize}`}
+          style={{ color: "#FAF6F0", fontWeight: size === "xl" ? 500 : 600 }}
+        >
+          {cat.name}
+        </h3>
+        {(size === "xl" || size === "lg") && (
+          <p
+            className="hidden lg:block text-sm font-light leading-relaxed mt-3 max-w-xs"
+            style={{ color: "#FAF6F0", opacity: 0.8 }}
+          >
+            {cat.description}
+          </p>
+        )}
+        <div
+          className="mt-4 text-[10px] tracking-[0.3em] uppercase inline-flex items-center gap-2 w-fit opacity-70 group-hover:opacity-100 transition-opacity"
+          style={{ color: "#D9C3A5" }}
+        >
+          <span>לצפייה</span>
+          <span
+            aria-hidden
+            className="inline-block w-4 group-hover:w-8 h-px transition-all duration-500"
+            style={{ background: "#D9C3A5" }}
+          />
+          <span className="opacity-0 group-hover:opacity-100 transition-opacity">←</span>
+        </div>
+      </div>
+    </Link>
+  );
+}
+
 function CatalogIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
@@ -125,51 +206,33 @@ export default function HomePage() {
       {/* Trust ribbon — marquee */}
       <TrustRibbon />
 
-      {/* Categories — editorial grid */}
-      <section className="max-w-[1400px] mx-auto px-6 lg:px-12 py-32 lg:py-40">
-        <div className="text-center mb-20">
-          <div className="eyebrow mb-5">הקולקציה</div>
-          <h2 className="font-display text-4xl lg:text-5xl text-ink max-w-2xl mx-auto">
-            כל פרט נבחר בקפידה — כי פרטים בונים מקום
-          </h2>
+      {/* Categories — bento collage */}
+      <section className="max-w-[1400px] mx-auto px-6 lg:px-12 py-24 lg:py-32">
+        <div className="flex items-end justify-between mb-12 lg:mb-16 flex-wrap gap-6">
+          <div>
+            <div className="eyebrow mb-4">הקולקציה</div>
+            <h2 className="font-display text-4xl lg:text-5xl text-ink max-w-xl" style={{ fontWeight: 500 }}>
+              כל פרט נבחר<br />
+              <span className="text-mocha" style={{ fontWeight: 300 }}>בקפידה.</span>
+            </h2>
+          </div>
+          <Link
+            href="/catalog"
+            className="inline-flex items-center gap-2 text-xs tracking-[0.25em] uppercase text-ink-soft hover:text-mocha transition-colors pb-2 border-b border-ink"
+          >
+            <span>לכל הקטלוג</span>
+            <span>←</span>
+          </Link>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-bone">
-          {categories.map((cat) => (
-            <Link
-              key={cat.slug}
-              href={`/categories/${cat.slug}`}
-              className="group relative bg-cream overflow-hidden min-h-[280px] lg:min-h-[340px] flex flex-col justify-between"
-            >
-              {/* Hover image background */}
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={cat.cover}
-                alt=""
-                aria-hidden
-                className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000 ease-out"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/50 to-ink/30 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-
-              {/* Content */}
-              <div className="relative p-10 lg:p-12">
-                <div className="text-xs eyebrow mb-4 group-hover:text-mocha-soft transition-colors">{cat.brand}</div>
-                <h3 className="font-display text-2xl lg:text-3xl text-ink group-hover:text-cream mb-3 transition-colors">
-                  {cat.name}
-                </h3>
-                <p className="text-sm text-ink-soft font-light leading-relaxed group-hover:text-cream transition-colors">
-                  {cat.description}
-                </p>
-              </div>
-              <div className="relative p-10 lg:p-12 pt-0">
-                <div className="text-xs tracking-[0.25em] uppercase text-mocha group-hover:text-mocha-soft transition-all flex items-center gap-2">
-                  <span>לצפייה</span>
-                  <span className="inline-block w-0 group-hover:w-6 h-px bg-mocha group-hover:bg-mocha-soft transition-all duration-500" />
-                  <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">&larr;</span>
-                </div>
-              </div>
-            </Link>
-          ))}
+        {/* Bento grid: 12 cols on desktop, varied heights and spans */}
+        <div className="grid grid-cols-2 lg:grid-cols-12 gap-3 lg:gap-4 auto-rows-[140px] lg:auto-rows-[200px]">
+          <BentoCard cat={categories[5]} spanDesktop="lg:col-span-7 lg:row-span-3" spanMobile="col-span-2 row-span-2" size="xl" />
+          <BentoCard cat={categories[0]} spanDesktop="lg:col-span-5 lg:row-span-2" spanMobile="col-span-2 row-span-1" size="lg" />
+          <BentoCard cat={categories[1]} spanDesktop="lg:col-span-5 lg:row-span-1" spanMobile="col-span-1 row-span-1" size="sm" />
+          <BentoCard cat={categories[2]} spanDesktop="lg:col-span-3 lg:row-span-2" spanMobile="col-span-1 row-span-1" size="md" />
+          <BentoCard cat={categories[3]} spanDesktop="lg:col-span-5 lg:row-span-2" spanMobile="col-span-2 row-span-1" size="md" />
+          <BentoCard cat={categories[4]} spanDesktop="lg:col-span-4 lg:row-span-2" spanMobile="col-span-2 row-span-1" size="md" />
         </div>
       </section>
 
