@@ -326,8 +326,6 @@ const trustItems: Array<{ brand?: string; text?: string; number?: string; label?
   { text: "SINCE 1985", label: "מטבחי יוקרה" },
   { brand: "AVENTOS", label: "מנגנוני הרמה" },
   { text: "B2B", label: "רשת אנשי מקצוע" },
-  { brand: "FLORALIS", label: "אקססוריז לבית" },
-  { text: "IL · שליחות", label: "לכל הארץ" },
 ];
 
 function TrustItem({ item }: { item: (typeof trustItems)[number] }) {
@@ -356,13 +354,7 @@ function TrustRibbon() {
   return (
     <section
       className="relative overflow-hidden marquee-pause"
-      style={{
-        background: "#0A0908",
-        maskImage:
-          "linear-gradient(to right, transparent 0, black 5%, black 95%, transparent 100%)",
-        WebkitMaskImage:
-          "linear-gradient(to right, transparent 0, black 5%, black 95%, transparent 100%)",
-      }}
+      style={{ background: "#0A0908" }}
       aria-label="מותגים ונתונים"
     >
       <div className="marquee-track flex py-7 lg:py-10 whitespace-nowrap" dir="ltr">
