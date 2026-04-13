@@ -114,23 +114,29 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
                 }}
               >
                 <div className="flex-1 min-w-0">
-                  <div className="text-[10px] tracking-[0.3em] uppercase text-mocha-soft mb-1 font-medium">
-                    <span className="opacity-50">{String(i + 1).padStart(2, "0")}</span>
-                    <span className="mx-2 opacity-30">/</span>
+                  <div
+                    className="text-[10px] tracking-[0.3em] uppercase mb-1 font-medium"
+                    style={{ color: "#D9C3A5" }}
+                  >
+                    <span style={{ opacity: 0.7 }}>{String(i + 1).padStart(2, "0")}</span>
+                    <span className="mx-2" style={{ opacity: 0.5 }}>/</span>
                     <span>{item.brand}</span>
                   </div>
                   <div
-                    className={`font-display font-bold text-3xl transition-colors ${
-                      active ? "text-mocha-soft" : "text-cream"
-                    }`}
+                    className="font-display font-bold text-3xl transition-colors"
+                    style={{ color: active ? "#D9C3A5" : "#FAF6F0" }}
                   >
                     {item.label}
                   </div>
                 </div>
                 <span
-                  className={`text-mocha-soft text-2xl flex-shrink-0 transition-all duration-300 ${
-                    active ? "opacity-100 -translate-x-1" : "opacity-30 translate-x-0"
+                  className={`text-2xl flex-shrink-0 transition-all duration-300 ${
+                    active ? "-translate-x-1" : "translate-x-0"
                   }`}
+                  style={{
+                    color: "#D9C3A5",
+                    opacity: active ? 1 : 0.4,
+                  }}
                   aria-hidden
                 >
                   ←
@@ -153,7 +159,8 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
                 key={item.href}
                 href={item.href}
                 onClick={onClose}
-                className="text-sm text-cream hover:text-mocha-soft tracking-wide opacity-75"
+                className="text-sm tracking-wide"
+                style={{ color: "rgba(250, 246, 240, 0.8)" }}
               >
                 {item.label}
               </Link>
@@ -161,7 +168,8 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
           </div>
           <a
             href="tel:0526804945"
-            className="font-display text-2xl text-cream tracking-wide block"
+            className="font-display text-2xl tracking-wide block"
+            style={{ color: "#FAF6F0" }}
             dir="ltr"
           >
             052-680-4945
