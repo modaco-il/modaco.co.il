@@ -3,15 +3,16 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { MobileMenu } from "@/components/shop/mobile-menu";
 
 const navItems = [
-  { href: "/categories/hinges", label: "צירים" },
-  { href: "/categories/slides", label: "מסילות" },
-  { href: "/categories/lift-systems", label: "מנגנוני הרמה" },
-  { href: "/categories/accessories", label: "אקססוריז" },
-  { href: "/categories/aluminum", label: "אלומיניום" },
-  { href: "/categories/carpentry", label: "נגרות" },
-  { href: "/about", label: "אודות" },
+  { href: "/categories/hinges", label: "צירים", brand: "Blum", img: "/images/israelevitz/3-web.jpg" },
+  { href: "/categories/slides", label: "מסילות", brand: "Movento", img: "/images/israelevitz/2-web.jpg" },
+  { href: "/categories/lift-systems", label: "מנגנוני הרמה", brand: "Aventos", img: "/images/israelevitz/1-web.jpg" },
+  { href: "/categories/accessories", label: "אקססוריז", brand: "Domicile", img: "/images/israelevitz/3-web.jpg" },
+  { href: "/categories/aluminum", label: "אלומיניום", brand: "Profile 19", img: "/images/israelevitz/2-web.jpg" },
+  { href: "/categories/carpentry", label: "נגרות", brand: "Modaco Premium", img: "/images/israelevitz/4-web.jpg" },
+  { href: "/about", label: "אודות", brand: "Modaco", img: "/images/israelevitz/1-web.jpg" },
 ];
 
 function UserIcon() {
@@ -61,7 +62,7 @@ export default function ShopLayout({
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
   const hasHero = HERO_PATHS.includes(pathname || "/");
-  const transparent = hasHero && !scrolled && !menuOpen;
+  const transparent = (hasHero && !scrolled) || menuOpen;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -130,42 +131,11 @@ export default function ShopLayout({
           </div>
         </div>
 
-        {/* Mobile menu */}
-        {menuOpen && (
-          <div className="lg:hidden border-t border-bone bg-cream" dir="rtl">
-            <div className="px-6 py-4 border-b border-bone">
-              <form action="/search" method="GET" className="relative">
-                <input
-                  type="text"
-                  name="q"
-                  placeholder="חיפוש..."
-                  className="w-full bg-cream-deep text-ink placeholder:text-ink-soft rounded-sm px-4 py-3 pr-10 text-sm outline-none focus:ring-1 focus:ring-mocha"
-                />
-                <SearchIcon className="absolute right-3 top-1/2 -translate-y-1/2 text-ink-soft" />
-              </form>
-            </div>
-            <nav className="px-6 py-4">
-              {navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="block py-3 text-ink-soft hover:text-mocha transition-colors border-b border-bone last:border-0"
-                  onClick={() => setMenuOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              ))}
-              <Link
-                href="/contact"
-                className="block py-3 text-ink-soft hover:text-mocha transition-colors"
-                onClick={() => setMenuOpen(false)}
-              >
-                צרו קשר
-              </Link>
-            </nav>
-          </div>
-        )}
       </header>
+
+      {/* Mobile full-screen takeover */}
+      <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
+
 
       {/* Main — no top padding on hero pages (image goes under header), padding on others */}
       <main className={`flex-1 ${hasHero ? "" : "pt-16 lg:pt-20"}`}>{children}</main>

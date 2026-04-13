@@ -1,12 +1,12 @@
 import Link from "next/link";
 
 const categories = [
-  { slug: "hinges", name: "צירים", brand: "Blum", description: "פרזול גרמני בדיוק שווייצרי" },
-  { slug: "slides", name: "מסילות", brand: "Movento", description: "תנועה שקטה, סגירה רכה" },
-  { slug: "lift-systems", name: "מנגנוני הרמה", brand: "Aventos", description: "הקלפה נפתחת בנגיעה" },
-  { slug: "accessories", name: "אקססוריז", brand: "Domicile", description: "פרטים שמרגישים נכון" },
-  { slug: "aluminum", name: "אלומיניום וזכוכית", brand: "Profile 19", description: "מסגרות בהתאמה אישית" },
-  { slug: "carpentry", name: "נגרות", brand: "Modaco Premium", description: "מטבחי יוקרה מהתחלה ועד הסוף" },
+  { slug: "hinges", name: "צירים", brand: "Blum", description: "פרזול גרמני בדיוק שווייצרי", cover: "/images/israelevitz/3-web.jpg" },
+  { slug: "slides", name: "מסילות", brand: "Movento", description: "תנועה שקטה, סגירה רכה", cover: "/images/israelevitz/2-web.jpg" },
+  { slug: "lift-systems", name: "מנגנוני הרמה", brand: "Aventos", description: "הקלפה נפתחת בנגיעה", cover: "/images/israelevitz/1-web.jpg" },
+  { slug: "accessories", name: "אקססוריז", brand: "Domicile", description: "פרטים שמרגישים נכון", cover: "/images/israelevitz/3-web.jpg" },
+  { slug: "aluminum", name: "אלומיניום וזכוכית", brand: "Profile 19", description: "מסגרות בהתאמה אישית", cover: "/images/israelevitz/2-web.jpg" },
+  { slug: "carpentry", name: "נגרות", brand: "Modaco Premium", description: "מטבחי יוקרה מהתחלה ועד הסוף", cover: "/images/israelevitz/4-web.jpg" },
 ];
 
 export default function HomePage() {
@@ -80,17 +80,34 @@ export default function HomePage() {
             <Link
               key={cat.slug}
               href={`/categories/${cat.slug}`}
-              className="group bg-cream p-10 lg:p-12 hover:bg-cream-deep transition-colors"
+              className="group relative bg-cream overflow-hidden min-h-[280px] lg:min-h-[340px] flex flex-col justify-between"
             >
-              <div className="text-xs eyebrow mb-4">{cat.brand}</div>
-              <h3 className="font-display text-2xl lg:text-3xl text-ink mb-3 group-hover:text-mocha transition-colors">
-                {cat.name}
-              </h3>
-              <p className="text-sm text-ink-soft font-light leading-relaxed mb-8">
-                {cat.description}
-              </p>
-              <div className="text-xs tracking-[0.25em] uppercase text-mocha group-hover:text-mocha-hover transition-colors">
-                לצפייה &larr;
+              {/* Hover image background */}
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={cat.cover}
+                alt=""
+                aria-hidden
+                className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-1000 ease-out"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/50 to-ink/30 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+
+              {/* Content */}
+              <div className="relative p-10 lg:p-12">
+                <div className="text-xs eyebrow mb-4 group-hover:text-mocha-soft transition-colors">{cat.brand}</div>
+                <h3 className="font-display text-2xl lg:text-3xl text-ink group-hover:text-cream mb-3 transition-colors">
+                  {cat.name}
+                </h3>
+                <p className="text-sm text-ink-soft font-light leading-relaxed group-hover:text-cream transition-colors">
+                  {cat.description}
+                </p>
+              </div>
+              <div className="relative p-10 lg:p-12 pt-0">
+                <div className="text-xs tracking-[0.25em] uppercase text-mocha group-hover:text-mocha-soft transition-all flex items-center gap-2">
+                  <span>לצפייה</span>
+                  <span className="inline-block w-0 group-hover:w-6 h-px bg-mocha group-hover:bg-mocha-soft transition-all duration-500" />
+                  <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-300">&larr;</span>
+                </div>
               </div>
             </Link>
           ))}

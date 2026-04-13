@@ -2,6 +2,7 @@ import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { ProductCard } from "@/components/shop/product-card";
+import { Reveal } from "@/components/shop/reveal";
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -41,22 +42,28 @@ export default async function CategoryPage({ params }: Props) {
     include: {
       images: { take: 1, orderBy: { sortOrder: "asc" } },
       category: true,
-      variants: { where: { isDefault: true }, take: 1 },
+      variants: { orderBy: { sortOrder: "asc" } },
     },
     orderBy: { sortOrder: "asc" },
   });
+
+  // Mark every 7th product as featured (only if it has an image)
+  const featuredIndex = (i: number) =>
+    i > 0 && i % 7 === 0 && products[i].images.length > 0;
 
   return (
     <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-20 lg:py-28">
       {/* Category header */}
       <div className="mb-16 lg:mb-20">
-        <div className="eyebrow mb-5">קטגוריה</div>
-        <h1 className="font-display text-5xl lg:text-6xl text-ink mb-4">
-          {category.name}
-        </h1>
-        <p className="text-ink-soft/70 font-light text-base">
-          {products.length} מוצרים בקטלוג
-        </p>
+        <Reveal>
+          <div className="eyebrow mb-5">קטגוריה</div>
+          <h1 className="font-display font-bold text-5xl lg:text-7xl text-ink mb-4">
+            {category.name}
+          </h1>
+          <p className="text-ink-soft font-light text-base">
+            {products.length} מוצרים בקטלוג
+          </p>
+        </Reveal>
       </div>
 
       {/* Subcategories */}
@@ -74,26 +81,39 @@ export default async function CategoryPage({ params }: Props) {
         </div>
       )}
 
-      {/* Products Grid */}
+      {/* Editorial grid — featured items break rhythm */}
       {products.length > 0 ? (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12 lg:gap-x-8 lg:gap-y-16">
-          {products.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={{
-                id: product.id,
-                name: product.name,
-                slug: product.slug,
-                price:
-                  product.variants[0]?.priceOverride ?? product.basePrice,
-                image: product.images[0]?.url || null,
-                category: product.category?.name || "",
-              }}
-            />
-          ))}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12 lg:gap-x-8 lg:gap-y-16 auto-rows-auto">
+          {products.map((product, i) => {
+            const isFeatured = featuredIndex(i);
+            // stagger delay per row of 4
+            const delay = (i % 4) * 80;
+            return (
+              <Reveal
+                key={product.id}
+                delay={delay}
+                className={isFeatured ? "lg:col-span-2 lg:row-span-2" : ""}
+              >
+                <ProductCard
+                  featured={isFeatured}
+                  product={{
+                    id: product.id,
+                    name: product.name,
+                    slug: product.slug,
+                    price:
+                      product.variants.find((v) => v.isDefault)?.priceOverride ??
+                      product.basePrice,
+                    image: product.images[0]?.url || null,
+                    category: product.category?.name || "",
+                    colors: product.variants.map((v) => v.name),
+                  }}
+                />
+              </Reveal>
+            );
+          })}
         </div>
       ) : (
-        <div className="text-center py-32 text-ink-soft/50 font-light">
+        <div className="text-center py-32 text-ink-soft font-light">
           <p className="text-lg">עדיין אין מוצרים בקטגוריה זו</p>
           <p className="text-sm mt-2">מוצרים חדשים מתווספים בקרוב</p>
         </div>
