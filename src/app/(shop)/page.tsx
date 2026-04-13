@@ -33,21 +33,30 @@ export default function HomePage() {
               <p className="text-cream text-lg lg:text-xl font-light leading-relaxed max-w-xl mb-10">
                 המותגים המובילים בעולם, נבחרים בקפידה — לבית, למטבח ולכל חלל שמגיע לו את הטוב ביותר.
               </p>
-              <div className="flex gap-4 flex-wrap">
+              <div className="flex gap-3 flex-wrap">
                 <Link
                   href="/catalog"
-                  className="px-9 py-4 bg-cream text-ink text-sm tracking-wide hover:bg-mocha-soft transition-colors"
+                  className="px-8 py-4 text-sm tracking-wide transition-colors"
+                  style={{ background: "#FAF6F0", color: "#0A0908" }}
                 >
-                  לקטלוג המוצרים
+                  קטלוג
                 </Link>
                 <a
-                  href="https://wa.me/972526804945"
+                  href="https://wa.me/972526804945?text=%D7%94%D7%99%D7%99%20%D7%99%D7%A8%D7%99%D7%9F%2C%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%93%D7%A8%D7%9A%20%D7%94%D7%90%D7%AA%D7%A8%20%D7%A9%D7%9C%20Modaco%20%D7%95%D7%99%D7%A9%20%D7%9C%D7%99%20%D7%A9%D7%90%D7%9C%D7%94"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-9 py-4 border border-cream/40 text-cream text-sm tracking-wide hover:border-cream hover:bg-cream/5 transition-all"
+                  className="px-8 py-4 text-sm tracking-wide transition-all"
+                  style={{ border: "1px solid rgba(250,246,240,0.5)", color: "#FAF6F0" }}
                 >
-                  שיחה עם יועץ
+                  ווטסאפ
                 </a>
+                <Link
+                  href="/login"
+                  className="px-8 py-4 text-sm tracking-wide transition-all"
+                  style={{ border: "1px solid rgba(250,246,240,0.5)", color: "#FAF6F0" }}
+                >
+                  הרשמה
+                </Link>
               </div>
             </div>
           </div>
