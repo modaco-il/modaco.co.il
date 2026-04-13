@@ -6,13 +6,9 @@ import { usePathname } from "next/navigation";
 import { MobileMenu } from "@/components/shop/mobile-menu";
 
 const navItems = [
-  { href: "/categories/hinges", label: "צירים", brand: "Blum", img: "/images/israelevitz/3-web.jpg" },
-  { href: "/categories/slides", label: "מסילות", brand: "Movento", img: "/images/israelevitz/2-web.jpg" },
-  { href: "/categories/lift-systems", label: "מנגנוני הרמה", brand: "Aventos", img: "/images/israelevitz/1-web.jpg" },
-  { href: "/categories/accessories", label: "אקססוריז", brand: "Domicile", img: "/images/israelevitz/3-web.jpg" },
-  { href: "/categories/aluminum", label: "אלומיניום", brand: "Profile 19", img: "/images/israelevitz/2-web.jpg" },
-  { href: "/categories/carpentry", label: "נגרות", brand: "Modaco Premium", img: "/images/israelevitz/4-web.jpg" },
-  { href: "/about", label: "אודות", brand: "Modaco", img: "/images/israelevitz/1-web.jpg" },
+  { href: "/catalog", label: "הקטלוג" },
+  { href: "/about", label: "אודות" },
+  { href: "/contact", label: "צרו קשר" },
 ];
 
 function UserIcon() {
