@@ -17,6 +17,7 @@ export default function CarpentryPage() {
           alt="מטבח Modaco Premium"
           className="absolute inset-0 w-full h-full object-cover"
         />
+        <div className="absolute inset-0 hero-base-mobile" />
         <div className="absolute inset-0 hero-overlay" />
 
         <div className="relative z-10 h-full flex items-end pb-24 lg:pb-32">
@@ -25,7 +26,7 @@ export default function CarpentryPage() {
               <div className="eyebrow text-mocha-soft mb-6">Modaco Premium</div>
               <h1 className="font-display text-5xl lg:text-7xl text-cream leading-[1.05] mb-8">
                 מטבחי יוקרה<br />
-                <span className="italic text-mocha-soft">בהתאמה אישית</span>
+                <span className="text-mocha-soft font-display-light">בהתאמה אישית</span>
               </h1>
               <p className="text-cream/80 text-lg lg:text-xl font-light leading-relaxed max-w-xl">
                 כל מטבח הוא עולם בפני עצמו. אנחנו מתכננים, מייצרים ומתקינים מטבחי יוקרה
@@ -44,7 +45,7 @@ export default function CarpentryPage() {
             <h2 className="font-display text-4xl lg:text-5xl text-ink mb-8 leading-[1.1]">
               40+ שנה של<br />
               מומחיות<br />
-              <span className="italic text-mocha">בנגרות</span>
+              <span className="text-mocha font-display-light">בנגרות</span>
             </h2>
             <div className="space-y-5 text-ink-soft/80 font-light text-base leading-loose">
               <p>
@@ -154,7 +155,7 @@ export default function CarpentryPage() {
           <div className="eyebrow text-mocha-soft mb-6">בואו נתחיל</div>
           <h2 className="font-display text-4xl lg:text-6xl text-cream mb-6 leading-tight">
             מוכנים למטבח<br />
-            <span className="italic text-mocha-soft">החלומות?</span>
+            <span className="text-mocha-soft font-display-light">החלומות?</span>
           </h2>
           <p className="text-cream/70 font-light text-lg leading-loose max-w-xl mx-auto mb-12">
             הצעד הראשון הוא שיחה. ספרו לנו על החלל, על הסגנון שאתם אוהבים ועל הצרכים —

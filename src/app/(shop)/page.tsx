@@ -19,6 +19,7 @@ export default function HomePage() {
           alt="מטבח Modaco"
           className="absolute inset-0 w-full h-full object-cover"
         />
+        <div className="absolute inset-0 hero-base-mobile" />
         <div className="absolute inset-0 hero-overlay" />
 
         <div className="relative z-10 h-full flex flex-col justify-end pb-24 lg:pb-32">
@@ -27,7 +28,7 @@ export default function HomePage() {
               <div className="eyebrow text-mocha-soft mb-6">למעלה מ-40 שנה</div>
               <h1 className="font-display text-cream text-5xl lg:text-7xl leading-[1.05] mb-8">
                 פרזול ואקססוריז<br />
-                <span className="italic text-mocha-soft">ברמה אחרת</span>
+                <span className="text-mocha-soft font-display-light">ברמה אחרת</span>
               </h1>
               <p className="text-cream/90 text-lg lg:text-xl font-light leading-relaxed max-w-xl mb-10">
                 המותגים המובילים בעולם, נבחרים בקפידה — לבית, למטבח ולכל חלל שמגיע לו את הטוב ביותר.
@@ -104,7 +105,7 @@ export default function HomePage() {
               <div className="eyebrow mb-5">פרופיל 19 &middot; אלומיניום וזכוכית</div>
               <h2 className="font-display text-4xl lg:text-5xl text-ink mb-8 leading-[1.1]">
                 חיתוך מדויק.<br />
-                <span className="italic text-mocha">למידות שלכם.</span>
+                <span className="text-mocha font-display-light">למידות שלכם.</span>
               </h2>
               <p className="text-ink-soft/80 font-light text-lg leading-loose mb-10">
                 פרופילי אלומיניום וזכוכית בחיתוך מדויק, מותאמים בדיוק למידות
@@ -147,6 +148,7 @@ export default function HomePage() {
           alt="מטבח יוקרה Modaco"
           className="absolute inset-0 w-full h-full object-cover"
         />
+        <div className="absolute inset-0 hero-base-mobile" />
         <div className="absolute inset-0 hero-overlay-side" />
 
         <div className="relative z-10 max-w-[1400px] mx-auto px-6 lg:px-12 py-24 w-full">
@@ -154,7 +156,7 @@ export default function HomePage() {
             <div className="eyebrow text-mocha-soft mb-6">Modaco Premium &middot; נגרות</div>
             <h2 className="font-display text-4xl lg:text-6xl text-cream mb-8 leading-[1.05]">
               מטבחי יוקרה.<br />
-              <span className="italic text-mocha-soft">בהתאמה מוחלטת.</span>
+              <span className="text-mocha-soft font-display-light">בהתאמה מוחלטת.</span>
             </h2>
             <p className="text-cream/80 font-light text-lg leading-loose mb-4">
               למעלה מ-40 שנות מומחיות בתכנון וייצור מטבחי יוקרה.
@@ -201,7 +203,7 @@ export default function HomePage() {
             <h2 className="font-display text-4xl lg:text-5xl text-ink mb-8 leading-[1.1]">
               ההבדל בין חלל טוב<br />
               לחלל יוצא דופן<br />
-              <span className="italic text-mocha">טמון בפרטים.</span>
+              <span className="text-mocha font-display-light">טמון בפרטים.</span>
             </h2>
             <p className="text-ink-soft/80 font-light text-base leading-loose mb-6">
               אנחנו בוחרים בקפידה כל פריט — מתוך ראייה רחבה של עמידות לאורך זמן,
@@ -228,7 +230,7 @@ export default function HomePage() {
           <div className="eyebrow text-mocha-soft mb-6">B2B</div>
           <h2 className="font-display text-4xl lg:text-5xl text-cream mb-6 leading-tight">
             אדריכלים, מעצבים<br />
-            <span className="italic text-mocha-soft">וקבלנים</span>
+            <span className="text-mocha-soft font-display-light">וקבלנים</span>
           </h2>
           <p className="text-cream/70 font-light text-lg leading-loose max-w-xl mx-auto mb-12">
             מחירון מיוחד, 15% הנחה על כל הקטלוג, וגישה לפלטפורמת B2B מלאה.

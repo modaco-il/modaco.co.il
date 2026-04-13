@@ -13,7 +13,7 @@ export default function ContactPage() {
           <div className="eyebrow mb-6">צרו קשר</div>
           <h1 className="font-display text-5xl lg:text-7xl text-ink leading-[1.05]">
             נשמח לשמוע<br />
-            <span className="italic text-mocha">מכם</span>
+            <span className="text-mocha font-display-light">מכם</span>
           </h1>
         </div>
       </section>

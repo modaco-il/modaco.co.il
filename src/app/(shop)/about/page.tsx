@@ -17,7 +17,7 @@ export default function AboutPage() {
           <h1 className="font-display text-5xl lg:text-7xl text-ink leading-[1.05]">
             ההבדל בין חלל טוב<br />
             לחלל יוצא דופן<br />
-            <span className="italic text-mocha">טמון בפרטים.</span>
+            <span className="text-mocha font-display-light">טמון בפרטים.</span>
           </h1>
         </div>
       </section>
@@ -39,7 +39,7 @@ export default function AboutPage() {
           <div className="lg:col-span-4">
             <div className="eyebrow mb-5">הסיפור שלנו</div>
             <h2 className="font-display text-3xl lg:text-4xl text-ink leading-tight">
-              40+ שנה של<br />מחויבות ל<span className="italic text-mocha">איכות</span>
+              40+ שנה של<br />מחויבות ל<span className="text-mocha font-display-light">איכות</span>
             </h2>
           </div>
           <div className="lg:col-span-8 space-y-6 text-ink-soft/85 font-light text-lg leading-loose">
@@ -67,7 +67,7 @@ export default function AboutPage() {
               <div className="eyebrow mb-5">פרזול ואקססוריז</div>
               <h2 className="font-display text-3xl lg:text-4xl text-ink leading-tight">
                 לב הפעילות.<br />
-                <span className="italic text-mocha">לב הבית.</span>
+                <span className="text-mocha font-display-light">לב הבית.</span>
               </h2>
             </div>
             <div className="lg:col-span-8 space-y-6 text-ink-soft/85 font-light text-lg leading-loose">
@@ -95,7 +95,7 @@ export default function AboutPage() {
             <div className="eyebrow mb-5">מטבחי יוקרה</div>
             <h2 className="font-display text-3xl lg:text-4xl text-ink leading-tight">
               העוגן<br />
-              <span className="italic text-mocha">המקצועי</span>
+              <span className="text-mocha font-display-light">המקצועי</span>
             </h2>
           </div>
           <div className="lg:col-span-8 space-y-6 text-ink-soft/85 font-light text-lg leading-loose">

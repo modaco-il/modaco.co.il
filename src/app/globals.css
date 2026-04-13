@@ -92,8 +92,8 @@
   --sidebar-border: oklch(0.88 0.02 75);
   --sidebar-ring: oklch(0.55 0.05 60);
 
-  --font-sans: 'Assistant', 'Heebo', sans-serif;
-  --font-serif: 'Frank Ruhl Libre', 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Assistant', sans-serif;
+  --font-display: 'Heebo', 'Assistant', sans-serif;
 }
 
 html {
@@ -118,10 +118,10 @@ html {
     -moz-osx-font-smoothing: grayscale;
   }
   h1, h2, h3, .font-display {
-    font-family: var(--font-serif);
-    font-weight: 500;
-    letter-spacing: -0.01em;
-    line-height: 1.1;
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
   }
   ::selection {
     background: var(--brand-mocha);
@@ -158,7 +158,8 @@ html {
   .hover\:border-ink:hover { border-color: var(--brand-ink); }
 
   /* Editorial typography */
-  .font-display { font-family: var(--font-serif); font-weight: 500; letter-spacing: -0.01em; }
+  .font-display { font-family: var(--font-display); font-weight: 800; letter-spacing: -0.02em; }
+  .font-display-light { font-family: var(--font-display); font-weight: 500; letter-spacing: -0.01em; }
   .font-sans { font-family: var(--font-sans); }
   .eyebrow {
     font-size: 0.75rem;
@@ -176,7 +177,14 @@ html {
 
   /* Readable text over images */
   .hero-text {
-    text-shadow: 0 2px 24px rgba(0,0,0,0.45), 0 1px 2px rgba(0,0,0,0.4);
+    text-shadow: 0 2px 16px rgba(0,0,0,0.55), 0 1px 3px rgba(0,0,0,0.6);
+  }
+  /* Mobile dark base — guarantees readability even on bright image areas */
+  .hero-base-mobile {
+    background-color: rgba(10, 9, 8, 0.45);
+  }
+  @media (min-width: 1024px) {
+    .hero-base-mobile { background-color: transparent; }
   }
   .hero-overlay {
     background: linear-gradient(
