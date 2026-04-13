@@ -9,18 +9,26 @@ export const metadata: Metadata = {
 export default function CarpentryPage() {
   return (
     <div>
-      {/* Hero */}
-      <section className="border-b border-gray-200 dark:border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-20 lg:py-28 text-center">
-          <div className="text-sm text-gray-500 tracking-[0.2em] uppercase mb-6">
+      {/* Hero with kitchen image */}
+      <section className="relative overflow-hidden border-b border-gray-200 dark:border-gray-800">
+        <div className="absolute inset-0 z-0">
+          <img
+            src="/images/israelevitz/1-web.jpg"
+            alt="מטבח Modaco Premium"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/50" />
+        </div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-24 lg:py-36 text-center">
+          <div className="text-sm text-mocha tracking-[0.3em] uppercase mb-6 font-medium">
             Modaco Premium
           </div>
-          <h1 className="text-4xl lg:text-6xl font-bold leading-tight mb-6">
+          <h1 className="text-4xl lg:text-6xl font-bold leading-tight mb-6 text-white">
             מטבחי יוקרה
             <br />
-            <span className="text-gray-400 dark:text-gray-500">בהתאמה אישית</span>
+            <span className="text-mocha">בהתאמה אישית</span>
           </h1>
-          <p className="text-lg text-gray-700 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg text-gray-200 max-w-2xl mx-auto leading-relaxed">
             כל מטבח הוא עולם בפני עצמו. אנחנו מתכננים, מייצרים ומתקינים מטבחי יוקרה שמשלבים נגרות ברמה הגבוהה ביותר עם פרזול מתקדם מהמותגים המובילים בעולם.
           </p>
         </div>
@@ -122,17 +130,24 @@ export default function CarpentryPage() {
       {/* Gallery placeholder */}
       <section className="border-t border-gray-200 dark:border-gray-800 transition-colors">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-20 text-center">
-          <div className="text-sm text-gray-500 tracking-[0.2em] uppercase mb-3">
+          <div className="text-sm text-mocha tracking-[0.3em] uppercase mb-3 font-medium">
             גלריה
           </div>
-          <h2 className="text-3xl font-bold mb-8">מהמטבחים שלנו</h2>
-          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-            {[1, 2, 3, 4, 5, 6].map((i) => (
+          <h2 className="text-3xl font-bold mb-4">מהמטבחים שלנו</h2>
+          <p className="text-sm text-gray-500 mb-10">
+            באדיבות Israelevitz Architects
+          </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {[1, 4, 2, 3].map((i) => (
               <div
                 key={i}
-                className="aspect-[4/3] bg-gray-100 dark:bg-gray-900 rounded-sm flex items-center justify-center text-gray-400 dark:text-gray-600 text-sm transition-colors"
+                className="aspect-[4/3] rounded-sm overflow-hidden bg-gray-100 dark:bg-gray-900 transition-colors"
               >
-                תמונה בקרוב
+                <img
+                  src={`/images/israelevitz/${i}-web.jpg`}
+                  alt={`מטבח Modaco ${i}`}
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-700"
+                />
               </div>
             ))}
           </div>

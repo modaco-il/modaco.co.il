@@ -117,6 +117,27 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+/* Modaco brand — mocha palette */
+:root {
+  /* Light mode mocha — warm brown for CTAs/accents */
+  --brand-mocha: #8B6F4E;
+  --brand-mocha-hover: #6F573A;
+  --brand-mocha-soft: #D9C3A5;
+  --brand-mocha-bg: #FAF6F0;
+  --brand-cream: #F5EEE3;
+  --brand-ink: #1C1612;
+}
+
+.dark {
+  /* Dark mode — warm gold-mocha that glows against deep black */
+  --brand-mocha: #C9A57A;
+  --brand-mocha-hover: #D9BC93;
+  --brand-mocha-soft: #6E5538;
+  --brand-mocha-bg: #0D0A07;
+  --brand-cream: #F5EEE3;
+  --brand-ink: #0A0806;
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -127,4 +148,24 @@
   html {
     @apply font-sans;
   }
+  .dark body {
+    background-color: var(--brand-ink);
+  }
+}
+
+@layer utilities {
+  .bg-mocha { background-color: var(--brand-mocha); }
+  .bg-mocha-hover { background-color: var(--brand-mocha-hover); }
+  .bg-mocha-soft { background-color: var(--brand-mocha-soft); }
+  .bg-mocha-bg { background-color: var(--brand-mocha-bg); }
+  .bg-cream { background-color: var(--brand-cream); }
+  .bg-ink { background-color: var(--brand-ink); }
+  .text-mocha { color: var(--brand-mocha); }
+  .text-mocha-hover { color: var(--brand-mocha-hover); }
+  .border-mocha { border-color: var(--brand-mocha); }
+  .border-mocha-soft { border-color: var(--brand-mocha-soft); }
+  .hover\:bg-mocha:hover { background-color: var(--brand-mocha); }
+  .hover\:bg-mocha-hover:hover { background-color: var(--brand-mocha-hover); }
+  .hover\:text-mocha:hover { color: var(--brand-mocha); }
+  .hover\:border-mocha:hover { border-color: var(--brand-mocha); }
 }

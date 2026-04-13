@@ -10,18 +10,26 @@ export const metadata: Metadata = {
 export default function AluminumPage() {
   return (
     <div>
-      {/* Hero */}
-      <section className="border-b border-gray-200 dark:border-gray-800">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-20 lg:py-28 text-center">
-          <div className="text-sm text-gray-500 tracking-[0.2em] uppercase mb-6">
+      {/* Hero with image */}
+      <section className="relative overflow-hidden border-b border-gray-200 dark:border-gray-800">
+        <div className="absolute inset-0 z-0">
+          <img
+            src="/images/israelevitz/2-web.jpg"
+            alt="פרופיל 19 — אלומיניום וזכוכית"
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/70 to-black/50" />
+        </div>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-24 lg:py-36 text-center">
+          <div className="text-sm text-mocha tracking-[0.3em] uppercase mb-6 font-medium">
             אלומיניום וזכוכית
           </div>
-          <h1 className="text-4xl lg:text-6xl font-bold leading-tight mb-6">
+          <h1 className="text-4xl lg:text-6xl font-bold leading-tight mb-6 text-white">
             פרופיל 19
             <br />
-            <span className="text-gray-400 dark:text-gray-500">בהתאמה אישית</span>
+            <span className="text-mocha">בהתאמה אישית</span>
           </h1>
-          <p className="text-lg text-gray-700 dark:text-gray-400 max-w-2xl mx-auto leading-relaxed">
+          <p className="text-lg text-gray-200 max-w-2xl mx-auto leading-relaxed">
             חיתוך מדויק למידות שלכם. אלומיניום וזכוכית באיכות הגבוהה ביותר, ישירות מהמפעל — לכל פרויקט, בכל גודל.
           </p>
         </div>
