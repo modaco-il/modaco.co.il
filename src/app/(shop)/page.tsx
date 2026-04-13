@@ -55,17 +55,22 @@ export default function HomePage() {
           <div className="max-w-[1400px] mx-auto px-6 lg:px-12 w-full">
             <div className="max-w-2xl lg:max-w-4xl lg:mx-auto hero-text lg:text-center">
               <div className="eyebrow text-mocha-soft mb-6">למעלה מ-40 שנה</div>
-              <h1 className="font-display text-cream text-5xl lg:text-7xl leading-[1.05] mb-8">
+              <h1
+                className="font-display text-cream text-5xl lg:text-7xl leading-[1.05] mb-8"
+                style={{ fontWeight: 500 }}
+              >
                 פרזול ואקססוריז<br />
-                <span className="text-mocha-soft font-display-light">ברמה אחרת</span>
+                <span className="text-mocha-soft" style={{ fontWeight: 300 }}>
+                  ברמה אחרת
+                </span>
               </h1>
               <p className="text-cream text-lg lg:text-xl font-light leading-relaxed max-w-xl lg:mx-auto mb-12">
                 המותגים המובילים בעולם, נבחרים בקפידה — לבית, למטבח ולכל חלל שמגיע לו את הטוב ביותר.
               </p>
-              <div className="flex gap-3 flex-wrap lg:justify-center">
+              <div className="flex flex-col lg:flex-row gap-3 lg:justify-center">
                 <Link
                   href="/catalog"
-                  className="group inline-flex items-center gap-3 pl-5 pr-6 py-4 text-sm tracking-wide transition-all hover:shadow-lg"
+                  className="group flex items-center justify-center gap-3 px-6 py-4 text-sm tracking-wide transition-all hover:shadow-lg w-full lg:w-auto"
                   style={{ background: "#FAF6F0", color: "#0A0908" }}
                 >
                   <CatalogIcon />
@@ -75,39 +80,42 @@ export default function HomePage() {
                     aria-hidden
                   >←</span>
                 </Link>
-                <a
-                  href="https://wa.me/972526804945?text=%D7%94%D7%99%D7%99%20%D7%99%D7%A8%D7%99%D7%9F%2C%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%93%D7%A8%D7%9A%20%D7%94%D7%90%D7%AA%D7%A8%20%D7%A9%D7%9C%20Modaco%20%D7%95%D7%99%D7%A9%20%D7%9C%D7%99%20%D7%A9%D7%90%D7%9C%D7%94"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-3 pl-5 pr-6 py-4 text-sm tracking-wide transition-all"
-                  style={{
-                    border: "1px solid rgba(250,246,240,0.4)",
-                    color: "#FAF6F0",
-                    background: "rgba(10,9,8,0.25)",
-                    backdropFilter: "blur(6px)",
-                  }}
-                >
-                  <WhatsAppIcon />
-                  <span>שיחה עם יועץ</span>
-                  <span
-                    className="w-2 h-2 rounded-full animate-pulse"
-                    style={{ background: "#25D366" }}
-                    aria-hidden
-                  />
-                </a>
-                <Link
-                  href="/login"
-                  className="group inline-flex items-center gap-3 pl-5 pr-6 py-4 text-sm tracking-wide transition-all"
-                  style={{
-                    border: "1px solid rgba(250,246,240,0.4)",
-                    color: "#FAF6F0",
-                    background: "rgba(10,9,8,0.25)",
-                    backdropFilter: "blur(6px)",
-                  }}
-                >
-                  <UserPlusIcon />
-                  <span>הרשמה</span>
-                </Link>
+
+                <div className="flex gap-3 lg:contents">
+                  <a
+                    href="https://wa.me/972526804945?text=%D7%94%D7%99%D7%99%20%D7%99%D7%A8%D7%99%D7%9F%2C%20%D7%94%D7%92%D7%A2%D7%AA%D7%99%20%D7%93%D7%A8%D7%9A%20%D7%94%D7%90%D7%AA%D7%A8%20%D7%A9%D7%9C%20Modaco%20%D7%95%D7%99%D7%A9%20%D7%9C%D7%99%20%D7%A9%D7%90%D7%9C%D7%94"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group flex-1 lg:flex-initial flex items-center justify-center gap-2.5 px-5 py-4 text-sm tracking-wide transition-all"
+                    style={{
+                      border: "1px solid rgba(250,246,240,0.4)",
+                      color: "#FAF6F0",
+                      background: "rgba(10,9,8,0.25)",
+                      backdropFilter: "blur(6px)",
+                    }}
+                  >
+                    <WhatsAppIcon />
+                    <span>שיחה עם יועץ</span>
+                    <span
+                      className="w-2 h-2 rounded-full animate-pulse"
+                      style={{ background: "#25D366" }}
+                      aria-hidden
+                    />
+                  </a>
+                  <Link
+                    href="/login"
+                    className="group flex-1 lg:flex-initial flex items-center justify-center gap-2.5 px-5 py-4 text-sm tracking-wide transition-all"
+                    style={{
+                      border: "1px solid rgba(250,246,240,0.4)",
+                      color: "#FAF6F0",
+                      background: "rgba(10,9,8,0.25)",
+                      backdropFilter: "blur(6px)",
+                    }}
+                  >
+                    <UserPlusIcon />
+                    <span>הרשמה</span>
+                  </Link>
+                </div>
               </div>
             </div>
           </div>
