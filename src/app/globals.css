@@ -186,6 +186,18 @@ html {
   @media (min-width: 1024px) {
     .hero-base-mobile { background-color: transparent; }
   }
+
+  /* Marquee */
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(50%); }
+  }
+  .marquee-track {
+    animation: marquee 60s linear infinite;
+  }
+  .marquee-pause:hover .marquee-track {
+    animation-play-state: paused;
+  }
   .hero-overlay {
     background: linear-gradient(
       to top,

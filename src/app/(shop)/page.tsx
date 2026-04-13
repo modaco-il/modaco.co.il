@@ -114,17 +114,8 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Trust strip */}
-      <section className="bg-cream-deep border-y border-bone">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-12">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-4 text-center">
-            <Stat value="40+" label="שנות מומחיות" />
-            <Stat value="Blum" label="אולם תצוגה רשמי" serif />
-            <Stat value="200+" label="מוצרים בקטלוג" />
-            <Stat value="B2B" label="ממשק לאנשי מקצוע" serif />
-          </div>
-        </div>
-      </section>
+      {/* Trust ribbon — marquee */}
+      <TrustRibbon />
 
       {/* Categories — editorial grid */}
       <section className="max-w-[1400px] mx-auto px-6 lg:px-12 py-32 lg:py-40">
@@ -326,13 +317,68 @@ export default function HomePage() {
   );
 }
 
-function Stat({ value, label, serif = false }: { value: string; label: string; serif?: boolean }) {
+const trustItems: Array<{ brand?: string; text?: string; number?: string; label?: string }> = [
+  { brand: "BLUM", label: "שותפים רשמיים" },
+  { number: "40+", label: "שנות מומחיות" },
+  { brand: "DOMICILE", label: "מפיצים מורשים" },
+  { number: "200+", label: "מוצרים בקטלוג" },
+  { brand: "MOVENTO", label: "טכנולוגיה אוסטרית" },
+  { text: "SINCE 1985", label: "מטבחי יוקרה" },
+  { brand: "AVENTOS", label: "מנגנוני הרמה" },
+  { text: "B2B", label: "רשת אנשי מקצוע" },
+  { brand: "FLORALIS", label: "אקססוריז לבית" },
+  { text: "IL · שליחות", label: "לכל הארץ" },
+];
+
+function TrustItem({ item }: { item: (typeof trustItems)[number] }) {
+  const primary = item.brand || item.text || item.number || "";
+  const isNumber = !!item.number;
   return (
-    <div>
-      <div className={`text-3xl lg:text-4xl text-ink mb-2 ${serif ? "font-display" : "font-light"}`}>
-        {value}
+    <span className="inline-flex items-baseline gap-3 mx-8 shrink-0">
+      <span
+        className={`text-2xl lg:text-3xl tracking-tight ${isNumber ? "font-display font-light" : "font-bold tracking-wider"}`}
+        style={{ color: "#FAF6F0" }}
+      >
+        {primary}
+      </span>
+      <span
+        className="text-[11px] tracking-[0.28em] uppercase font-medium"
+        style={{ color: "#D9C3A5" }}
+      >
+        {item.label}
+      </span>
+    </span>
+  );
+}
+
+function TrustRibbon() {
+  const doubled = [...trustItems, ...trustItems];
+  return (
+    <section
+      className="relative overflow-hidden marquee-pause"
+      style={{
+        background: "#0A0908",
+        maskImage:
+          "linear-gradient(to right, transparent 0, black 5%, black 95%, transparent 100%)",
+        WebkitMaskImage:
+          "linear-gradient(to right, transparent 0, black 5%, black 95%, transparent 100%)",
+      }}
+      aria-label="מותגים ונתונים"
+    >
+      <div className="marquee-track flex py-7 lg:py-10 whitespace-nowrap" dir="ltr">
+        {doubled.map((item, i) => (
+          <span key={i} className="flex items-baseline">
+            <TrustItem item={item} />
+            <span
+              className="text-xl opacity-30 select-none"
+              style={{ color: "#D9C3A5" }}
+              aria-hidden
+            >
+              ◆
+            </span>
+          </span>
+        ))}
       </div>
-      <div className="text-xs tracking-[0.2em] uppercase text-ink-soft">{label}</div>
-    </div>
+    </section>
   );
 }
