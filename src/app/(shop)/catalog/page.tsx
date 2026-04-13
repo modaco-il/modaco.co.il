@@ -157,10 +157,10 @@ export default async function CatalogPage() {
         </div>
       </section>
 
-      {/* Index strip */}
-      <section className="bg-cream border-b border-bone">
-        <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-8">
-          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-xs tracking-[0.2em] uppercase">
+      {/* Index strip — desktop only */}
+      <section className="hidden lg:block bg-cream border-b border-bone">
+        <div className="max-w-[1400px] mx-auto px-12 py-8">
+          <div className="flex items-center justify-center gap-8 text-xs tracking-[0.2em] uppercase">
             {entries.map((e) => (
               <a
                 key={e.slug}
