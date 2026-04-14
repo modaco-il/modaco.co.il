@@ -26,7 +26,7 @@ export default function AboutPage() {
       <section className="max-w-[1400px] mx-auto px-6 lg:px-12 mb-20">
         <div className="aspect-[21/9] overflow-hidden">
           <img
-            src="/images/israelevitz/3-web.jpg"
+            src="/images/modaco/5F7A9768.webp"
             alt="פרויקט מודקו"
             className="w-full h-full object-cover"
           />
