@@ -5,6 +5,15 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
+  /* Modaco brand palette — registered so Tailwind generates utilities with opacity modifiers */
+  --color-cream: var(--brand-cream);
+  --color-cream-deep: var(--brand-cream-deep);
+  --color-bone: var(--brand-bone);
+  --color-ink: var(--brand-ink);
+  --color-ink-soft: var(--brand-ink-soft);
+  --color-mocha: var(--brand-mocha);
+  --color-mocha-hover: var(--brand-mocha-hover);
+  --color-mocha-soft: var(--brand-mocha-soft);
   --font-sans: var(--font-sans);
   --font-serif: var(--font-serif);
   --font-mono: var(--font-geist-mono);
@@ -130,33 +139,6 @@ html {
 }
 
 @layer utilities {
-  /* Brand colors */
-  .bg-cream { background-color: var(--brand-cream); }
-  .bg-cream-deep { background-color: var(--brand-cream-deep); }
-  .bg-ink { background-color: var(--brand-ink); }
-  .bg-ink-soft { background-color: var(--brand-ink-soft); }
-  .bg-mocha { background-color: var(--brand-mocha); }
-  .bg-mocha-hover { background-color: var(--brand-mocha-hover); }
-  .bg-mocha-soft { background-color: var(--brand-mocha-soft); }
-
-  .text-cream { color: var(--brand-cream); }
-  .text-ink { color: var(--brand-ink); }
-  .text-ink-soft { color: var(--brand-ink-soft); }
-  .text-mocha { color: var(--brand-mocha); }
-  .text-mocha-hover { color: var(--brand-mocha-hover); }
-
-  .border-bone { border-color: var(--brand-bone); }
-  .border-mocha { border-color: var(--brand-mocha); }
-  .border-mocha-soft { border-color: var(--brand-mocha-soft); }
-  .border-ink { border-color: var(--brand-ink); }
-
-  .hover\:bg-mocha:hover { background-color: var(--brand-mocha); }
-  .hover\:bg-mocha-hover:hover { background-color: var(--brand-mocha-hover); }
-  .hover\:text-mocha:hover { color: var(--brand-mocha); }
-  .hover\:text-ink:hover { color: var(--brand-ink); }
-  .hover\:border-mocha:hover { border-color: var(--brand-mocha); }
-  .hover\:border-ink:hover { border-color: var(--brand-ink); }
-
   /* Editorial typography */
   .font-display { font-family: var(--font-display); font-weight: 700; letter-spacing: -0.02em; }
   .font-display-light { font-family: var(--font-display); font-weight: 400; letter-spacing: -0.01em; }
