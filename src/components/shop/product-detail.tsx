@@ -56,9 +56,11 @@ export function ProductDetail({ product }: ProductDetailProps) {
     product.variants[0] || null
   );
   const [quantity, setQuantity] = useState(1);
+  const [mainImageIdx, setMainImageIdx] = useState(0);
 
   const currentPrice = selectedVariant?.priceOverride ?? product.basePrice;
   const stock = selectedVariant ? stockStatus[selectedVariant.stockStatus] : null;
+  const mainImage = product.images[mainImageIdx] || product.images[0];
 
   return (
     <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-12 lg:py-16">
@@ -85,26 +87,39 @@ export function ProductDetail({ product }: ProductDetailProps) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
         {/* Images */}
         <div className="space-y-4">
-          <div className="aspect-square img-frame border border-bone overflow-hidden">
-            {product.images.length > 0 ? (
+          <div className="aspect-square img-frame border border-bone overflow-hidden relative group">
+            {mainImage ? (
               /* eslint-disable-next-line @next/next/no-img-element */
               <img
-                src={product.images[0].url}
-                alt={product.images[0].altText || product.name}
-                className="w-full h-full object-contain p-12"
+                key={mainImage.id}
+                src={mainImage.url}
+                alt={mainImage.altText || product.name}
+                className="w-full h-full object-contain p-12 transition-opacity duration-300"
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-ink-soft/30 text-xs tracking-widest uppercase">
                 ללא תמונה
               </div>
             )}
+            {product.images.length > 1 && (
+              <div
+                className="absolute bottom-4 right-4 text-[10px] tracking-[0.3em] uppercase text-ink-soft bg-cream/80 px-2.5 py-1"
+              >
+                {mainImageIdx + 1} / {product.images.length}
+              </div>
+            )}
           </div>
           {product.images.length > 1 && (
             <div className="grid grid-cols-4 gap-3">
-              {product.images.slice(1, 5).map((img) => (
-                <div
+              {product.images.slice(0, 4).map((img, i) => (
+                <button
                   key={img.id}
-                  className="aspect-square img-frame border border-bone overflow-hidden"
+                  type="button"
+                  onClick={() => setMainImageIdx(i)}
+                  className={`aspect-square img-frame border overflow-hidden transition-colors ${
+                    mainImageIdx === i ? "border-mocha" : "border-bone hover:border-mocha/50"
+                  }`}
+                  aria-label={`תמונה ${i + 1}`}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
@@ -112,7 +127,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
                     alt={img.altText || ""}
                     className="w-full h-full object-contain p-3"
                   />
-                </div>
+                </button>
               ))}
             </div>
           )}
