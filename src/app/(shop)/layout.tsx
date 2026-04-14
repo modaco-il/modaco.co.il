@@ -6,11 +6,11 @@ import { usePathname } from "next/navigation";
 import { MobileMenu } from "@/components/shop/mobile-menu";
 
 const navItems = [
+  { href: "/categories/handles", label: "ידיות" },
   { href: "/categories/hinges", label: "צירים" },
   { href: "/categories/slides", label: "מסילות" },
-  { href: "/categories/lift-systems", label: "מנגנוני הרמה" },
+  { href: "/categories/bath", label: "מוצרי אמבט" },
   { href: "/categories/accessories", label: "אקססוריז" },
-  { href: "/categories/aluminum", label: "אלומיניום" },
   { href: "/categories/carpentry", label: "נגרות" },
   { href: "/catalog", label: "הקטלוג" },
   { href: "/about", label: "אודות" },
@@ -167,10 +167,11 @@ export default function ShopLayout({
             <div className="lg:col-span-3">
               <div className="eyebrow text-mocha-soft mb-5">קטגוריות</div>
               <ul className="space-y-3 text-sm text-cream font-light">
+                <li><Link href="/categories/handles" className="hover:text-mocha-soft transition-colors">ידיות</Link></li>
                 <li><Link href="/categories/hinges" className="hover:text-mocha-soft transition-colors">צירים</Link></li>
                 <li><Link href="/categories/slides" className="hover:text-mocha-soft transition-colors">מסילות</Link></li>
+                <li><Link href="/categories/bath" className="hover:text-mocha-soft transition-colors">מוצרי אמבט</Link></li>
                 <li><Link href="/categories/accessories" className="hover:text-mocha-soft transition-colors">אקססוריז</Link></li>
-                <li><Link href="/categories/aluminum" className="hover:text-mocha-soft transition-colors">אלומיניום</Link></li>
                 <li><Link href="/categories/carpentry" className="hover:text-mocha-soft transition-colors">נגרות</Link></li>
               </ul>
             </div>

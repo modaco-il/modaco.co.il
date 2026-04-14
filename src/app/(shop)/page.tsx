@@ -111,10 +111,12 @@ function UserPlusIcon() {
 }
 
 const categories = [
-  { slug: "hinges", name: "צירים", brand: "Blum", description: "פרזול גרמני בדיוק שווייצרי", cover: "/images/blum/blum-hinges.jpg" },
+  { slug: "handles", name: "ידיות", brand: "Domicile", description: "ידיות לארונות, מטבחים ודלתות", cover: "/images/domicile/mood.jpg" },
+  { slug: "hinges", name: "צירים", brand: "Blum & Domicile", description: "פרזול גרמני בדיוק שווייצרי", cover: "/images/blum/blum-hinges.jpg" },
   { slug: "slides", name: "מסילות", brand: "Movento", description: "תנועה שקטה, סגירה רכה", cover: "/images/blum/blum-slides.jpg" },
   { slug: "lift-systems", name: "מנגנוני הרמה", brand: "Aventos", description: "הקלפה נפתחת בנגיעה", cover: "/images/blum/blum-lift.jpg" },
-  { slug: "accessories", name: "אקססוריז", brand: "Domicile", description: "פרטים שמרגישים נכון", cover: "/images/domicile/mood.jpg" },
+  { slug: "bath", name: "מוצרי אמבט", brand: "Domicile", description: "סדרות מלאות לחדרי רחצה", cover: "/images/domicile/lucy.jpg" },
+  { slug: "accessories", name: "אקססוריז", brand: "Floralis", description: "אגרטלים, מראות ופריטי בית", cover: "/images/modaco/5F7A9697.webp" },
   { slug: "aluminum", name: "אלומיניום וזכוכית", brand: "Profile 19", description: "מסגרות בהתאמה אישית", cover: "/images/israelevitz/2-web.jpg" },
   { slug: "carpentry", name: "נגרות", brand: "Modaco Premium", description: "מטבחי יוקרה מהתחלה ועד הסוף", cover: "/images/israelevitz/4-web.jpg" },
 ];
@@ -227,12 +229,22 @@ export default function HomePage() {
 
         {/* Bento grid: 12 cols on desktop, varied heights and spans */}
         <div className="grid grid-cols-2 lg:grid-cols-12 gap-3 lg:gap-4 auto-rows-[140px] lg:auto-rows-[200px]">
-          <BentoCard cat={categories[5]} spanDesktop="lg:col-span-7 lg:row-span-3" spanMobile="col-span-2 row-span-2" size="xl" />
-          <BentoCard cat={categories[0]} spanDesktop="lg:col-span-5 lg:row-span-2" spanMobile="col-span-2 row-span-1" size="lg" />
-          <BentoCard cat={categories[1]} spanDesktop="lg:col-span-5 lg:row-span-1" spanMobile="col-span-1 row-span-1" size="sm" />
-          <BentoCard cat={categories[2]} spanDesktop="lg:col-span-3 lg:row-span-2" spanMobile="col-span-1 row-span-1" size="md" />
-          <BentoCard cat={categories[3]} spanDesktop="lg:col-span-5 lg:row-span-2" spanMobile="col-span-2 row-span-1" size="md" />
-          <BentoCard cat={categories[4]} spanDesktop="lg:col-span-4 lg:row-span-2" spanMobile="col-span-2 row-span-1" size="md" />
+          {/* Carpentry — flagship */}
+          <BentoCard cat={categories[7]} spanDesktop="lg:col-span-8 lg:row-span-2" spanMobile="col-span-2 row-span-2" size="xl" />
+          {/* Handles — vertical secondary */}
+          <BentoCard cat={categories[0]} spanDesktop="lg:col-span-4 lg:row-span-2" spanMobile="col-span-2 row-span-1" size="lg" />
+          {/* Hinges */}
+          <BentoCard cat={categories[1]} spanDesktop="lg:col-span-5 lg:row-span-2" spanMobile="col-span-1 row-span-1" size="md" />
+          {/* Slides */}
+          <BentoCard cat={categories[2]} spanDesktop="lg:col-span-4 lg:row-span-2" spanMobile="col-span-1 row-span-1" size="md" />
+          {/* Bath */}
+          <BentoCard cat={categories[4]} spanDesktop="lg:col-span-3 lg:row-span-2" spanMobile="col-span-1 row-span-1" size="sm" />
+          {/* Lift systems */}
+          <BentoCard cat={categories[3]} spanDesktop="lg:col-span-3 lg:row-span-1" spanMobile="col-span-1 row-span-1" size="sm" />
+          {/* Accessories */}
+          <BentoCard cat={categories[5]} spanDesktop="lg:col-span-3 lg:row-span-1" spanMobile="col-span-2 row-span-1" size="sm" />
+          {/* Aluminum — wide */}
+          <BentoCard cat={categories[6]} spanDesktop="lg:col-span-6 lg:row-span-1" spanMobile="col-span-2 row-span-1" size="md" />
         </div>
       </section>
 

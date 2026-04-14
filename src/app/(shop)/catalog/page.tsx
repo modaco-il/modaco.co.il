@@ -20,14 +20,24 @@ interface CatalogEntry {
 
 const entries: CatalogEntry[] = [
   {
+    slug: "handles",
+    name: "ידיות",
+    brand: "Domicile",
+    tagline: "הפרט שמשלים את הקו",
+    description:
+      "מבחר רחב של ידיות לארונות, מטבחים ודלתות. עיצובים מינימליסטיים, קלאסיים ויוקרתיים — בכל הגימורים. ליבת החנות שלנו.",
+    cover: "/images/domicile/mood.jpg",
+    index: "01",
+  },
+  {
     slug: "hinges",
     name: "צירים",
-    brand: "Blum",
+    brand: "Blum & Domicile",
     tagline: "הדיוק האוסטרי של פרזול עולמי",
     description:
       "צירים בסטנדרט הגבוה ביותר. סגירה רכה, תנועה שקטה, אחריות יצרן עד 25 שנה. מהציר הקליפי הקטן ועד מנגנונים של 180°.",
     cover: "/images/blum/blum-hinges.jpg",
-    index: "01",
+    index: "02",
   },
   {
     slug: "slides",
@@ -37,7 +47,7 @@ const entries: CatalogEntry[] = [
     description:
       "מסילות נסתרות, נשלפות וטיפ-און. בלומושן ומסילות מובנטו לעומסים של 40 ו-70 קילו. כל מידה, כל גודל, התאמה אישית מוחלטת.",
     cover: "/images/blum/blum-slides.jpg",
-    index: "02",
+    index: "03",
   },
   {
     slug: "lift-systems",
@@ -47,17 +57,27 @@ const entries: CatalogEntry[] = [
     description:
       "מנגנונים סטטיים ודינמיים לחזיתות עליונות. פתיחה רכה, סגירה אילמת, התאמה לדלתות זכוכית, עץ או אלומיניום בגדלים ומשקלים שונים.",
     cover: "/images/blum/blum-lift.jpg",
-    index: "03",
+    index: "04",
   },
   {
-    slug: "accessories",
-    name: "אקססוריז ואמבטיה",
-    brand: "Domicile · Floralis",
+    slug: "bath",
+    name: "מוצרי אמבט",
+    brand: "Domicile",
     tagline: "פרטים שמרגישים נכון בידיים",
     description:
       "סדרות מלאות לחדרי רחצה — רודיום, SHELL, RIVIERA, BINOVA, RONDO, EDGE, LUCY, SANDRA, PICCOLO. גם פחים, מראות, מחממי מגבות ומחזיקי יין.",
     cover: "/images/domicile/lucy.jpg",
-    index: "04",
+    index: "05",
+  },
+  {
+    slug: "accessories",
+    name: "אקססוריז",
+    brand: "Floralis",
+    tagline: "אגרטלים, מראות ופריטי בית",
+    description:
+      "אקססוריז מעוצבים לבית — אגרטלים, מראות, מעמדים ופריטים משלימים מהמותג Floralis. בקרוב במלאי.",
+    cover: "/images/modaco/5F7A9697.webp",
+    index: "06",
   },
   {
     slug: "aluminum",
@@ -67,7 +87,7 @@ const entries: CatalogEntry[] = [
     description:
       "פרופילי אלומיניום בעובי 19 מ\"מ עם משטחי זכוכית. לחזיתות ארונות, ויטרינות, מחיצות חלל ודלתות הזזה. כל פרופיל נחתך בהתאמה אישית.",
     cover: "/images/israelevitz/2-web.jpg",
-    index: "05",
+    index: "07",
   },
   {
     slug: "carpentry",
@@ -77,7 +97,7 @@ const entries: CatalogEntry[] = [
     description:
       "מטבחי יוקרה בהתאמה אישית מוחלטת. תכנון, ייצור והתקנה ב-A→Z. שילוב של נגרות איכותית עם כל הפרזול שאנו מציעים — בליווי אישי.",
     cover: "/images/israelevitz/4-web.jpg",
-    index: "06",
+    index: "08",
   },
 ];
 
