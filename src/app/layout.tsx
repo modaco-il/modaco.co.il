@@ -52,6 +52,56 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;500;600;700&family=Heebo:wght@300;400;500;600;700;800;900&display=swap"
           rel="stylesheet"
         />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Organization",
+              name: "Modaco",
+              alternateName: "מודקו",
+              url: "https://modaco.co.il",
+              logo: "https://modaco.co.il/logo.png",
+              image: "https://modaco.co.il/images/israelevitz/1-web.jpg",
+              description:
+                "למעלה מ-40 שנה של מומחיות בפרזול ואקססוריז לבית. צירים, מסילות, ידיות, ברזי מטבח ומטבחי יוקרה בהתאמה אישית.",
+              telephone: "+972-52-680-4945",
+              email: "info@modaco.co.il",
+              address: {
+                "@type": "PostalAddress",
+                addressCountry: "IL",
+                addressLocality: "ישראל",
+              },
+              contactPoint: {
+                "@type": "ContactPoint",
+                telephone: "+972-52-680-4945",
+                contactType: "Customer Service",
+                availableLanguage: ["Hebrew", "English"],
+              },
+              sameAs: ["https://wa.me/972526804945"],
+            }),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "Modaco",
+              url: "https://modaco.co.il",
+              potentialAction: {
+                "@type": "SearchAction",
+                target: {
+                  "@type": "EntryPoint",
+                  urlTemplate:
+                    "https://modaco.co.il/search?q={search_term_string}",
+                },
+                "query-input": "required name=search_term_string",
+              },
+            }),
+          }}
+        />
       </head>
       <body className="min-h-full flex flex-col bg-cream text-ink">
         {children}

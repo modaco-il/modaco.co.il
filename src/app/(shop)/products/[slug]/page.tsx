@@ -12,16 +12,24 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const slug = decodeURIComponent(raw);
   const product = await db.product.findUnique({
     where: { slug, status: "ACTIVE" },
+    include: { images: { take: 1, orderBy: { sortOrder: "asc" } } },
   });
 
   if (!product) return {};
 
+  const image = product.images[0]?.url;
   return {
-    title: product.seoTitle || `${product.name} — Modaco`,
+    title: product.seoTitle || product.name,
     description:
       product.seoDescription ||
       product.description?.slice(0, 160) ||
-      `${product.name} — פרזול ואקססוריז לבית | Modaco`,
+      `${product.name} — פרזול ואקססוריז לבית מהמותגים המובילים בעולם | Modaco`,
+    openGraph: {
+      title: product.name,
+      description: product.description?.slice(0, 160),
+      images: image ? [{ url: image, alt: product.name }] : undefined,
+      type: "website",
+    },
   };
 }
 
@@ -53,5 +61,40 @@ export default async function ProductPage({ params }: Props) {
 
   if (!product) notFound();
 
-  return <ProductDetail product={product} />;
+  const defaultVariant = product.variants.find((v) => v.isDefault) || product.variants[0];
+  const price = defaultVariant?.priceOverride ?? product.basePrice;
+
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: product.name,
+    description: product.description || undefined,
+    image: product.images.map((i) => i.url).filter(Boolean),
+    sku: defaultVariant?.sku,
+    category: product.category?.name,
+    offers: {
+      "@type": "Offer",
+      price: price.toString(),
+      priceCurrency: "ILS",
+      availability:
+        defaultVariant?.stockStatus === "OUT_OF_STOCK"
+          ? "https://schema.org/OutOfStock"
+          : "https://schema.org/InStock",
+      url: `https://modaco.co.il/products/${product.slug}`,
+      seller: {
+        "@type": "Organization",
+        name: "Modaco",
+      },
+    },
+  };
+
+  return (
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <ProductDetail product={product} />
+    </>
+  );
 }

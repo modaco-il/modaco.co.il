@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { MobileMenu } from "@/components/shop/mobile-menu";
+import { WhatsAppFloat } from "@/components/shop/whatsapp-float";
 
 const navItems = [
   { href: "/categories/hinges", label: "צירים" },
@@ -148,6 +149,9 @@ export default function ShopLayout({
 
       {/* Mobile full-screen takeover */}
       <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
+
+      {/* Floating WhatsApp — hidden when menu open */}
+      {!menuOpen && <WhatsAppFloat />}
 
 
       {/* Main — no top padding on hero pages (image goes under header), padding on others */}
