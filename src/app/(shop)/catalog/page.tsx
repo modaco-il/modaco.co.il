@@ -26,7 +26,7 @@ const entries: CatalogEntry[] = [
     tagline: "הדיוק האוסטרי של פרזול עולמי",
     description:
       "צירים בסטנדרט הגבוה ביותר. סגירה רכה, תנועה שקטה, אחריות יצרן עד 25 שנה. מהציר הקליפי הקטן ועד מנגנונים של 180°.",
-    cover: "/images/modaco/5F7A9537.webp",
+    cover: "/images/modaco/5F7A9697.webp",
     index: "01",
   },
   {
@@ -36,7 +36,7 @@ const entries: CatalogEntry[] = [
     tagline: "תנועה שאי אפשר להרגיש",
     description:
       "מסילות נסתרות, נשלפות וטיפ-און. בלומושן ומסילות מובנטו לעומסים של 40 ו-70 קילו. כל מידה, כל גודל, התאמה אישית מוחלטת.",
-    cover: "/images/modaco/5F7A9300.webp",
+    cover: "/images/modaco/5F7A9683.webp",
     index: "02",
   },
   {
@@ -46,7 +46,7 @@ const entries: CatalogEntry[] = [
     tagline: "הקלפה נפתחת בנגיעה",
     description:
       "מנגנונים סטטיים ודינמיים לחזיתות עליונות. פתיחה רכה, סגירה אילמת, התאמה לדלתות זכוכית, עץ או אלומיניום בגדלים ומשקלים שונים.",
-    cover: "/images/modaco/5F7A9454.webp",
+    cover: "/images/modaco/5F7A9761.webp",
     index: "03",
   },
   {
@@ -56,7 +56,7 @@ const entries: CatalogEntry[] = [
     tagline: "פרטים שמרגישים נכון בידיים",
     description:
       "סדרות מלאות לחדרי רחצה — רודיום, SHELL, RIVIERA, BINOVA, RONDO, EDGE, LUCY, SANDRA, PICCOLO. גם פחים, מראות, מחממי מגבות ומחזיקי יין.",
-    cover: "/images/modaco/5F7A9697.webp",
+    cover: "/images/modaco/5F7A9768.webp",
     index: "04",
   },
   {
@@ -66,7 +66,7 @@ const entries: CatalogEntry[] = [
     tagline: "חיתוך מדויק. למידות שלכם.",
     description:
       "פרופילי אלומיניום בעובי 19 מ\"מ עם משטחי זכוכית. לחזיתות ארונות, ויטרינות, מחיצות חלל ודלתות הזזה. כל פרופיל נחתך בהתאמה אישית.",
-    cover: "/images/modaco/5F7A9417.webp",
+    cover: "/images/israelevitz/2-web.jpg",
     index: "05",
   },
   {

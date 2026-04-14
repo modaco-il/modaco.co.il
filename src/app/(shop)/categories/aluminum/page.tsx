@@ -12,7 +12,7 @@ export default function AluminumPage() {
       {/* Hero */}
       <section className="relative h-[88vh] min-h-[640px] overflow-hidden">
         <img
-          src="/images/modaco/5F7A9450.webp"
+          src="/images/israelevitz/2-web.jpg"
           alt="פרופיל 19 — אלומיניום וזכוכית"
           className="absolute inset-0 w-full h-full object-cover"
         />

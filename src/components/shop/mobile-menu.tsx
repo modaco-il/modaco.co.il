@@ -11,11 +11,11 @@ interface NavItem {
 }
 
 const items: NavItem[] = [
-  { href: "/categories/hinges", label: "צירים", brand: "Blum", img: "/images/modaco/5F7A9761.webp" },
-  { href: "/categories/slides", label: "מסילות", brand: "Movento", img: "/images/modaco/5F7A9286.webp" },
-  { href: "/categories/lift-systems", label: "מנגנוני הרמה", brand: "Aventos", img: "/images/modaco/5F7A9411.webp" },
-  { href: "/categories/accessories", label: "אקססוריז", brand: "Domicile", img: "/images/modaco/5F7A9697.webp" },
-  { href: "/categories/aluminum", label: "אלומיניום וזכוכית", brand: "Profile 19", img: "/images/modaco/5F7A9450.webp" },
+  { href: "/categories/hinges", label: "צירים", brand: "Blum", img: "/images/modaco/5F7A9697.webp" },
+  { href: "/categories/slides", label: "מסילות", brand: "Movento", img: "/images/modaco/5F7A9683.webp" },
+  { href: "/categories/lift-systems", label: "מנגנוני הרמה", brand: "Aventos", img: "/images/modaco/5F7A9761.webp" },
+  { href: "/categories/accessories", label: "אקססוריז", brand: "Domicile", img: "/images/modaco/5F7A9768.webp" },
+  { href: "/categories/aluminum", label: "אלומיניום וזכוכית", brand: "Profile 19", img: "/images/israelevitz/2-web.jpg" },
   { href: "/categories/carpentry", label: "נגרות", brand: "Modaco Premium", img: "/images/israelevitz/4-web.jpg" },
 ];
 

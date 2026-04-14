@@ -111,11 +111,11 @@ function UserPlusIcon() {
 }
 
 const categories = [
-  { slug: "hinges", name: "צירים", brand: "Blum", description: "פרזול גרמני בדיוק שווייצרי", cover: "/images/modaco/5F7A9537.webp" },
-  { slug: "slides", name: "מסילות", brand: "Movento", description: "תנועה שקטה, סגירה רכה", cover: "/images/modaco/5F7A9286.webp" },
-  { slug: "lift-systems", name: "מנגנוני הרמה", brand: "Aventos", description: "הקלפה נפתחת בנגיעה", cover: "/images/modaco/5F7A9411.webp" },
-  { slug: "accessories", name: "אקססוריז", brand: "Domicile", description: "פרטים שמרגישים נכון", cover: "/images/modaco/5F7A9697.webp" },
-  { slug: "aluminum", name: "אלומיניום וזכוכית", brand: "Profile 19", description: "מסגרות בהתאמה אישית", cover: "/images/modaco/5F7A9417.webp" },
+  { slug: "hinges", name: "צירים", brand: "Blum", description: "פרזול גרמני בדיוק שווייצרי", cover: "/images/modaco/5F7A9697.webp" },
+  { slug: "slides", name: "מסילות", brand: "Movento", description: "תנועה שקטה, סגירה רכה", cover: "/images/modaco/5F7A9683.webp" },
+  { slug: "lift-systems", name: "מנגנוני הרמה", brand: "Aventos", description: "הקלפה נפתחת בנגיעה", cover: "/images/modaco/5F7A9761.webp" },
+  { slug: "accessories", name: "אקססוריז", brand: "Domicile", description: "פרטים שמרגישים נכון", cover: "/images/modaco/5F7A9768.webp" },
+  { slug: "aluminum", name: "אלומיניום וזכוכית", brand: "Profile 19", description: "מסגרות בהתאמה אישית", cover: "/images/israelevitz/2-web.jpg" },
   { slug: "carpentry", name: "נגרות", brand: "Modaco Premium", description: "מטבחי יוקרה מהתחלה ועד הסוף", cover: "/images/israelevitz/4-web.jpg" },
 ];
 
@@ -125,8 +125,8 @@ export default function HomePage() {
       {/* Hero — full-bleed editorial */}
       <section className="relative h-[88vh] min-h-[640px] overflow-hidden">
         <img
-          src="/images/modaco/5F7A9683.webp"
-          alt="אולם התצוגה של Modaco"
+          src="/images/israelevitz/1-web.jpg"
+          alt="מטבח Modaco"
           className="absolute inset-0 w-full h-full object-cover"
         />
         <div className="absolute inset-0 hero-base-mobile" />
@@ -270,7 +270,7 @@ export default function HomePage() {
             </div>
             <div className="lg:col-span-7 relative aspect-[4/3] overflow-hidden">
               <img
-                src="/images/modaco/5F7A9450.webp"
+                src="/images/israelevitz/2-web.jpg"
                 alt="פרופיל 19 — אלומיניום וזכוכית"
                 className="w-full h-full object-cover"
               />
