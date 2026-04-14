@@ -193,14 +193,17 @@ export default function ShopLayout({
               </ul>
             </div>
           </div>
-          <div className="border-t border-cream/10 mt-16 pt-8 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-cream font-light">
+          <div className="border-t border-cream/10 mt-16 pt-8 flex flex-col items-center gap-4 text-xs text-cream font-light">
             <div>&copy; {new Date().getFullYear()} Modaco. כל הזכויות שמורות.</div>
-            <div dir="ltr">
-              Crafted by{" "}
-              <a href="https://ozkabala.com" target="_blank" rel="noopener noreferrer" className="hover:text-mocha-soft transition-colors">
-                Oz Kabala
-              </a>
-            </div>
+            <a
+              href="https://ozkabala.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="opacity-40 hover:opacity-70 transition-opacity"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/ozkabala-logo.svg" alt="Oz Kabala" className="h-5" />
+            </a>
           </div>
         </div>
       </footer>
