@@ -17,8 +17,11 @@ export default async function CheckoutPage() {
   }, 0);
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">השלמת הזמנה</h1>
+    <div className="max-w-3xl mx-auto px-6 lg:px-12 py-16 lg:py-24">
+      <div className="eyebrow mb-4">עגלה · תשלום</div>
+      <h1 className="font-display font-bold text-4xl lg:text-5xl text-ink mb-10 leading-[1.05]">
+        השלמת הזמנה
+      </h1>
       <CheckoutForm
         items={cart.items.map((item) => ({
           id: item.id,
