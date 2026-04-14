@@ -111,10 +111,10 @@ function UserPlusIcon() {
 }
 
 const categories = [
-  { slug: "hinges", name: "צירים", brand: "Blum", description: "פרזול גרמני בדיוק שווייצרי", cover: "/images/modaco/5F7A9697.webp" },
-  { slug: "slides", name: "מסילות", brand: "Movento", description: "תנועה שקטה, סגירה רכה", cover: "/images/modaco/5F7A9683.webp" },
-  { slug: "lift-systems", name: "מנגנוני הרמה", brand: "Aventos", description: "הקלפה נפתחת בנגיעה", cover: "/images/modaco/5F7A9761.webp" },
-  { slug: "accessories", name: "אקססוריז", brand: "Domicile", description: "פרטים שמרגישים נכון", cover: "/images/modaco/5F7A9768.webp" },
+  { slug: "hinges", name: "צירים", brand: "Blum", description: "פרזול גרמני בדיוק שווייצרי", cover: "/images/blum/blum-hinges.jpg" },
+  { slug: "slides", name: "מסילות", brand: "Movento", description: "תנועה שקטה, סגירה רכה", cover: "/images/blum/blum-slides.jpg" },
+  { slug: "lift-systems", name: "מנגנוני הרמה", brand: "Aventos", description: "הקלפה נפתחת בנגיעה", cover: "/images/blum/blum-lift.jpg" },
+  { slug: "accessories", name: "אקססוריז", brand: "Domicile", description: "פרטים שמרגישים נכון", cover: "/images/domicile/mood.jpg" },
   { slug: "aluminum", name: "אלומיניום וזכוכית", brand: "Profile 19", description: "מסגרות בהתאמה אישית", cover: "/images/israelevitz/2-web.jpg" },
   { slug: "carpentry", name: "נגרות", brand: "Modaco Premium", description: "מטבחי יוקרה מהתחלה ועד הסוף", cover: "/images/israelevitz/4-web.jpg" },
 ];
