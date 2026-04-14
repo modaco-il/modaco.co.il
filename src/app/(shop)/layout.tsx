@@ -72,6 +72,18 @@ export default function ShopLayout({
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Dynamic mobile theme-color — black over hero image, cream elsewhere
+  useEffect(() => {
+    const color = transparent ? "#0A0908" : "#FAF6F0";
+    let meta = document.querySelector('meta[name="theme-color"]') as HTMLMetaElement | null;
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.name = "theme-color";
+      document.head.appendChild(meta);
+    }
+    meta.content = color;
+  }, [transparent]);
+
   const headerBg = transparent
     ? "bg-transparent border-transparent"
     : "bg-cream/95 backdrop-blur-md border-bone";
@@ -115,9 +127,9 @@ export default function ShopLayout({
                 <SearchIcon />
               </Link>
               <Link
-                href="/contact"
+                href="/login"
                 className={`transition-colors ${linkColor}`}
-                aria-label="צרו קשר"
+                aria-label="הרשמה / התחברות"
               >
                 <UserIcon />
               </Link>
