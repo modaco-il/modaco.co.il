@@ -403,7 +403,7 @@ export default function HomePage() {
 const trustItems: Array<{ brand?: string; text?: string; number?: string; label?: string }> = [
   { brand: "BLUM", label: "שותפים רשמיים" },
   { number: "40+", label: "שנות מומחיות" },
-  { brand: "DOMICILE", label: "מפיצים מורשים" },
+  { brand: "DOMICILE", label: "מפיץ מורשה" },
   { number: "200+", label: "מוצרים בקטלוג" },
   { brand: "MOVENTO", label: "טכנולוגיה אוסטרית" },
   { text: "SINCE 1985", label: "מטבחי יוקרה" },

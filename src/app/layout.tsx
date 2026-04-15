@@ -66,7 +66,7 @@ export default function RootLayout({
               description:
                 "למעלה מ-40 שנה של מומחיות בפרזול ואקססוריז לבית. צירים, מסילות, ידיות, ברזי מטבח ומטבחי יוקרה בהתאמה אישית.",
               telephone: "+972-52-680-4945",
-              email: "info@modaco.co.il",
+              email: "Modacopirzul@gmail.com",
               address: {
                 "@type": "PostalAddress",
                 addressCountry: "IL",
