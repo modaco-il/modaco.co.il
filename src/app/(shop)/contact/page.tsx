@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ContactForm } from "./contact-form";
 
 export const metadata: Metadata = {
-  title: "צרו קשר — Modaco",
+  title: "צרו קשר",
   description: "צרו איתנו קשר. טלפון, מייל או השאירו פנייה ונחזור אליכם.",
 };
 
@@ -24,40 +25,14 @@ export default function ContactPage() {
           {/* Form */}
           <div className="lg:col-span-7">
             <div className="eyebrow mb-6">השאירו פנייה</div>
-            <form className="space-y-6">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                <Field label="שם מלא" name="name" required />
-                <Field label="טלפון" name="phone" type="tel" dir="ltr" required />
-              </div>
-              <Field label="אימייל" name="email" type="email" dir="ltr" />
-              <Field label="נושא" name="subject" />
-              <div>
-                <label className="eyebrow block mb-3" htmlFor="message">
-                  הודעה *
-                </label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows={6}
-                  required
-                  placeholder="במה נוכל לעזור?"
-                  className="w-full bg-cream-deep border border-bone px-5 py-4 text-ink placeholder:text-ink-soft/40 outline-none focus:border-mocha transition-colors font-light text-base resize-none"
-                />
-              </div>
-              <button
-                type="submit"
-                className="w-full h-12 bg-ink text-cream text-sm tracking-wide hover:bg-mocha transition-colors"
-              >
-                שלח פנייה
-              </button>
-              <p className="text-xs text-ink-soft font-light leading-relaxed mt-4">
-                פרטי הפנייה יישמרו ויטופלו בהתאם ל
-                <Link href="/privacy" className="text-mocha hover:text-mocha-hover underline">
-                  מדיניות הפרטיות
-                </Link>
-                . לא נשתמש בהם לצרכי שיווק ללא הסכמתך המפורשת.
-              </p>
-            </form>
+            <ContactForm />
+            <p className="text-xs text-ink-soft font-light leading-relaxed mt-6">
+              פרטי הפנייה יישמרו ויטופלו בהתאם ל
+              <Link href="/privacy" className="text-mocha hover:text-mocha-hover underline">
+                מדיניות הפרטיות
+              </Link>
+              . לא נשתמש בהם לצרכי שיווק ללא הסכמתך המפורשת.
+            </p>
           </div>
 
           {/* Info */}
@@ -101,24 +76,6 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
-    </div>
-  );
-}
-
-function Field({ label, name, type = "text", required = false, dir }: { label: string; name: string; type?: string; required?: boolean; dir?: string }) {
-  return (
-    <div>
-      <label className="eyebrow block mb-3" htmlFor={name}>
-        {label} {required && "*"}
-      </label>
-      <input
-        id={name}
-        name={name}
-        type={type}
-        required={required}
-        dir={dir}
-        className="w-full h-12 bg-cream-deep border border-bone px-5 text-ink outline-none focus:border-mocha transition-colors font-light"
-      />
     </div>
   );
 }

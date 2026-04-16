@@ -66,10 +66,10 @@ export default function RegisterPage() {
         </div>
 
         <form action={formAction} className="space-y-5">
-          <Field label="שם מלא" name="name" required />
-          <Field label="אימייל" name="email" type="email" dir="ltr" required />
+          <Field label="שם מלא" name="name" required placeholder="ישראל ישראלי" />
+          <Field label="אימייל" name="email" type="email" dir="ltr" required placeholder="name@example.com" />
           <Field label="טלפון" name="phone" type="tel" dir="ltr" required placeholder="050-1234567" />
-          <Field label="סיסמה" name="password" type="password" required minLength={6} />
+          <Field label="סיסמה" name="password" type="password" required minLength={6} placeholder="לפחות 6 תווים" />
 
           <div className="space-y-3 pt-2">
             <label className="flex items-start gap-3 cursor-pointer">
@@ -160,7 +160,7 @@ function Field({
     <div>
       <label
         htmlFor={name}
-        className="block text-[10px] tracking-[0.3em] uppercase mb-2 font-medium"
+        className="block text-xs tracking-[0.2em] uppercase mb-2 font-semibold"
         style={{ color: "#8B6F4E" }}
       >
         {label} {required && "*"}
@@ -173,10 +173,10 @@ function Field({
         dir={dir}
         minLength={minLength}
         placeholder={placeholder}
-        className="w-full h-12 px-5 outline-none transition-colors font-light"
+        className="w-full h-12 px-5 outline-none transition-colors font-light placeholder:text-ink-soft/40 focus:border-mocha"
         style={{
-          background: "#F2EBDD",
-          border: "1px solid #E8DFCC",
+          background: "#FAF6F0",
+          border: "1px solid #C9B68F",
           color: "#0A0908",
         }}
         autoComplete={

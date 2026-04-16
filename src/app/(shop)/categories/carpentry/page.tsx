@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "מטבחי יוקרה בהתאמה אישית — נגרות | Modaco",
+  title: "מטבחי יוקרה בהתאמה אישית — נגרות",
   description:
     "מטבחי יוקרה בהתאמה אישית מוחלטת. למעלה מ-40 שנה של מומחיות בתכנון, ייצור והתקנת מטבחים ברמה הגבוהה ביותר.",
 };

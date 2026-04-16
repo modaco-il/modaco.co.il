@@ -1,5 +1,6 @@
 export const dynamic = "force-dynamic";
 
+import type { Metadata } from "next";
 import { db } from "@/lib/db";
 import { ProductCard } from "@/components/shop/product-card";
 
@@ -7,9 +8,14 @@ interface Props {
   searchParams: Promise<{ q?: string }>;
 }
 
-export const metadata = {
-  robots: { index: false, follow: true },
-};
+export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+  const { q } = await searchParams;
+  const query = q?.trim() || "";
+  return {
+    title: query ? `חיפוש: ${query}` : "חיפוש",
+    robots: { index: false, follow: true },
+  };
+}
 
 function SearchIcon({ className }: { className?: string }) {
   return (
@@ -58,7 +64,15 @@ export default async function SearchPage({ searchParams }: Props) {
       <div className="max-w-3xl mb-12">
         <div className="eyebrow mb-5">חיפוש</div>
         <h1 className="font-display font-bold text-4xl lg:text-6xl text-ink leading-[1.05]">
-          מה תרצו למצוא?
+          {query ? (
+            <>
+              תוצאות עבור
+              <br />
+              <span className="text-mocha font-display-light">&quot;{query}&quot;</span>
+            </>
+          ) : (
+            "מה תרצו למצוא?"
+          )}
         </h1>
       </div>
 

@@ -4,7 +4,7 @@ import { db } from "@/lib/db";
 import { CATEGORIES } from "@/lib/categories";
 
 export const metadata: Metadata = {
-  title: "הקטלוג המלא — Modaco",
+  title: "הקטלוג המלא",
   description:
     "כל הקטגוריות במקום אחד. צירים, מסילות, מנגנוני הרמה, אקססוריז, אלומיניום ונגרות — מהמותגים המובילים בעולם.",
 };

@@ -28,12 +28,60 @@ interface CheckoutFormProps {
 }
 
 export function CheckoutForm({ items, subtotal }: CheckoutFormProps) {
-  const [step, setStep] = useState<"details" | "payment">("details");
+  const [submitted, setSubmitted] = useState(false);
   const shippingCost = subtotal >= 500 ? 0 : 39;
   const total = subtotal + shippingCost;
 
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSubmitted(true);
+  };
+
+  if (submitted) {
+    return (
+      <div className="max-w-2xl mx-auto">
+        <div className="border border-mocha/40 bg-cream-deep p-10 lg:p-14 text-center">
+          <div className="w-16 h-16 mx-auto mb-6 rounded-full border border-mocha flex items-center justify-center">
+            <svg className="w-8 h-8 text-mocha" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </div>
+          <div className="eyebrow text-mocha mb-4">הזמנה התקבלה</div>
+          <h2 className="font-display text-3xl lg:text-4xl text-ink mb-5">
+            תודה, נחזור אליכם בהקדם
+          </h2>
+          <p className="text-base text-ink-soft font-light leading-loose mb-10">
+            ההזמנה נרשמה. נציג שלנו יתקשר לאימות פרטים ותיאום משלוח,
+            ולאחר מכן תקבלו קישור לתשלום מאובטח ב-Morning.
+            <br />
+            <span className="text-sm opacity-80">
+              סך כולל: <span className="font-medium">₪{total.toLocaleString()}</span>
+            </span>
+          </p>
+          <div className="flex flex-col sm:flex-row gap-3 justify-center">
+            <a
+              href="https://wa.me/972526804945"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center h-12 px-8 bg-ink text-cream text-sm tracking-wide hover:bg-mocha transition-colors"
+            >
+              שליחת וואטסאפ
+            </a>
+            <a
+              href="tel:0526804945"
+              className="inline-flex items-center justify-center h-12 px-8 border border-ink text-ink text-sm tracking-wide hover:bg-ink hover:text-cream transition-colors"
+              dir="ltr"
+            >
+              052-680-4945
+            </a>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    <form onSubmit={handleSubmit} className="grid grid-cols-1 lg:grid-cols-3 gap-8">
       {/* Form */}
       <div className="lg:col-span-2 space-y-6">
         {/* Contact */}
@@ -113,15 +161,19 @@ export function CheckoutForm({ items, subtotal }: CheckoutFormProps) {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="bg-gray-50 rounded-lg p-8 text-center text-gray-500">
-              <Lock className="w-8 h-8 mx-auto mb-2" />
-              <p className="font-medium">סליקה מאובטחת</p>
-              <p className="text-sm mt-1">
-                פרטי האשראי ייקלטו במערכת Morning המאובטחת.
-                <br />
-                אנחנו לא שומרים פרטי כרטיס אשראי.
+            <div className="border border-bone bg-cream-deep p-8 text-center">
+              <Lock className="w-8 h-8 mx-auto mb-3 text-mocha" />
+              <p className="font-display text-lg text-ink mb-2">
+                סליקה מאובטחת דרך Morning
               </p>
-              {/* TODO: Morning payment iframe/redirect will be here */}
+              <p className="text-sm text-ink-soft font-light leading-relaxed">
+                בשלב הזה נשלים את ההזמנה ישירות איתכם — נתקשר לאישור פרטים
+                ולתיאום משלוח. לאחר מכן תקבלו קישור לתשלום מאובטח ב-Morning.
+                <br />
+                <span className="text-xs opacity-70 mt-2 inline-block">
+                  אנחנו לא שומרים פרטי כרטיס אשראי.
+                </span>
+              </p>
             </div>
           </CardContent>
         </Card>
@@ -160,13 +212,13 @@ export function CheckoutForm({ items, subtotal }: CheckoutFormProps) {
           </CardContent>
         </Card>
 
-        <Button size="lg" className="w-full">
+        <Button size="lg" type="submit" className="w-full">
           <Lock className="w-4 h-4 ml-2" />
-          בצע הזמנה — ₪{total.toLocaleString()}
+          שליחת הזמנה — ₪{total.toLocaleString()}
         </Button>
 
         <p className="text-xs text-gray-500 leading-relaxed">
-          לחיצה על &quot;בצע הזמנה&quot; מהווה התקשרות מחייבת. ביטול עד 14 ימים מיום קבלת המוצר
+          לחיצה על &quot;שליחת הזמנה&quot; מהווה התקשרות מחייבת. ביטול עד 14 ימים מיום קבלת המוצר
           לפי חוק הגנת הצרכן — פרטים מלאים ב
           <a href="/terms" className="text-blue-600 underline" target="_blank">תנאי השימוש</a>.
         </p>
@@ -220,6 +272,6 @@ export function CheckoutForm({ items, subtotal }: CheckoutFormProps) {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </form>
   );
 }

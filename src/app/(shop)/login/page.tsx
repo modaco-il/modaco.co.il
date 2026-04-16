@@ -69,8 +69,8 @@ export default function LoginPage() {
 
         {/* Email/password */}
         <form action={formAction} className="space-y-5">
-          <Field label="אימייל" name="email" type="email" dir="ltr" required />
-          <Field label="סיסמה" name="password" type="password" required />
+          <Field label="אימייל" name="email" type="email" dir="ltr" required placeholder="name@example.com" />
+          <Field label="סיסמה" name="password" type="password" required placeholder="••••••••" />
 
           {state && !state.success && (
             <p className="text-sm" style={{ color: "#A02323" }}>
@@ -109,18 +109,20 @@ function Field({
   type = "text",
   required = false,
   dir,
+  placeholder,
 }: {
   label: string;
   name: string;
   type?: string;
   required?: boolean;
   dir?: string;
+  placeholder?: string;
 }) {
   return (
     <div>
       <label
         htmlFor={name}
-        className="block text-[10px] tracking-[0.3em] uppercase mb-2 font-medium"
+        className="block text-xs tracking-[0.2em] uppercase mb-2 font-semibold"
         style={{ color: "#8B6F4E" }}
       >
         {label} {required && "*"}
@@ -131,10 +133,11 @@ function Field({
         type={type}
         required={required}
         dir={dir}
-        className="w-full h-12 px-5 outline-none transition-colors font-light"
+        placeholder={placeholder}
+        className="w-full h-12 px-5 outline-none transition-colors font-light placeholder:text-ink-soft/40 focus:border-mocha"
         style={{
-          background: "#F2EBDD",
-          border: "1px solid #E8DFCC",
+          background: "#FAF6F0",
+          border: "1px solid #C9B68F",
           color: "#0A0908",
         }}
         autoComplete={type === "password" ? "current-password" : type === "email" ? "email" : undefined}

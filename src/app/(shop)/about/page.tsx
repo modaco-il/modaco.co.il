@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "אודות — Modaco",
+  title: "אודות",
   description:
     "למעלה מ-40 שנה של מומחיות בפרזול ואקססוריז לבית. חזון, ערכים וניסיון.",
 };

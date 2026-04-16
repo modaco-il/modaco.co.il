@@ -1,4 +1,6 @@
 import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { auth } from "@/lib/auth";
 import { AdminSidebar } from "@/components/admin/sidebar";
 import { AdminMobileNav } from "@/components/admin/mobile-nav";
 
@@ -7,11 +9,21 @@ export const metadata: Metadata = {
   robots: "noindex, nofollow",
 };
 
-export default function AdminLayout({
+export default async function AdminLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const session = await auth();
+  const role = (session?.user as { role?: string } | undefined)?.role;
+
+  if (!session?.user) {
+    redirect("/login?from=/admin");
+  }
+  if (role !== "ADMIN") {
+    redirect("/");
+  }
+
   return (
     <div className="min-h-screen bg-gray-50" dir="rtl">
       {/* Desktop sidebar */}

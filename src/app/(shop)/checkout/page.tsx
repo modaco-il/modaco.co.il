@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { CheckoutForm } from "@/components/shop/checkout-form";
 
 export const metadata = {
-  title: "תשלום — Modaco",
+  title: "תשלום",
   robots: { index: false, follow: false },
 };
 

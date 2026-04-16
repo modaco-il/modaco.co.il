@@ -3,7 +3,7 @@ import { CartView } from "@/components/shop/cart-view";
 import Link from "next/link";
 
 export const metadata = {
-  title: "עגלת קניות — Modaco",
+  title: "עגלת קניות",
   robots: { index: false, follow: false },
 };
 
