@@ -41,6 +41,7 @@ export default async function ProductPage({ params }: Props) {
     where: { slug, status: "ACTIVE" },
     include: {
       category: true,
+      supplier: true,
       variants: {
         orderBy: { sortOrder: "asc" },
       },

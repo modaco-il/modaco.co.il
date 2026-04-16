@@ -37,7 +37,9 @@ interface ProductDetailProps {
     slug: string;
     description: string | null;
     basePrice: number;
+    supplierSku?: string | null;
     category: { id: string; name: string; slug: string } | null;
+    supplier?: { id: string; name: string } | null;
     variants: Variant[];
     images: Image[];
     crossSellFrom: CrossSell[];
@@ -50,6 +52,15 @@ const stockStatus: Record<string, { label: string; color: string }> = {
   ON_ORDER: { label: "בהזמנה — צרו קשר לזמן אספקה", color: "text-amber-700" },
   OUT_OF_STOCK: { label: "אזל מהמלאי", color: "text-red-700" },
 };
+
+function SpecRow({ label, value, valueColor }: { label: string; value: string; valueColor?: string }) {
+  return (
+    <div className="flex justify-between items-baseline py-3">
+      <dt className="text-xs tracking-[0.2em] uppercase text-ink-soft">{label}</dt>
+      <dd className={`font-light ${valueColor || "text-ink"}`}>{value}</dd>
+    </div>
+  );
+}
 
 export function ProductDetail({ product }: ProductDetailProps) {
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>(
@@ -218,19 +229,43 @@ export function ProductDetail({ product }: ProductDetailProps) {
           {/* Description */}
           {product.description && (
             <div className="mb-10">
-              <div className="eyebrow mb-4">פרטי המוצר</div>
-              <div className="text-ink-soft/80 font-light text-sm leading-loose whitespace-pre-line">
+              <div className="eyebrow mb-4">על המוצר</div>
+              <div className="text-ink-soft font-light text-sm leading-loose whitespace-pre-line">
                 {product.description}
               </div>
             </div>
           )}
 
-          {/* SKU */}
-          {selectedVariant && (
-            <p className="text-xs text-ink-soft/40 tracking-wider uppercase">
-              מק&quot;ט: {selectedVariant.sku}
-            </p>
-          )}
+          {/* Spec table */}
+          <div className="mb-10">
+            <div className="eyebrow mb-4">מפרט</div>
+            <dl className="divide-y divide-bone text-sm">
+              {product.supplier && (
+                <SpecRow label="מותג" value={product.supplier.name} />
+              )}
+              {product.category && (
+                <SpecRow label="קטגוריה" value={product.category.name} />
+              )}
+              {product.supplierSku && (
+                <SpecRow label="דגם" value={product.supplierSku} />
+              )}
+              {selectedVariant && (
+                <SpecRow label="מק״ט" value={selectedVariant.sku} />
+              )}
+              {product.variants.length > 1 && (
+                <SpecRow
+                  label="וריאציות זמינות"
+                  value={product.variants.length.toString()}
+                />
+              )}
+              <SpecRow
+                label="זמינות"
+                value={stock?.label || "בדיקה"}
+                valueColor={stock?.color}
+              />
+              <SpecRow label="משלוח" value="לכל הארץ" />
+            </dl>
+          </div>
 
           <div className="border-t border-bone mt-12 pt-10" />
 

@@ -1,32 +1,13 @@
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+export const dynamic = "force-dynamic";
 
-const mockOrders = [
-  {
-    id: "1",
-    orderNumber: "MOD-0005",
-    customer: "יוסי כהן",
-    phone: "050-1234567",
-    total: 1250,
-    items: 3,
-    status: "PAID" as const,
-    createdAt: "08/04/2026 14:30",
-  },
-  {
-    id: "2",
-    orderNumber: "MOD-0004",
-    customer: "שרית לוי",
-    phone: "052-9876543",
-    total: 3800,
-    items: 7,
-    status: "PROCESSING" as const,
-    createdAt: "08/04/2026 10:15",
-  },
-];
+import Link from "next/link";
+import { db } from "@/lib/db";
+import { auth } from "@/lib/auth";
+import { redirect } from "next/navigation";
+
+interface Props {
+  searchParams: Promise<{ status?: string }>;
+}
 
 const statusColors: Record<string, string> = {
   PENDING: "bg-yellow-100 text-yellow-800",
@@ -35,6 +16,7 @@ const statusColors: Record<string, string> = {
   SHIPPED: "bg-purple-100 text-purple-800",
   DELIVERED: "bg-gray-100 text-gray-800",
   CANCELLED: "bg-red-100 text-red-800",
+  REFUNDED: "bg-orange-100 text-orange-800",
 };
 
 const statusLabels: Record<string, string> = {
@@ -44,49 +26,87 @@ const statusLabels: Record<string, string> = {
   SHIPPED: "נשלחה",
   DELIVERED: "הגיעה",
   CANCELLED: "בוטלה",
+  REFUNDED: "הוחזרה",
 };
 
-export default function OrdersPage() {
+export default async function OrdersPage({ searchParams }: Props) {
+  const session = await auth();
+  if (!session?.user || (session.user as any).role !== "ADMIN") {
+    redirect("/login");
+  }
+
+  const { status = "" } = await searchParams;
+  const where = status ? { status: status as any } : {};
+
+  const orders = await db.order.findMany({
+    where,
+    include: {
+      customer: { include: { user: true } },
+      items: true,
+    },
+    orderBy: { createdAt: "desc" },
+    take: 100,
+  });
+
+  const tabs = [
+    { value: "", label: "הכל" },
+    { value: "PENDING", label: "ממתינות" },
+    { value: "PAID", label: "שולמו" },
+    { value: "PROCESSING", label: "בטיפול" },
+    { value: "SHIPPED", label: "נשלחו" },
+  ];
+
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">הזמנות</h1>
 
-      <Tabs defaultValue="all">
-        <TabsList className="w-full lg:w-auto">
-          <TabsTrigger value="all">הכל</TabsTrigger>
-          <TabsTrigger value="pending">ממתינות</TabsTrigger>
-          <TabsTrigger value="processing">בטיפול</TabsTrigger>
-          <TabsTrigger value="shipped">נשלחו</TabsTrigger>
-        </TabsList>
+      <div className="flex gap-1 border-b border-gray-200 overflow-x-auto">
+        {tabs.map((t) => (
+          <Link
+            key={t.value}
+            href={t.value ? `/admin/orders?status=${t.value}` : "/admin/orders"}
+            className={`px-4 py-2 text-sm border-b-2 transition-colors whitespace-nowrap ${
+              status === t.value
+                ? "border-blue-500 text-blue-600"
+                : "border-transparent text-gray-500 hover:text-gray-900"
+            }`}
+          >
+            {t.label}
+          </Link>
+        ))}
+      </div>
 
-        <TabsContent value="all" className="space-y-3 mt-4">
-          {mockOrders.map((order) => (
-            <Card key={order.id} className="hover:bg-gray-50 cursor-pointer">
-              <CardContent className="p-4">
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="font-bold">{order.orderNumber}</div>
-                    <div className="text-sm text-gray-600">
-                      {order.customer}
-                    </div>
-                    <div className="text-xs text-gray-400">
-                      {order.createdAt} · {order.items} פריטים
-                    </div>
+      <div className="space-y-3">
+        {orders.length === 0 ? (
+          <div className="text-center py-16 text-gray-400 text-sm">אין הזמנות להצגה</div>
+        ) : (
+          orders.map((order) => (
+            <Link
+              key={order.id}
+              href={`/admin/orders/${order.id}`}
+              className="block bg-white border border-gray-200 rounded-lg p-4 hover:border-blue-500"
+            >
+              <div className="flex items-center justify-between flex-wrap gap-3">
+                <div>
+                  <div className="font-bold">{order.orderNumber}</div>
+                  <div className="text-sm text-gray-600 mt-0.5">
+                    {order.customer?.user?.name || order.customer?.user?.email || "—"}
                   </div>
-                  <div className="text-left">
-                    <Badge className={statusColors[order.status]}>
-                      {statusLabels[order.status]}
-                    </Badge>
-                    <div className="font-bold mt-1">
-                      ₪{order.total.toLocaleString()}
-                    </div>
+                  <div className="text-xs text-gray-400 mt-0.5">
+                    {new Date(order.createdAt).toLocaleString("he-IL")} · {order.items.length} פריטים
                   </div>
                 </div>
-              </CardContent>
-            </Card>
-          ))}
-        </TabsContent>
-      </Tabs>
+                <div className="text-left">
+                  <span className={`px-2 py-0.5 rounded text-xs ${statusColors[order.status]}`}>
+                    {statusLabels[order.status] || order.status}
+                  </span>
+                  <div className="font-bold mt-1">₪{order.total.toLocaleString()}</div>
+                </div>
+              </div>
+            </Link>
+          ))
+        )}
+      </div>
     </div>
   );
 }

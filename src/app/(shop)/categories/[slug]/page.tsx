@@ -8,14 +8,34 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+const categoryMeta: Record<string, { og: string; tagline: string }> = {
+  hinges: { og: "/images/blum/blum-hinges.jpg", tagline: "צירי Blum ו-Domicile באיכות שווייצרית" },
+  slides: { og: "/images/blum/blum-slides.jpg", tagline: "מסילות Movento, Tandem ו-Blumotion" },
+  "lift-systems": { og: "/images/blum/blum-lift.jpg", tagline: "מנגנוני הרמה Aventos לחזיתות עליונות" },
+  bath: { og: "/images/domicile/lucy.jpg", tagline: "סדרות מלאות לחדרי רחצה מ-Domicile" },
+  handles: { og: "/images/domicile/mood.jpg", tagline: "ידיות Domicile לארונות ומטבחים — לב החנות" },
+  accessories: { og: "/images/modaco/5F7A9697.webp", tagline: "אקססוריז לבית מ-Floralis" },
+  mirrors: { og: "/images/domicile/mood.jpg", tagline: "מראות מעוצבות לאמבטיה וסלון" },
+  bins: { og: "/images/domicile/mood.jpg", tagline: "פחי אשפה למטבח ואמבטיה" },
+  legs: { og: "/images/modaco/5F7A9683.webp", tagline: "רגליים לריהוט, שולחנות ודלפקים" },
+  decorative: { og: "/images/modaco/5F7A9697.webp", tagline: "פריטים דקורטיביים לבית" },
+};
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug: raw } = await params;
   const slug = decodeURIComponent(raw);
   const category = await db.category.findUnique({ where: { slug } });
   if (!category) return {};
+  const meta = categoryMeta[slug] || { og: "/images/israelevitz/1-web.jpg", tagline: `${category.name} — מוצרים מהמותגים המובילים` };
   return {
-    title: `${category.name} — Modaco`,
-    description: `${category.name} — מבחר מוצרים מהמותגים המובילים | Modaco`,
+    title: category.name,
+    description: `${category.name} — ${meta.tagline}. Modaco — למעלה מ-40 שנה של מומחיות בפרזול ואקססוריז לבית.`,
+    openGraph: {
+      title: `${category.name} | Modaco`,
+      description: meta.tagline,
+      images: [{ url: meta.og, alt: category.name }],
+      type: "website",
+    },
   };
 }
 
