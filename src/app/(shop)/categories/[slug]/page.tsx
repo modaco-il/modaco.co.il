@@ -51,12 +51,25 @@ export default async function CategoryPage({ params, searchParams }: Props) {
   const category = await db.category.findUnique({
     where: { slug },
     include: {
-      children: { orderBy: { sortOrder: "asc" } },
+      children: {
+        orderBy: { sortOrder: "asc" },
+        include: {
+          _count: {
+            select: {
+              products: {
+                where: { status: "ACTIVE", images: { some: {} } },
+              },
+            },
+          },
+        },
+      },
     },
   });
 
   if (!category) notFound();
 
+  // Only show subcategory pills that have products (with images) in them
+  const visibleChildren = category.children.filter((c) => c._count.products > 0);
   const categoryIds = [category.id, ...category.children.map((c) => c.id)];
 
   // Only show products that actually have images — avoids "תמונה חסרה" cards
@@ -111,10 +124,10 @@ export default async function CategoryPage({ params, searchParams }: Props) {
         </Reveal>
       </div>
 
-      {/* Subcategories */}
-      {category.children.length > 0 && (
+      {/* Subcategories — only those with products */}
+      {visibleChildren.length > 0 && (
         <div className="flex gap-3 mb-12 flex-wrap">
-          {category.children.map((child) => (
+          {visibleChildren.map((child) => (
             <a
               key={child.id}
               href={`/categories/${child.slug}`}

@@ -65,14 +65,25 @@ export function ContactForm() {
         />
       </div>
 
-      {/* Honeypot — hidden from real users, bots fill it */}
+      {/* Honeypot — hidden from real users, bots fill it.
+          Use sr-only clip-path pattern so it doesn't affect document width. */}
       <input
         type="text"
         name="website"
         tabIndex={-1}
         autoComplete="off"
         aria-hidden="true"
-        className="absolute -left-[9999px] opacity-0 pointer-events-none"
+        style={{
+          position: "absolute",
+          width: 1,
+          height: 1,
+          padding: 0,
+          margin: -1,
+          overflow: "hidden",
+          clip: "rect(0,0,0,0)",
+          whiteSpace: "nowrap",
+          border: 0,
+        }}
       />
 
       {state && !state.success && state.error && (
