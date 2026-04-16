@@ -104,7 +104,7 @@ export default function AccessibilityPage() {
             <ul className="space-y-1">
               <li><strong>שם:</strong> ירין מויאל, מנכ&quot;ל Modaco</li>
               <li><strong>טלפון:</strong> <a href="tel:0526804945" className="text-mocha" dir="ltr">052-680-4945</a></li>
-              <li><strong>דוא&quot;ל:</strong> <a href="mailto:Modacopirzul@gmail.com?subject=נגישות" className="text-mocha" dir="ltr">Modacopirzul@gmail.com</a></li>
+              <li><strong>דוא&quot;ל:</strong> <a href="mailto:yarin@modaco.co.il?subject=נגישות" className="text-mocha" dir="ltr">yarin@modaco.co.il</a></li>
               <li><strong>שעות מענה:</strong> א&apos;–ה&apos; 08:00–18:00 · ו&apos; 08:00–13:00</li>
             </ul>
             <p className="mt-4 text-sm">

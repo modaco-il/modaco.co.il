@@ -56,7 +56,7 @@ export default function TermsPage() {
               <li><strong>שם מותג:</strong> Modaco</li>
               <li><strong>אחראי תפעול:</strong> ירין מויאל, מנכ&quot;ל</li>
               <li><strong>טלפון:</strong> <a href="tel:0526804945" className="text-mocha" dir="ltr">052-680-4945</a></li>
-              <li><strong>דוא&quot;ל:</strong> <a href="mailto:Modacopirzul@gmail.com" className="text-mocha" dir="ltr">Modacopirzul@gmail.com</a></li>
+              <li><strong>דוא&quot;ל:</strong> <a href="mailto:yarin@modaco.co.il" className="text-mocha" dir="ltr">yarin@modaco.co.il</a></li>
               <li><strong>שעות פעילות שירות לקוחות:</strong> א&apos;–ה&apos; 08:00–18:00 · ו&apos; 08:00–13:00</li>
             </ul>
           </div>
@@ -279,7 +279,7 @@ export default function TermsPage() {
             <p className="mb-3">בשאלות, תלונות או בקשות לביטול עסקה — יש לפנות:</p>
             <ul className="space-y-1">
               <li><strong>טלפון:</strong> <a href="tel:0526804945" className="text-mocha" dir="ltr">052-680-4945</a></li>
-              <li><strong>דוא&quot;ל:</strong> <a href="mailto:Modacopirzul@gmail.com" className="text-mocha" dir="ltr">Modacopirzul@gmail.com</a></li>
+              <li><strong>דוא&quot;ל:</strong> <a href="mailto:yarin@modaco.co.il" className="text-mocha" dir="ltr">yarin@modaco.co.il</a></li>
               <li><strong>טופס פנייה:</strong> <Link href="/contact" className="text-mocha underline">דף יצירת קשר</Link></li>
             </ul>
             <p className="mt-4 text-sm">

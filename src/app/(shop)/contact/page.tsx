@@ -69,8 +69,8 @@ export default function ContactPage() {
                 </a>
               </Info>
               <Info label="אימייל">
-                <a href="mailto:Modacopirzul@gmail.com" className="text-base text-ink hover:text-mocha transition-colors" dir="ltr">
-                  Modacopirzul@gmail.com
+                <a href="mailto:yarin@modaco.co.il" className="text-base text-ink hover:text-mocha transition-colors" dir="ltr">
+                  yarin@modaco.co.il
                 </a>
               </Info>
               <Info label="שעות פעילות">

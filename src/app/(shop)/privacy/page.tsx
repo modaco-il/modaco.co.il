@@ -46,7 +46,7 @@ export default function PrivacyPage() {
             <p className="mb-3"><strong>ממונה הגנת הפרטיות (Data Protection Officer):</strong></p>
             <ul className="space-y-1">
               <li><strong>שם:</strong> ירין מויאל, מנכ&quot;ל</li>
-              <li><strong>דוא&quot;ל:</strong> <a href="mailto:Modacopirzul@gmail.com" className="text-mocha" dir="ltr">Modacopirzul@gmail.com</a></li>
+              <li><strong>דוא&quot;ל:</strong> <a href="mailto:yarin@modaco.co.il" className="text-mocha" dir="ltr">yarin@modaco.co.il</a></li>
               <li><strong>טלפון:</strong> <a href="tel:0526804945" className="text-mocha" dir="ltr">052-680-4945</a></li>
             </ul>
             <p className="mt-4 text-sm">
@@ -346,7 +346,7 @@ export default function PrivacyPage() {
             <p className="mb-3">פניות, שאלות ומימוש זכויות — יש לפנות לממונה הגנת הפרטיות:</p>
             <ul className="space-y-1">
               <li><strong>ירין מויאל</strong> · מנכ&quot;ל Modaco</li>
-              <li><strong>דוא&quot;ל:</strong> <a href="mailto:Modacopirzul@gmail.com" className="text-mocha" dir="ltr">Modacopirzul@gmail.com</a></li>
+              <li><strong>דוא&quot;ל:</strong> <a href="mailto:yarin@modaco.co.il" className="text-mocha" dir="ltr">yarin@modaco.co.il</a></li>
               <li><strong>טלפון:</strong> <a href="tel:0526804945" className="text-mocha" dir="ltr">052-680-4945</a></li>
             </ul>
             <p className="mt-4 text-sm">

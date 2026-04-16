@@ -190,8 +190,8 @@ export default function ShopLayout({
                   </a>
                 </li>
                 <li>
-                  <a href="mailto:Modacopirzul@gmail.com" className="hover:text-mocha-soft transition-colors">
-                    Modacopirzul@gmail.com
+                  <a href="mailto:yarin@modaco.co.il" className="hover:text-mocha-soft transition-colors">
+                    yarin@modaco.co.il
                   </a>
                 </li>
                 <li><Link href="/about" className="hover:text-mocha-soft transition-colors">אודות</Link></li>
