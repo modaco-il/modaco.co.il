@@ -66,7 +66,7 @@ export default function AluminumPage() {
               { v: "19mm", l: "עובי פרופיל" },
               { v: "100%", l: "התאמה אישית" },
               { v: "4+", l: "גימורים" },
-              { v: "IL", l: "משלוח לכל הארץ", serif: true },
+              { v: "ארצי", l: "משלוח לכל הארץ", serif: true },
             ].map((s) => (
               <div key={s.l} className="bg-cream p-10 lg:p-14 text-center">
                 <div className={`text-4xl lg:text-5xl text-ink mb-3 ${s.serif ? "font-display" : "font-light"}`}>

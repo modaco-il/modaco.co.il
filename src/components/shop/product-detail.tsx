@@ -115,6 +115,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
             {product.images.length > 1 && (
               <div
                 className="absolute bottom-4 right-4 text-[10px] tracking-[0.3em] uppercase text-ink-soft bg-cream/80 px-2.5 py-1"
+                dir="ltr"
               >
                 {mainImageIdx + 1} / {product.images.length}
               </div>

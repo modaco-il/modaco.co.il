@@ -50,6 +50,16 @@ export function AccessibilityWidget() {
     } catch {}
   }, []);
 
+  // Close on Escape key
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open]);
+
   const update = (updates: Partial<A11yPrefs>) => {
     const next = { ...prefs, ...updates };
     setPrefs(next);
@@ -88,6 +98,7 @@ export function AccessibilityWidget() {
             className="fixed bottom-0 right-0 left-0 lg:bottom-8 lg:right-8 lg:left-auto lg:w-[420px] z-50 bg-cream border border-bone shadow-2xl max-h-[85vh] overflow-y-auto"
             dir="rtl"
             role="dialog"
+            aria-modal="true"
             aria-label="הגדרות נגישות"
           >
             <div className="flex items-center justify-between p-5 border-b border-bone sticky top-0 bg-cream">

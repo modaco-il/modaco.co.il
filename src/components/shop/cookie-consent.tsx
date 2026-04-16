@@ -43,6 +43,16 @@ export function CookieConsent() {
     }
   }, []);
 
+  // ESC closes settings dialog (back to the short banner)
+  useEffect(() => {
+    if (!settingsOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSettingsOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [settingsOpen]);
+
   const save = (state: ConsentState) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     setVisible(false);
@@ -79,9 +89,9 @@ export function CookieConsent() {
 
   return (
     <div
-      className="fixed bottom-0 left-0 right-0 z-[100] px-4 pb-4 pt-6 lg:p-6"
+      className="fixed bottom-0 left-0 right-0 z-[100] px-3 pb-3 pt-3 lg:p-6"
       role="dialog"
-      aria-modal="false"
+      aria-modal="true"
       aria-label="הסכמת עוגיות"
       dir="rtl"
     >
@@ -90,33 +100,38 @@ export function CookieConsent() {
         style={{ background: "#FAF6F0" }}
       >
         {!settingsOpen ? (
-          <div className="p-6 lg:p-8">
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-6 items-center">
+          <div className="p-4 lg:p-8">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_auto] gap-4 lg:gap-6 items-center">
               <div>
-                <div className="eyebrow mb-3">עוגיות · Cookies</div>
-                <h2 className="font-display font-bold text-xl lg:text-2xl text-ink mb-2 leading-snug">
+                <div className="eyebrow mb-2 lg:mb-3 text-[10px] lg:text-xs">עוגיות · Cookies</div>
+                <h2 className="font-display font-bold text-base lg:text-2xl text-ink mb-1 lg:mb-2 leading-snug">
                   אנחנו מכבדים את הפרטיות שלכם
                 </h2>
-                <p className="text-sm text-ink-soft font-light leading-relaxed">
-                  האתר משתמש בעוגיות הכרחיות להפעלתו, ובעוגיות נוספות — אנליטיות ושיווקיות — שיופעלו רק בהסכמתכם.
-                  ניתן לשנות את ההגדרות בכל עת.{" "}
+                <p className="text-xs lg:text-sm text-ink-soft font-light leading-relaxed">
+                  <span className="hidden lg:inline">
+                    האתר משתמש בעוגיות הכרחיות להפעלתו, ובעוגיות נוספות — אנליטיות ושיווקיות — שיופעלו רק בהסכמתכם.
+                    ניתן לשנות את ההגדרות בכל עת.{" "}
+                  </span>
+                  <span className="lg:hidden">
+                    עוגיות נוספות יופעלו רק בהסכמתכם.{" "}
+                  </span>
                   <Link href="/privacy" className="text-mocha underline">
-                    למדיניות הפרטיות המלאה
+                    מדיניות פרטיות
                   </Link>
                   .
                 </p>
               </div>
-              <div className="flex flex-wrap gap-2 lg:flex-col lg:w-56">
+              <div className="flex gap-2 lg:flex-col lg:w-56">
                 <button
                   onClick={acceptAll}
-                  className="flex-1 lg:flex-initial h-11 px-6 text-sm tracking-wide transition-colors"
+                  className="flex-1 lg:flex-initial h-10 lg:h-11 px-4 lg:px-6 text-xs lg:text-sm tracking-wide transition-colors"
                   style={{ background: "#0A0908", color: "#FAF6F0" }}
                 >
                   אישור הכל
                 </button>
                 <button
                   onClick={acceptEssentialOnly}
-                  className="flex-1 lg:flex-initial h-11 px-6 text-sm tracking-wide transition-all"
+                  className="flex-1 lg:flex-initial h-10 lg:h-11 px-4 lg:px-6 text-xs lg:text-sm tracking-wide transition-all"
                   style={{
                     border: "1px solid #0A0908",
                     color: "#0A0908",
@@ -127,12 +142,18 @@ export function CookieConsent() {
                 </button>
                 <button
                   onClick={() => setSettingsOpen(true)}
-                  className="flex-1 lg:flex-initial h-11 px-6 text-xs tracking-[0.2em] uppercase text-mocha hover:text-mocha-hover transition-colors"
+                  className="hidden lg:block flex-1 lg:flex-initial h-11 px-6 text-xs tracking-[0.2em] uppercase text-mocha hover:text-mocha-hover transition-colors"
                 >
                   הגדרות מפורטות
                 </button>
               </div>
             </div>
+            <button
+              onClick={() => setSettingsOpen(true)}
+              className="lg:hidden block mt-3 text-[10px] tracking-[0.25em] uppercase text-mocha hover:text-mocha-hover transition-colors"
+            >
+              הגדרות מפורטות ←
+            </button>
           </div>
         ) : (
           <div className="p-6 lg:p-8 max-h-[80vh] overflow-y-auto">
