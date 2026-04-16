@@ -2,24 +2,14 @@
 
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { CATEGORIES } from "@/lib/categories";
 
-interface NavItem {
-  href: string;
-  label: string;
-  brand: string;
-  img: string;
-}
-
-const items: NavItem[] = [
-  { href: "/categories/handles", label: "ידיות", brand: "Domicile", img: "/images/domicile/mood.jpg" },
-  { href: "/categories/hinges", label: "צירים", brand: "Blum & Domicile", img: "/images/blum/blum-hinges.jpg" },
-  { href: "/categories/slides", label: "מסילות", brand: "Movento", img: "/images/blum/blum-slides.jpg" },
-  { href: "/categories/lift-systems", label: "מנגנוני הרמה", brand: "Aventos", img: "/images/blum/blum-lift.jpg" },
-  { href: "/categories/bath", label: "מוצרי אמבט", brand: "Domicile", img: "/images/domicile/lucy.jpg" },
-  { href: "/categories/accessories", label: "אקססוריז", brand: "Floralis", img: "/images/modaco/5F7A9697.webp" },
-  { href: "/categories/aluminum", label: "אלומיניום וזכוכית", brand: "Profile 19", img: "/images/israelevitz/2-web.jpg" },
-  { href: "/categories/carpentry", label: "נגרות", brand: "Modaco Premium", img: "/images/israelevitz/4-web.jpg" },
-];
+const items = CATEGORIES.map((cat) => ({
+  href: `/categories/${cat.slug}`,
+  label: cat.name,
+  brand: cat.brand,
+  img: cat.cover,
+}));
 
 const secondaryItems = [
   { href: "/catalog", label: "הקטלוג המלא" },

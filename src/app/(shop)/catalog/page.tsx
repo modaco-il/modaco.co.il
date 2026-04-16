@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { db } from "@/lib/db";
+import { CATEGORIES } from "@/lib/categories";
 
 export const metadata: Metadata = {
   title: "הקטלוג המלא — Modaco",
@@ -8,98 +9,7 @@ export const metadata: Metadata = {
     "כל הקטגוריות במקום אחד. צירים, מסילות, מנגנוני הרמה, אקססוריז, אלומיניום ונגרות — מהמותגים המובילים בעולם.",
 };
 
-interface CatalogEntry {
-  slug: string;
-  name: string;
-  brand: string;
-  tagline: string;
-  description: string;
-  cover: string;
-  index: string;
-}
-
-const entries: CatalogEntry[] = [
-  {
-    slug: "handles",
-    name: "ידיות",
-    brand: "Domicile",
-    tagline: "הפרט שמשלים את הקו",
-    description:
-      "מבחר רחב של ידיות לארונות, מטבחים ודלתות. עיצובים מינימליסטיים, קלאסיים ויוקרתיים — בכל הגימורים. ליבת החנות שלנו.",
-    cover: "/images/domicile/mood.jpg",
-    index: "01",
-  },
-  {
-    slug: "hinges",
-    name: "צירים",
-    brand: "Blum & Domicile",
-    tagline: "הדיוק האוסטרי של פרזול עולמי",
-    description:
-      "צירים בסטנדרט הגבוה ביותר. סגירה רכה, תנועה שקטה, אחריות יצרן עד 25 שנה. מהציר הקליפי הקטן ועד מנגנונים של 180°.",
-    cover: "/images/blum/blum-hinges.jpg",
-    index: "02",
-  },
-  {
-    slug: "slides",
-    name: "מסילות",
-    brand: "Movento · Tandem",
-    tagline: "תנועה שאי אפשר להרגיש",
-    description:
-      "מסילות נסתרות, נשלפות וטיפ-און. בלומושן ומסילות מובנטו לעומסים של 40 ו-70 קילו. כל מידה, כל גודל, התאמה אישית מוחלטת.",
-    cover: "/images/blum/blum-slides.jpg",
-    index: "03",
-  },
-  {
-    slug: "lift-systems",
-    name: "מנגנוני הרמה",
-    brand: "Aventos · Exparo",
-    tagline: "הקלפה נפתחת בנגיעה",
-    description:
-      "מנגנונים סטטיים ודינמיים לחזיתות עליונות. פתיחה רכה, סגירה אילמת, התאמה לדלתות זכוכית, עץ או אלומיניום בגדלים ומשקלים שונים.",
-    cover: "/images/blum/blum-lift.jpg",
-    index: "04",
-  },
-  {
-    slug: "bath",
-    name: "מוצרי אמבט",
-    brand: "Domicile",
-    tagline: "פרטים שמרגישים נכון בידיים",
-    description:
-      "סדרות מלאות לחדרי רחצה — רודיום, SHELL, RIVIERA, BINOVA, RONDO, EDGE, LUCY, SANDRA, PICCOLO. גם פחים, מראות, מחממי מגבות ומחזיקי יין.",
-    cover: "/images/domicile/lucy.jpg",
-    index: "05",
-  },
-  {
-    slug: "accessories",
-    name: "אקססוריז",
-    brand: "Floralis",
-    tagline: "אגרטלים, מראות ופריטי בית",
-    description:
-      "אקססוריז מעוצבים לבית — אגרטלים, מראות, מעמדים ופריטים משלימים מהמותג Floralis. בקרוב במלאי.",
-    cover: "/images/modaco/5F7A9697.webp",
-    index: "06",
-  },
-  {
-    slug: "aluminum",
-    name: "אלומיניום וזכוכית",
-    brand: "Profile 19",
-    tagline: "חיתוך מדויק. למידות שלכם.",
-    description:
-      "פרופילי אלומיניום בעובי 19 מ\"מ עם משטחי זכוכית. לחזיתות ארונות, ויטרינות, מחיצות חלל ודלתות הזזה. כל פרופיל נחתך בהתאמה אישית.",
-    cover: "/images/israelevitz/2-web.jpg",
-    index: "07",
-  },
-  {
-    slug: "carpentry",
-    name: "מטבחי יוקרה",
-    brand: "Modaco Premium",
-    tagline: "הסיפור הראשון, בנגרות מאז 1985",
-    description:
-      "מטבחי יוקרה בהתאמה אישית מוחלטת. תכנון, ייצור והתקנה ב-A→Z. שילוב של נגרות איכותית עם כל הפרזול שאנו מציעים — בליווי אישי.",
-    cover: "/images/israelevitz/4-web.jpg",
-    index: "08",
-  },
-];
+const entries = CATEGORIES;
 
 async function getCounts(): Promise<Record<string, number>> {
   const counts = await db.product.groupBy({
@@ -164,7 +74,7 @@ export default async function CatalogPage() {
                 className="text-lg lg:text-xl font-light leading-relaxed max-w-xl"
                 style={{ color: "#FAF6F0", opacity: 0.92 }}
               >
-                שש קטגוריות, מאות פריטים, מהמותגים המובילים בעולם —
+                שמונה קטגוריות, מאות פריטים, מהמותגים המובילים בעולם —
                 כולם נבחרים בקפידה ומוצגים כאן במקום אחד.
               </p>
             </div>

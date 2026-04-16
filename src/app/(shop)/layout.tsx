@@ -6,16 +6,12 @@ import { usePathname } from "next/navigation";
 import { MobileMenu } from "@/components/shop/mobile-menu";
 import { CookieConsent } from "@/components/shop/cookie-consent";
 import { AccessibilityWidget } from "@/components/shop/accessibility-widget";
+import { CATEGORIES } from "@/lib/categories";
 
-const navItems = [
-  { href: "/categories/handles", label: "ידיות" },
-  { href: "/categories/hinges", label: "צירים" },
-  { href: "/categories/slides", label: "מסילות" },
-  { href: "/categories/bath", label: "מוצרי אמבט" },
-  { href: "/categories/accessories", label: "אקססוריז" },
-  { href: "/categories/carpentry", label: "נגרות" },
+const utilityItems = [
   { href: "/catalog", label: "הקטלוג" },
   { href: "/about", label: "אודות" },
+  { href: "/contact", label: "צרו קשר" },
 ];
 
 function UserIcon() {
@@ -99,7 +95,8 @@ export default function ShopLayout({
       {/* Header */}
       <header className={`fixed top-0 left-0 right-0 z-50 border-b transition-colors duration-300 ${headerBg}`}>
         <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
-          <div className="flex items-center justify-between h-16 lg:h-20" dir="ltr">
+          {/* Main row: logo + icons (+ utility links desktop) */}
+          <div className="flex items-center justify-between h-16 lg:h-18" dir="ltr">
             <Link href="/" className="flex-shrink-0">
               <img
                 src="/logo.png"
@@ -108,12 +105,13 @@ export default function ShopLayout({
               />
             </Link>
 
-            <nav className="hidden lg:flex items-center gap-7" dir="rtl">
-              {navItems.map((item) => (
+            {/* Utility links — desktop only, centered */}
+            <nav className="hidden lg:flex items-center gap-6" dir="rtl">
+              {utilityItems.map((item) => (
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`text-[13px] tracking-wide transition-colors ${linkColor}`}
+                  className={`text-[11px] tracking-[0.25em] uppercase transition-colors ${linkColor}`}
                 >
                   {item.label}
                 </Link>
@@ -144,6 +142,24 @@ export default function ShopLayout({
               </button>
             </div>
           </div>
+
+          {/* Categories row — desktop only */}
+          <nav
+            className={`hidden lg:flex items-center justify-center gap-7 h-11 border-t transition-colors duration-300 ${
+              transparent ? "border-cream/10" : "border-bone"
+            }`}
+            dir="rtl"
+          >
+            {CATEGORIES.map((cat) => (
+              <Link
+                key={cat.slug}
+                href={`/categories/${cat.slug}`}
+                className={`text-[13px] tracking-wide transition-colors ${linkColor}`}
+              >
+                {cat.name}
+              </Link>
+            ))}
+          </nav>
         </div>
 
       </header>
@@ -157,7 +173,7 @@ export default function ShopLayout({
 
 
       {/* Main — no top padding on hero pages (image goes under header), padding on others */}
-      <main className={`flex-1 ${hasHero ? "" : "pt-16 lg:pt-20"}`}>{children}</main>
+      <main className={`flex-1 ${hasHero ? "" : "pt-16 lg:pt-[116px]"}`}>{children}</main>
 
       {/* Footer */}
       <footer className="bg-ink text-cream mt-32" dir="rtl">
@@ -173,12 +189,16 @@ export default function ShopLayout({
             <div className="lg:col-span-3">
               <div className="eyebrow text-mocha-soft mb-5">קטגוריות</div>
               <ul className="space-y-3 text-sm text-cream font-light">
-                <li><Link href="/categories/handles" className="hover:text-mocha-soft transition-colors">ידיות</Link></li>
-                <li><Link href="/categories/hinges" className="hover:text-mocha-soft transition-colors">צירים</Link></li>
-                <li><Link href="/categories/slides" className="hover:text-mocha-soft transition-colors">מסילות</Link></li>
-                <li><Link href="/categories/bath" className="hover:text-mocha-soft transition-colors">מוצרי אמבט</Link></li>
-                <li><Link href="/categories/accessories" className="hover:text-mocha-soft transition-colors">אקססוריז</Link></li>
-                <li><Link href="/categories/carpentry" className="hover:text-mocha-soft transition-colors">נגרות</Link></li>
+                {CATEGORIES.map((cat) => (
+                  <li key={cat.slug}>
+                    <Link
+                      href={`/categories/${cat.slug}`}
+                      className="hover:text-mocha-soft transition-colors"
+                    >
+                      {cat.name}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             </div>
             <div className="lg:col-span-4">

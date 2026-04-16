@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { CATEGORIES, type Category } from "@/lib/categories";
 
 function BentoCard({
   cat,
@@ -6,7 +7,7 @@ function BentoCard({
   spanMobile,
   size,
 }: {
-  cat: (typeof categories)[number];
+  cat: Category;
   spanDesktop: string;
   spanMobile: string;
   size: "xl" | "lg" | "md" | "sm";
@@ -61,7 +62,7 @@ function BentoCard({
             className="hidden lg:block text-sm font-light leading-relaxed mt-3 max-w-xs"
             style={{ color: "#FAF6F0", opacity: 0.8 }}
           >
-            {cat.description}
+            {cat.shortDesc}
           </p>
         )}
         <div
@@ -110,16 +111,7 @@ function UserPlusIcon() {
   );
 }
 
-const categories = [
-  { slug: "handles", name: "ידיות", brand: "Domicile", description: "ידיות לארונות, מטבחים ודלתות", cover: "/images/domicile/mood.jpg" },
-  { slug: "hinges", name: "צירים", brand: "Blum & Domicile", description: "פרזול גרמני בדיוק שווייצרי", cover: "/images/blum/blum-hinges.jpg" },
-  { slug: "slides", name: "מסילות", brand: "Movento", description: "תנועה שקטה, סגירה רכה", cover: "/images/blum/blum-slides.jpg" },
-  { slug: "lift-systems", name: "מנגנוני הרמה", brand: "Aventos", description: "הקלפה נפתחת בנגיעה", cover: "/images/blum/blum-lift.jpg" },
-  { slug: "bath", name: "מוצרי אמבט", brand: "Domicile", description: "סדרות מלאות לחדרי רחצה", cover: "/images/domicile/lucy.jpg" },
-  { slug: "accessories", name: "אקססוריז", brand: "Floralis", description: "אגרטלים, מראות ופריטי בית", cover: "/images/modaco/5F7A9697.webp" },
-  { slug: "aluminum", name: "אלומיניום וזכוכית", brand: "Profile 19", description: "מסגרות בהתאמה אישית", cover: "/images/israelevitz/2-web.jpg" },
-  { slug: "carpentry", name: "נגרות", brand: "Modaco Premium", description: "מטבחי יוקרה מהתחלה ועד הסוף", cover: "/images/israelevitz/4-web.jpg" },
-];
+const categories = CATEGORIES;
 
 export default function HomePage() {
   return (
