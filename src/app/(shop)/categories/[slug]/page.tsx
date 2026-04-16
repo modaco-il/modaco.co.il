@@ -59,22 +59,22 @@ export default async function CategoryPage({ params, searchParams }: Props) {
 
   const categoryIds = [category.id, ...category.children.map((c) => c.id)];
 
-  const totalCount = await db.product.count({
-    where: {
-      categoryId: { in: categoryIds },
-      status: "ACTIVE",
-    },
-  });
+  // Only show products that actually have images — avoids "תמונה חסרה" cards
+  // leaking into public browsing until Yarin uploads replacements.
+  const productWhere = {
+    categoryId: { in: categoryIds },
+    status: "ACTIVE" as const,
+    images: { some: {} },
+  };
+
+  const totalCount = await db.product.count({ where: productWhere });
 
   const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
   const page = Math.max(1, Math.min(totalPages, Number(pageParam) || 1));
   const skip = (page - 1) * PAGE_SIZE;
 
   const products = await db.product.findMany({
-    where: {
-      categoryId: { in: categoryIds },
-      status: "ACTIVE",
-    },
+    where: productWhere,
     include: {
       images: { take: 1, orderBy: { sortOrder: "asc" } },
       category: true,

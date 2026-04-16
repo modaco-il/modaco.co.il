@@ -19,17 +19,37 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${BASE_URL}/accessibility`, changeFrequency: "yearly", priority: 0.4 },
   ];
 
-  // Categories
-  const categories = await db.category.findMany({ select: { slug: true } });
-  const categoryPages: MetadataRoute.Sitemap = categories.map((cat) => ({
-    url: `${BASE_URL}/categories/${cat.slug}`,
-    changeFrequency: "weekly",
-    priority: 0.8,
-  }));
+  // Categories — only those that'll render non-empty after image filter
+  const categories = await db.category.findMany({
+    select: {
+      slug: true,
+      _count: {
+        select: { products: { where: { status: "ACTIVE", images: { some: {} } } } },
+      },
+      children: {
+        select: {
+          _count: {
+            select: { products: { where: { status: "ACTIVE", images: { some: {} } } } },
+          },
+        },
+      },
+    },
+  });
+  const categoryPages: MetadataRoute.Sitemap = categories
+    .filter((cat) => {
+      const ownCount = cat._count.products;
+      const childCount = cat.children.reduce((sum, c) => sum + c._count.products, 0);
+      return ownCount + childCount > 0 || ["aluminum", "carpentry"].includes(cat.slug);
+    })
+    .map((cat) => ({
+      url: `${BASE_URL}/categories/${cat.slug}`,
+      changeFrequency: "weekly" as const,
+      priority: 0.8,
+    }));
 
-  // Products
+  // Products — only those with images (Google dislikes thin/empty pages)
   const products = await db.product.findMany({
-    where: { status: "ACTIVE" },
+    where: { status: "ACTIVE", images: { some: {} } },
     select: { slug: true, updatedAt: true },
   });
   const productPages: MetadataRoute.Sitemap = products.map((product) => ({

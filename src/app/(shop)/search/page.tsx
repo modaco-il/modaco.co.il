@@ -34,6 +34,7 @@ export default async function SearchPage({ searchParams }: Props) {
     ? await db.product.findMany({
         where: {
           status: "ACTIVE",
+          images: { some: {} },
           OR: [
             { name: { contains: query, mode: "insensitive" } },
             { description: { contains: query, mode: "insensitive" } },
