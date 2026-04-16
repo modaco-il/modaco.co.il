@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 
 export const metadata: Metadata = {
   title: "צרו קשר — Modaco",
@@ -49,6 +50,13 @@ export default function ContactPage() {
               >
                 שלח פנייה
               </button>
+              <p className="text-xs text-ink-soft font-light leading-relaxed mt-4">
+                פרטי הפנייה יישמרו ויטופלו בהתאם ל
+                <Link href="/privacy" className="text-mocha hover:text-mocha-hover underline">
+                  מדיניות הפרטיות
+                </Link>
+                . לא נשתמש בהם לצרכי שיווק ללא הסכמתך המפורשת.
+              </p>
             </form>
           </div>
 

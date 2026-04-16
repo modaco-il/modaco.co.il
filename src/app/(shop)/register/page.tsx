@@ -71,6 +71,39 @@ export default function RegisterPage() {
           <Field label="טלפון" name="phone" type="tel" dir="ltr" required placeholder="050-1234567" />
           <Field label="סיסמה" name="password" type="password" required minLength={6} />
 
+          <div className="space-y-3 pt-2">
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                name="acceptTerms"
+                required
+                className="mt-1 w-4 h-4 accent-mocha"
+              />
+              <span className="text-xs font-light" style={{ color: "#2E2520" }}>
+                אישרתי את{" "}
+                <Link href="/terms" className="text-mocha underline" target="_blank">
+                  תנאי השימוש
+                </Link>{" "}
+                ואת{" "}
+                <Link href="/privacy" className="text-mocha underline" target="_blank">
+                  מדיניות הפרטיות
+                </Link>
+                . (חובה)
+              </span>
+            </label>
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                name="marketingConsent"
+                className="mt-1 w-4 h-4 accent-mocha"
+              />
+              <span className="text-xs font-light" style={{ color: "#2E2520" }}>
+                אני מסכים/ה לקבל עדכונים שיווקיים ומבצעים מ-Modaco בדוא&quot;ל
+                (ניתן להסיר בכל עת).
+              </span>
+            </label>
+          </div>
+
           {state && !state.success && (
             <p className="text-sm" style={{ color: "#A02323" }}>
               {state.error}

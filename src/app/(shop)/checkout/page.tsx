@@ -4,6 +4,7 @@ import { CheckoutForm } from "@/components/shop/checkout-form";
 
 export const metadata = {
   title: "תשלום — Modaco",
+  robots: { index: false, follow: false },
 };
 
 export default async function CheckoutPage() {

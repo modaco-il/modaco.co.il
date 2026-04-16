@@ -4,6 +4,8 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { MobileMenu } from "@/components/shop/mobile-menu";
+import { CookieConsent } from "@/components/shop/cookie-consent";
+import { AccessibilityWidget } from "@/components/shop/accessibility-widget";
 
 const navItems = [
   { href: "/categories/handles", label: "ידיות" },
@@ -149,6 +151,10 @@ export default function ShopLayout({
       {/* Mobile full-screen takeover */}
       <MobileMenu open={menuOpen} onClose={() => setMenuOpen(false)} />
 
+      {/* Legal + Accessibility */}
+      <CookieConsent />
+      <AccessibilityWidget />
+
 
       {/* Main — no top padding on hero pages (image goes under header), padding on others */}
       <main className={`flex-1 ${hasHero ? "" : "pt-16 lg:pt-20"}`}>{children}</main>
@@ -193,17 +199,44 @@ export default function ShopLayout({
               </ul>
             </div>
           </div>
-          <div className="border-t border-cream/10 mt-16 pt-8 flex flex-col items-center gap-4 text-xs text-cream font-light">
-            <div>&copy; {new Date().getFullYear()} Modaco. כל הזכויות שמורות.</div>
-            <a
-              href="https://ozkabala.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="opacity-40 hover:opacity-70 transition-opacity"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/ozkabala-logo.svg" alt="Oz Kabala" className="h-5" />
-            </a>
+          <div className="border-t border-cream/10 mt-16 pt-8 space-y-6">
+            <div className="flex flex-wrap justify-center gap-x-6 gap-y-2 text-xs text-cream font-light">
+              <Link href="/terms" className="hover:text-mocha-soft transition-colors">
+                תנאי שימוש
+              </Link>
+              <span className="opacity-30">·</span>
+              <Link href="/privacy" className="hover:text-mocha-soft transition-colors">
+                מדיניות פרטיות
+              </Link>
+              <span className="opacity-30">·</span>
+              <Link href="/accessibility" className="hover:text-mocha-soft transition-colors">
+                הצהרת נגישות
+              </Link>
+              <span className="opacity-30">·</span>
+              <button
+                onClick={() => {
+                  try {
+                    localStorage.removeItem("modaco-cookie-consent");
+                    window.location.reload();
+                  } catch {}
+                }}
+                className="hover:text-mocha-soft transition-colors"
+              >
+                עוגיות
+              </button>
+            </div>
+            <div className="flex flex-col items-center gap-4 text-xs text-cream font-light">
+              <div>&copy; {new Date().getFullYear()} Modaco. כל הזכויות שמורות.</div>
+              <a
+                href="https://ozkabala.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="opacity-40 hover:opacity-70 transition-opacity"
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/ozkabala-logo.svg" alt="Oz Kabala" className="h-5" />
+              </a>
+            </div>
           </div>
         </div>
       </footer>

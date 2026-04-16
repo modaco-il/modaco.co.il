@@ -126,10 +126,50 @@ export function CheckoutForm({ items, subtotal }: CheckoutFormProps) {
           </CardContent>
         </Card>
 
+        <Card>
+          <CardContent className="pt-6 space-y-3">
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                name="acceptTerms"
+                required
+                className="mt-1 w-4 h-4 accent-black"
+              />
+              <span className="text-xs font-light text-gray-700">
+                קראתי ואישרתי את{" "}
+                <a href="/terms" target="_blank" className="text-blue-600 underline">
+                  תנאי השימוש
+                </a>
+                , את{" "}
+                <a href="/privacy" target="_blank" className="text-blue-600 underline">
+                  מדיניות הפרטיות
+                </a>{" "}
+                ואת מדיניות הביטולים. (חובה)
+              </span>
+            </label>
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                name="marketingConsent"
+                className="mt-1 w-4 h-4 accent-black"
+              />
+              <span className="text-xs font-light text-gray-700">
+                אני מסכים/ה לקבל עדכונים ומבצעים מ-Modaco בדוא&quot;ל (ניתן להסיר בכל עת).
+              </span>
+            </label>
+          </CardContent>
+        </Card>
+
         <Button size="lg" className="w-full">
           <Lock className="w-4 h-4 ml-2" />
           בצע הזמנה — ₪{total.toLocaleString()}
         </Button>
+
+        <p className="text-xs text-gray-500 leading-relaxed">
+          לחיצה על &quot;בצע הזמנה&quot; מהווה התקשרות מחייבת. ביטול עד 14 ימים מיום קבלת המוצר
+          לפי חוק הגנת הצרכן — פרטים מלאים ב
+          <a href="/terms" className="text-blue-600 underline" target="_blank">תנאי השימוש</a>.
+        </p>
       </div>
 
       {/* Order Summary Sidebar */}

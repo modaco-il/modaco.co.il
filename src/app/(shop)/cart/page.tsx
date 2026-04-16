@@ -4,6 +4,7 @@ import Link from "next/link";
 
 export const metadata = {
   title: "עגלת קניות — Modaco",
+  robots: { index: false, follow: false },
 };
 
 function CartIcon() {

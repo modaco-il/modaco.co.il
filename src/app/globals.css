@@ -161,12 +161,89 @@ html {
   .hero-text {
     text-shadow: 0 2px 16px rgba(0,0,0,0.55), 0 1px 3px rgba(0,0,0,0.6);
   }
+  /* ===== Accessibility modes ===== */
+  kbd {
+    display: inline-block;
+    padding: 0.15rem 0.4rem;
+    font-family: monospace;
+    font-size: 0.85em;
+    background: #F2EBDD;
+    border: 1px solid #E8DFCC;
+    border-radius: 3px;
+    color: #0A0908;
+  }
+
   /* Mobile dark base — guarantees readability even on bright image areas */
   .hero-base-mobile {
     background-color: rgba(10, 9, 8, 0.45);
   }
   @media (min-width: 1024px) {
     .hero-base-mobile { background-color: transparent; }
+  }
+
+  /* Accessibility: high contrast mode */
+  .a11y-contrast-high {
+    filter: contrast(1.4);
+  }
+  .a11y-contrast-high body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+  .a11y-contrast-high .bg-cream,
+  .a11y-contrast-high .bg-cream-deep {
+    background: #FFFFFF !important;
+  }
+  .a11y-contrast-high .text-ink-soft,
+  .a11y-contrast-high .text-mocha {
+    color: #000000 !important;
+  }
+
+  /* Accessibility: dark contrast mode */
+  .a11y-contrast-dark {
+    filter: invert(1) hue-rotate(180deg);
+  }
+  .a11y-contrast-dark img,
+  .a11y-contrast-dark video,
+  .a11y-contrast-dark picture {
+    filter: invert(1) hue-rotate(180deg);
+  }
+
+  /* Accessibility: highlight links */
+  .a11y-highlight-links a,
+  .a11y-highlight-links button {
+    text-decoration: underline !important;
+    outline: 2px solid #8B6F4E !important;
+    outline-offset: 2px !important;
+  }
+
+  /* Accessibility: reduce motion */
+  .a11y-reduce-motion,
+  .a11y-reduce-motion *,
+  .a11y-reduce-motion *::before,
+  .a11y-reduce-motion *::after {
+    animation-duration: 0.001s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001s !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Accessibility: big cursor */
+  .a11y-big-cursor,
+  .a11y-big-cursor * {
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'><path d='M3 3l15 37 6-17 17-6z' fill='%23FAF6F0' stroke='%230A0908' stroke-width='2'/></svg>") 3 3, auto !important;
+  }
+  .a11y-big-cursor a,
+  .a11y-big-cursor button {
+    cursor: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='48' height='48' viewBox='0 0 48 48'><circle cx='24' cy='24' r='8' fill='%23FAF6F0' stroke='%230A0908' stroke-width='2'/></svg>") 24 24, pointer !important;
+  }
+
+  /* Accessibility: readable font */
+  .a11y-readable-font,
+  .a11y-readable-font * {
+    font-family: Arial, Helvetica, sans-serif !important;
+    letter-spacing: 0.02em !important;
+    word-spacing: 0.1em !important;
+    line-height: 1.7 !important;
   }
 
   /* Marquee */
