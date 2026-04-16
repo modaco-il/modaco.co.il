@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 interface ProductCardProps {
   product: {
@@ -55,12 +56,12 @@ export function ProductCard({ product, featured = false }: ProductCardProps) {
     >
       <div className={`img-frame relative overflow-hidden border border-bone group-hover:border-mocha/40 transition-colors ${featured ? "aspect-[4/5]" : "aspect-square"}`}>
         {product.image ? (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img
+          <Image
             src={product.image}
             alt={product.name}
-            className={`w-full h-full object-contain group-hover:scale-[1.04] transition-transform duration-700 ease-out ${featured ? "p-12 lg:p-20" : "p-6"}`}
-            loading="lazy"
+            fill
+            sizes={featured ? "(max-width: 1024px) 50vw, 40vw" : "(max-width: 1024px) 50vw, 25vw"}
+            className={`object-contain group-hover:scale-[1.04] transition-transform duration-700 ease-out ${featured ? "p-12 lg:p-20" : "p-6"}`}
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-ink-soft text-xs tracking-widest uppercase opacity-30">

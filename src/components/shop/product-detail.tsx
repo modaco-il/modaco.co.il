@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import NextImage from "next/image";
 import { ProductCard } from "./product-card";
 
 interface Variant {
@@ -100,12 +101,14 @@ export function ProductDetail({ product }: ProductDetailProps) {
         <div className="space-y-4">
           <div className="aspect-square img-frame border border-bone overflow-hidden relative group">
             {mainImage ? (
-              /* eslint-disable-next-line @next/next/no-img-element */
-              <img
+              <NextImage
                 key={mainImage.id}
                 src={mainImage.url}
                 alt={mainImage.altText || product.name}
-                className="w-full h-full object-contain p-12 transition-opacity duration-300"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                priority
+                className="object-contain p-12 transition-opacity duration-300"
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-ink-soft/30 text-xs tracking-widest uppercase">
@@ -128,16 +131,17 @@ export function ProductDetail({ product }: ProductDetailProps) {
                   key={img.id}
                   type="button"
                   onClick={() => setMainImageIdx(i)}
-                  className={`aspect-square img-frame border overflow-hidden transition-colors ${
+                  className={`relative aspect-square img-frame border overflow-hidden transition-colors ${
                     mainImageIdx === i ? "border-mocha" : "border-bone hover:border-mocha/50"
                   }`}
                   aria-label={`תמונה ${i + 1}`}
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <NextImage
                     src={img.url}
-                    alt={img.altText || ""}
-                    className="w-full h-full object-contain p-3"
+                    alt={img.altText || `תמונה ${i + 1}`}
+                    fill
+                    sizes="120px"
+                    className="object-contain p-3"
                   />
                 </button>
               ))}

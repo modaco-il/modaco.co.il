@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "אלומיניום וזכוכית — פרופיל 19 בהתאמה אישית",
@@ -11,10 +12,13 @@ export default function AluminumPage() {
     <article>
       {/* Hero */}
       <section className="relative h-[88vh] min-h-[640px] overflow-hidden">
-        <img
+        <Image
           src="/images/israelevitz/2-web.jpg"
           alt="פרופיל 19 — אלומיניום וזכוכית"
-          className="absolute inset-0 w-full h-full object-cover"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
         />
         <div className="absolute inset-0 hero-base-mobile" />
         <div className="absolute inset-0 hero-overlay" />

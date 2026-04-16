@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "אודות",
@@ -24,11 +25,13 @@ export default function AboutPage() {
 
       {/* Image break */}
       <section className="max-w-[1400px] mx-auto px-6 lg:px-12 mb-20">
-        <div className="aspect-[21/9] overflow-hidden">
-          <img
+        <div className="relative aspect-[21/9] overflow-hidden">
+          <Image
             src="/images/modaco/5F7A9768.webp"
             alt="פרויקט מודקו"
-            className="w-full h-full object-cover"
+            fill
+            sizes="(max-width: 1400px) 100vw, 1376px"
+            className="object-cover"
           />
         </div>
       </section>

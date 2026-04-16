@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import { db } from "@/lib/db";
 import { CATEGORIES } from "@/lib/categories";
 
@@ -125,11 +126,12 @@ export default async function CatalogPage() {
                     reversed ? "lg:order-2" : "lg:order-1"
                   }`}
                 >
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
+                  <Image
                     src={entry.cover}
                     alt={entry.name}
-                    className="absolute inset-0 w-full h-full object-cover hover:scale-[1.02] transition-transform duration-1000 ease-out"
+                    fill
+                    sizes="(max-width: 1024px) 100vw, 50vw"
+                    className="object-cover hover:scale-[1.02] transition-transform duration-1000 ease-out"
                   />
                   {/* Index overlay */}
                   <div

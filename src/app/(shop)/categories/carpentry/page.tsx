@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 
 export const metadata: Metadata = {
   title: "מטבחי יוקרה בהתאמה אישית — נגרות",
@@ -12,10 +13,13 @@ export default function CarpentryPage() {
     <article>
       {/* Hero */}
       <section className="relative h-[88vh] min-h-[640px] overflow-hidden">
-        <img
+        <Image
           src="/images/israelevitz/1-web.jpg"
           alt="מטבח Modaco Premium"
-          className="absolute inset-0 w-full h-full object-cover"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
         />
         <div className="absolute inset-0 hero-base-mobile" />
         <div className="absolute inset-0 hero-overlay" />
@@ -137,11 +141,13 @@ export default function CarpentryPage() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[1, 4, 2, 3].map((i) => (
-              <div key={i} className="aspect-[4/3] overflow-hidden">
-                <img
+              <div key={i} className="relative aspect-[4/3] overflow-hidden">
+                <Image
                   src={`/images/israelevitz/${i}-web.jpg`}
                   alt={`מטבח Modaco ${i}`}
-                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-1000 ease-out"
+                  fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="object-cover hover:scale-105 transition-transform duration-1000 ease-out"
                 />
               </div>
             ))}

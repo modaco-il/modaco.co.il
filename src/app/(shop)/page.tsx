@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { CATEGORIES, type Category } from "@/lib/categories";
 
 function BentoCard({
@@ -27,11 +28,12 @@ function BentoCard({
       href={`/categories/${cat.slug}`}
       className={`group relative overflow-hidden ${spanMobile} ${spanDesktop}`}
     >
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img
+      <Image
         src={cat.cover}
         alt={cat.name}
-        className="absolute inset-0 w-full h-full object-cover group-hover:scale-[1.06] transition-transform duration-[1200ms] ease-out"
+        fill
+        sizes={size === "xl" ? "(max-width: 1024px) 100vw, 66vw" : size === "lg" ? "(max-width: 1024px) 100vw, 33vw" : "(max-width: 1024px) 50vw, 25vw"}
+        className="object-cover group-hover:scale-[1.06] transition-transform duration-[1200ms] ease-out"
       />
       {/* gradient overlay — readable text always */}
       <div
@@ -118,10 +120,13 @@ export default function HomePage() {
     <div>
       {/* Hero — full-bleed editorial */}
       <section className="relative h-[88vh] min-h-[640px] overflow-hidden">
-        <img
+        <Image
           src="/images/israelevitz/1-web.jpg"
           alt="מטבח Modaco"
-          className="absolute inset-0 w-full h-full object-cover"
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover"
         />
         <div className="absolute inset-0 hero-base-mobile" />
         <div className="absolute inset-0 hero-overlay" />
@@ -273,10 +278,12 @@ export default function HomePage() {
               </div>
             </div>
             <div className="lg:col-span-7 relative aspect-[4/3] overflow-hidden">
-              <img
+              <Image
                 src="/images/israelevitz/2-web.jpg"
                 alt="פרופיל 19 — אלומיניום וזכוכית"
-                className="w-full h-full object-cover"
+                fill
+                sizes="(max-width: 1024px) 100vw, 58vw"
+                className="object-cover"
               />
               <div className="absolute bottom-6 left-6 text-7xl lg:text-9xl font-display text-cream leading-none">19</div>
             </div>
@@ -286,10 +293,12 @@ export default function HomePage() {
 
       {/* Carpentry — full-bleed dark hero */}
       <section className="relative min-h-[680px] overflow-hidden flex items-center">
-        <img
+        <Image
           src="/images/israelevitz/4-web.jpg"
           alt="מטבח יוקרה Modaco"
-          className="absolute inset-0 w-full h-full object-cover"
+          fill
+          sizes="100vw"
+          className="object-cover"
         />
         <div className="absolute inset-0 hero-base-mobile" />
         <div className="absolute inset-0 hero-overlay-side" />
@@ -334,10 +343,12 @@ export default function HomePage() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
           <div className="lg:col-span-7 order-2 lg:order-1">
             <div className="relative aspect-[5/4] overflow-hidden">
-              <img
+              <Image
                 src="/images/modaco/5F7A9697.webp"
                 alt="אולם התצוגה של מודקו"
-                className="w-full h-full object-cover"
+                fill
+                sizes="(max-width: 1024px) 100vw, 58vw"
+                className="object-cover"
               />
             </div>
           </div>

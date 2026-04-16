@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { CATEGORIES } from "@/lib/categories";
 
@@ -55,13 +56,14 @@ export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => vo
       {/* Backdrop layer: ink + image (visible from open) + readable scrim */}
       <div className="absolute inset-0 bg-ink overflow-hidden">
         {items.map((item, i) => (
-          /* eslint-disable-next-line @next/next/no-img-element */
-          <img
+          <Image
             key={item.img + i}
             src={item.img}
             alt=""
             aria-hidden
-            className={`absolute inset-0 w-full h-full object-cover transition-opacity duration-700 ${
+            fill
+            sizes="100vw"
+            className={`object-cover transition-opacity duration-700 ${
               activeIdx === i ? "opacity-55" : "opacity-0"
             }`}
           />
