@@ -56,7 +56,7 @@ export const CATEGORIES: Category[] = [
   },
   {
     slug: "legs",
-    name: "רגליים לריהוט",
+    name: "רגליים לריהוט ודלפקים",
     brand: "Modaco",
     tagline: "היסוד הנכון לכל רהיט",
     shortDesc: "רגליים, רגליי דלפק וגלגלים",
