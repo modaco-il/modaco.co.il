@@ -66,6 +66,17 @@ export const CATEGORIES: Category[] = [
     index: "05",
   },
   {
+    slug: "faucets",
+    name: "ברזים",
+    brand: "Blanco · Delta",
+    tagline: "מים ששופכים עיצוב",
+    shortDesc: "ברזי מטבח Blanco ו-Delta",
+    description:
+      "ברזי מטבח ברמה אחרת — סדרות Blanco הגרמנית ו-Delta האמריקאית. עיצוב מודרני, ברזים נשלפים, מגוון גימורים וצבעים, אחריות יצרן מלאה.",
+    cover: "/images/modaco/5F7A9683.webp",
+    index: "06",
+  },
+  {
     slug: "bath",
     name: "מוצרי אמבט",
     brand: "Domicile",
@@ -74,7 +85,7 @@ export const CATEGORIES: Category[] = [
     description:
       "סדרות מלאות לחדרי רחצה — רודיום, SHELL, RIVIERA, BINOVA, RONDO, EDGE, LUCY, SANDRA, PICCOLO. גם פחים, מראות, מחממי מגבות ומחזיקי יין.",
     cover: "/images/domicile/lucy.jpg",
-    index: "06",
+    index: "07",
   },
   {
     slug: "accessories",
@@ -85,7 +96,7 @@ export const CATEGORIES: Category[] = [
     description:
       "אקססוריז מעוצבים לבית מהמותג Floralis — אגרטלים, מראות ופריטים משלימים שמחברים בין הפרזול הטכני לתחושה ביתית מוגמרת.",
     cover: "/images/modaco/5F7A9697.webp",
-    index: "07",
+    index: "08",
   },
   {
     slug: "aluminum",
@@ -96,7 +107,7 @@ export const CATEGORIES: Category[] = [
     description:
       "פרופילי אלומיניום בעובי 19 מ\"מ עם משטחי זכוכית. לחזיתות ארונות, ויטרינות, מחיצות חלל ודלתות הזזה. כל פרופיל נחתך בהתאמה אישית.",
     cover: "/images/israelevitz/2-web.jpg",
-    index: "08",
+    index: "09",
   },
   {
     slug: "carpentry",
@@ -107,6 +118,6 @@ export const CATEGORIES: Category[] = [
     description:
       "מטבחי יוקרה בהתאמה אישית מוחלטת. תכנון, ייצור והתקנה ב-A→Z. שילוב של נגרות איכותית עם כל הפרזול שאנו מציעים — בליווי אישי.",
     cover: "/images/israelevitz/4-web.jpg",
-    index: "09",
+    index: "10",
   },
 ];

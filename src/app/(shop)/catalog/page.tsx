@@ -75,7 +75,7 @@ export default async function CatalogPage() {
                 className="text-lg lg:text-xl font-light leading-relaxed max-w-xl"
                 style={{ color: "#FAF6F0", opacity: 0.92 }}
               >
-                תשע קטגוריות, מאות פריטים, מהמותגים המובילים בעולם —
+                עשר קטגוריות, מאות פריטים, מהמותגים המובילים בעולם —
                 כולם נבחרים בקפידה ומוצגים כאן במקום אחד.
               </p>
             </div>

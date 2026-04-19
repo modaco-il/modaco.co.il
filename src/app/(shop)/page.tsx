@@ -227,23 +227,25 @@ export default function HomePage() {
         {/* Bento grid: 12 cols on desktop, varied heights and spans */}
         <div className="grid grid-cols-2 lg:grid-cols-12 gap-3 lg:gap-4 auto-rows-[140px] lg:auto-rows-[200px]">
           {/* Carpentry — flagship */}
-          <BentoCard cat={categories[8]} spanDesktop="lg:col-span-8 lg:row-span-2" spanMobile="col-span-2 row-span-2" size="xl" />
+          <BentoCard cat={categories[9]} spanDesktop="lg:col-span-8 lg:row-span-2" spanMobile="col-span-2 row-span-2" size="xl" />
           {/* Handles — vertical secondary */}
           <BentoCard cat={categories[0]} spanDesktop="lg:col-span-4 lg:row-span-2" spanMobile="col-span-2 row-span-1" size="lg" />
           {/* Hinges */}
           <BentoCard cat={categories[1]} spanDesktop="lg:col-span-5 lg:row-span-2" spanMobile="col-span-1 row-span-1" size="md" />
           {/* Slides */}
           <BentoCard cat={categories[2]} spanDesktop="lg:col-span-4 lg:row-span-2" spanMobile="col-span-1 row-span-1" size="md" />
-          {/* Bath */}
+          {/* Faucets */}
           <BentoCard cat={categories[5]} spanDesktop="lg:col-span-3 lg:row-span-2" spanMobile="col-span-1 row-span-1" size="sm" />
+          {/* Bath */}
+          <BentoCard cat={categories[6]} spanDesktop="lg:col-span-3 lg:row-span-2" spanMobile="col-span-1 row-span-1" size="sm" />
           {/* Lift systems */}
           <BentoCard cat={categories[3]} spanDesktop="lg:col-span-3 lg:row-span-1" spanMobile="col-span-1 row-span-1" size="sm" />
           {/* Legs */}
           <BentoCard cat={categories[4]} spanDesktop="lg:col-span-3 lg:row-span-1" spanMobile="col-span-1 row-span-1" size="sm" />
           {/* Accessories */}
-          <BentoCard cat={categories[6]} spanDesktop="lg:col-span-3 lg:row-span-1" spanMobile="col-span-1 row-span-1" size="sm" />
+          <BentoCard cat={categories[7]} spanDesktop="lg:col-span-3 lg:row-span-1" spanMobile="col-span-1 row-span-1" size="sm" />
           {/* Aluminum — wide */}
-          <BentoCard cat={categories[7]} spanDesktop="lg:col-span-6 lg:row-span-1" spanMobile="col-span-2 row-span-1" size="md" />
+          <BentoCard cat={categories[8]} spanDesktop="lg:col-span-6 lg:row-span-1" spanMobile="col-span-2 row-span-1" size="md" />
         </div>
       </section>
 
