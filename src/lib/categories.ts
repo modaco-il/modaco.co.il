@@ -35,11 +35,11 @@ export const CATEGORIES: Category[] = [
   {
     slug: "slides",
     name: "מסילות",
-    brand: "Movento · Tandem",
+    brand: "Blum & Domicile",
     tagline: "תנועה שאי אפשר להרגיש",
     shortDesc: "תנועה שקטה, סגירה רכה",
     description:
-      "מסילות נסתרות, נשלפות וטיפ-און. בלומושן ומסילות מובנטו לעומסים של 40 ו-70 קילו. כל מידה, כל גודל, התאמה אישית מוחלטת.",
+      "מסילות נסתרות, נשלפות וטיפ-און — לעומסים של 40 ו-70 קילו, עם סגירה רכה ופתיחה קלה. כל מידה, כל גודל, התאמה אישית מוחלטת.",
     cover: "/images/blum/blum-slides.jpg",
     index: "03",
   },
@@ -55,6 +55,17 @@ export const CATEGORIES: Category[] = [
     index: "04",
   },
   {
+    slug: "legs",
+    name: "רגליים לריהוט",
+    brand: "Modaco",
+    tagline: "היסוד הנכון לכל רהיט",
+    shortDesc: "רגליים, רגליי דלפק וגלגלים",
+    description:
+      "רגליים לשולחנות, רגליי דלפק ורגליים נמוכות לריהוט — במגוון גבהים, גימורים וסגנונות. כולל גלגלים לריהוט ניידים.",
+    cover: "/images/modaco/5F7A9768.webp",
+    index: "05",
+  },
+  {
     slug: "bath",
     name: "מוצרי אמבט",
     brand: "Domicile",
@@ -63,7 +74,7 @@ export const CATEGORIES: Category[] = [
     description:
       "סדרות מלאות לחדרי רחצה — רודיום, SHELL, RIVIERA, BINOVA, RONDO, EDGE, LUCY, SANDRA, PICCOLO. גם פחים, מראות, מחממי מגבות ומחזיקי יין.",
     cover: "/images/domicile/lucy.jpg",
-    index: "05",
+    index: "06",
   },
   {
     slug: "accessories",
@@ -74,7 +85,7 @@ export const CATEGORIES: Category[] = [
     description:
       "אקססוריז מעוצבים לבית מהמותג Floralis — אגרטלים, מראות ופריטים משלימים שמחברים בין הפרזול הטכני לתחושה ביתית מוגמרת.",
     cover: "/images/modaco/5F7A9697.webp",
-    index: "06",
+    index: "07",
   },
   {
     slug: "aluminum",
@@ -85,7 +96,7 @@ export const CATEGORIES: Category[] = [
     description:
       "פרופילי אלומיניום בעובי 19 מ\"מ עם משטחי זכוכית. לחזיתות ארונות, ויטרינות, מחיצות חלל ודלתות הזזה. כל פרופיל נחתך בהתאמה אישית.",
     cover: "/images/israelevitz/2-web.jpg",
-    index: "07",
+    index: "08",
   },
   {
     slug: "carpentry",
@@ -96,6 +107,6 @@ export const CATEGORIES: Category[] = [
     description:
       "מטבחי יוקרה בהתאמה אישית מוחלטת. תכנון, ייצור והתקנה ב-A→Z. שילוב של נגרות איכותית עם כל הפרזול שאנו מציעים — בליווי אישי.",
     cover: "/images/israelevitz/4-web.jpg",
-    index: "08",
+    index: "09",
   },
 ];

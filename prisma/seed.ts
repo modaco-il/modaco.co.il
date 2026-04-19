@@ -143,16 +143,28 @@ async function main() {
     update: {},
     create: { name: "מסילות", slug: "slides", sortOrder: 2 },
   });
-  await db.category.upsert({
-    where: { slug: "movento-slides" },
-    update: {},
-    create: {
-      name: "מסילות מובנטו",
-      slug: "movento-slides",
-      parentId: slides.id,
-      sortOrder: 1,
-    },
-  });
+  await Promise.all([
+    db.category.upsert({
+      where: { slug: "movento-slides" },
+      update: {},
+      create: {
+        name: "מסילות מובנטו",
+        slug: "movento-slides",
+        parentId: slides.id,
+        sortOrder: 1,
+      },
+    }),
+    db.category.upsert({
+      where: { slug: "tandem-slides" },
+      update: {},
+      create: {
+        name: "מסילות טנדם",
+        slug: "tandem-slides",
+        parentId: slides.id,
+        sortOrder: 2,
+      },
+    }),
+  ]);
 
   const liftSystems = await db.category.upsert({
     where: { slug: "lift-systems" },
@@ -193,6 +205,54 @@ async function main() {
     update: {},
     create: { name: "ידיות", slug: "handles", sortOrder: 5 },
   });
+
+  const legs = await db.category.upsert({
+    where: { slug: "legs" },
+    update: {},
+    create: { name: "רגליים לריהוט", slug: "legs", sortOrder: 7 },
+  });
+  await Promise.all([
+    db.category.upsert({
+      where: { slug: "table-legs" },
+      update: {},
+      create: {
+        name: "רגליים לשולחנות",
+        slug: "table-legs",
+        parentId: legs.id,
+        sortOrder: 1,
+      },
+    }),
+    db.category.upsert({
+      where: { slug: "counter-legs" },
+      update: {},
+      create: {
+        name: "רגליי דלפק",
+        slug: "counter-legs",
+        parentId: legs.id,
+        sortOrder: 2,
+      },
+    }),
+    db.category.upsert({
+      where: { slug: "low-furniture-legs" },
+      update: {},
+      create: {
+        name: "רגליים נמוכות לריהוט",
+        slug: "low-furniture-legs",
+        parentId: legs.id,
+        sortOrder: 3,
+      },
+    }),
+    db.category.upsert({
+      where: { slug: "furniture-wheels" },
+      update: {},
+      create: {
+        name: "גלגלים לריהוט",
+        slug: "furniture-wheels",
+        parentId: legs.id,
+        sortOrder: 4,
+      },
+    }),
+  ]);
 
   const accessories = await db.category.upsert({
     where: { slug: "accessories" },

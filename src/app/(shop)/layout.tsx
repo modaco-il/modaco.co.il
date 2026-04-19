@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { MobileMenu } from "@/components/shop/mobile-menu";
 import { CookieConsent } from "@/components/shop/cookie-consent";
 import { AccessibilityWidget } from "@/components/shop/accessibility-widget";
+import { CategoryRail } from "@/components/shop/category-rail";
 import { CATEGORIES } from "@/lib/categories";
 
 const utilityItems = [
@@ -170,6 +171,9 @@ export default function ShopLayout({
       {/* Legal + Accessibility */}
       <CookieConsent />
       <AccessibilityWidget />
+
+      {/* Persistent category rail — desktop only, transparent over hero */}
+      <CategoryRail transparent={transparent} />
 
 
       {/* Main — no top padding on hero pages (image goes under header), padding on others */}

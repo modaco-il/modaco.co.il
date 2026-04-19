@@ -54,6 +54,17 @@ const stockStatus: Record<string, { label: string; color: string }> = {
   OUT_OF_STOCK: { label: "אזל מהמלאי", color: "text-red-700" },
 };
 
+const SIZE_PATTERNS = [
+  /^\s*גודל\s*\d+/,
+  /^\s*מידה\s*\d+/,
+  /\d+\s*(מ"?מ|ס"?מ|ק"?ג|mm|cm|kg)\b/i,
+  /^\d{2,}(\.\d+)?$/,
+];
+
+function isSizeVariant(name: string): boolean {
+  return SIZE_PATTERNS.some((re) => re.test(name.trim()));
+}
+
 function SpecRow({ label, value, valueColor }: { label: string; value: string; valueColor?: string }) {
   return (
     <div className="flex justify-between items-baseline py-3">
@@ -168,12 +179,13 @@ export function ProductDetail({ product }: ProductDetailProps) {
             </p>
           )}
 
-          {/* Variants */}
-          {product.variants.length > 1 && (
-            <div className="mb-10">
-              <div className="eyebrow mb-4">בחירת גרסה</div>
+          {/* Variants — grouped by type */}
+          {product.variants.length > 1 && (() => {
+            const sizeVariants = product.variants.filter((v) => isSizeVariant(v.name));
+            const colorVariants = product.variants.filter((v) => !isSizeVariant(v.name));
+            const renderButtons = (variants: Variant[]) => (
               <div className="flex flex-wrap gap-2">
-                {product.variants.map((v) => (
+                {variants.map((v) => (
                   <button
                     key={v.id}
                     onClick={() => setSelectedVariant(v)}
@@ -187,8 +199,27 @@ export function ProductDetail({ product }: ProductDetailProps) {
                   </button>
                 ))}
               </div>
-            </div>
-          )}
+            );
+
+            return (
+              <div className="mb-10 space-y-6">
+                {colorVariants.length > 0 && (
+                  <div>
+                    <div className="eyebrow mb-4">
+                      {sizeVariants.length > 0 ? "גימור" : "בחירת גרסה"}
+                    </div>
+                    {renderButtons(colorVariants)}
+                  </div>
+                )}
+                {sizeVariants.length > 0 && (
+                  <div>
+                    <div className="eyebrow mb-4">מידה</div>
+                    {renderButtons(sizeVariants)}
+                  </div>
+                )}
+              </div>
+            );
+          })()}
 
           {/* Quantity + CTA */}
           <div className="space-y-4 mb-12">

@@ -227,7 +227,7 @@ export default function HomePage() {
         {/* Bento grid: 12 cols on desktop, varied heights and spans */}
         <div className="grid grid-cols-2 lg:grid-cols-12 gap-3 lg:gap-4 auto-rows-[140px] lg:auto-rows-[200px]">
           {/* Carpentry — flagship */}
-          <BentoCard cat={categories[7]} spanDesktop="lg:col-span-8 lg:row-span-2" spanMobile="col-span-2 row-span-2" size="xl" />
+          <BentoCard cat={categories[8]} spanDesktop="lg:col-span-8 lg:row-span-2" spanMobile="col-span-2 row-span-2" size="xl" />
           {/* Handles — vertical secondary */}
           <BentoCard cat={categories[0]} spanDesktop="lg:col-span-4 lg:row-span-2" spanMobile="col-span-2 row-span-1" size="lg" />
           {/* Hinges */}
@@ -235,13 +235,15 @@ export default function HomePage() {
           {/* Slides */}
           <BentoCard cat={categories[2]} spanDesktop="lg:col-span-4 lg:row-span-2" spanMobile="col-span-1 row-span-1" size="md" />
           {/* Bath */}
-          <BentoCard cat={categories[4]} spanDesktop="lg:col-span-3 lg:row-span-2" spanMobile="col-span-1 row-span-1" size="sm" />
+          <BentoCard cat={categories[5]} spanDesktop="lg:col-span-3 lg:row-span-2" spanMobile="col-span-1 row-span-1" size="sm" />
           {/* Lift systems */}
           <BentoCard cat={categories[3]} spanDesktop="lg:col-span-3 lg:row-span-1" spanMobile="col-span-1 row-span-1" size="sm" />
+          {/* Legs */}
+          <BentoCard cat={categories[4]} spanDesktop="lg:col-span-3 lg:row-span-1" spanMobile="col-span-1 row-span-1" size="sm" />
           {/* Accessories */}
-          <BentoCard cat={categories[5]} spanDesktop="lg:col-span-3 lg:row-span-1" spanMobile="col-span-2 row-span-1" size="sm" />
+          <BentoCard cat={categories[6]} spanDesktop="lg:col-span-3 lg:row-span-1" spanMobile="col-span-1 row-span-1" size="sm" />
           {/* Aluminum — wide */}
-          <BentoCard cat={categories[6]} spanDesktop="lg:col-span-6 lg:row-span-1" spanMobile="col-span-2 row-span-1" size="md" />
+          <BentoCard cat={categories[7]} spanDesktop="lg:col-span-6 lg:row-span-1" spanMobile="col-span-2 row-span-1" size="md" />
         </div>
       </section>
 
@@ -404,14 +406,13 @@ export default function HomePage() {
 }
 
 const trustItems: Array<{ brand?: string; text?: string; number?: string; label?: string }> = [
-  { brand: "BLUM", label: "שותפים רשמיים" },
   { number: "40+", label: "שנות מומחיות" },
-  { brand: "DOMICILE", label: "מפיץ מורשה" },
   { number: "200+", label: "מוצרים בקטלוג" },
   { brand: "MOVENTO", label: "טכנולוגיה אוסטרית" },
   { text: "SINCE 1985", label: "מטבחי יוקרה" },
   { brand: "AVENTOS", label: "מנגנוני הרמה" },
   { text: "B2B", label: "רשת אנשי מקצוע" },
+  { text: "B2C", label: "אולם תצוגה רחב" },
 ];
 
 function TrustItem({ item }: { item: (typeof trustItems)[number] }) {

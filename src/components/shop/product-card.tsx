@@ -32,13 +32,31 @@ const COLOR_MAP: Record<string, string> = {
   "זהב": "#D4AF37",
   "רוז גולד": "#B76E79",
   "שמפניה": "#F7E7CE",
-  "סטנדרט": "#D9C3A5",
+  "ברונזה": "#8C5A3C",
+  "פליז": "#B5A642",
+  "נחושת": "#B87333",
+  "טיטניום": "#878681",
+  "אנתרציט": "#2E2E2E",
 };
+
+const SIZE_PATTERNS = [
+  /^\s*גודל\s*\d+/,
+  /^\s*מידה\s*\d+/,
+  /\d+\s*(מ"?מ|ס"?מ|ק"?ג|mm|cm|kg)\b/i,
+  /^\d{2,}(\.\d+)?$/,
+];
+
+function isColorName(name: string): boolean {
+  const trimmed = name.trim();
+  if (!trimmed) return false;
+  if (SIZE_PATTERNS.some((re) => re.test(trimmed))) return false;
+  if (COLOR_MAP[trimmed]) return true;
+  return Object.keys(COLOR_MAP).some((key) => trimmed.includes(key));
+}
 
 function colorHex(name: string): string {
   const trimmed = name.trim();
   if (COLOR_MAP[trimmed]) return COLOR_MAP[trimmed];
-  // partial match
   for (const key of Object.keys(COLOR_MAP)) {
     if (trimmed.includes(key)) return COLOR_MAP[key];
   }
@@ -46,8 +64,11 @@ function colorHex(name: string): string {
 }
 
 export function ProductCard({ product, featured = false }: ProductCardProps) {
-  const visibleColors = (product.colors || []).slice(0, 5);
-  const moreCount = (product.colors?.length || 0) - visibleColors.length;
+  const allVariants = product.colors || [];
+  const colorVariants = allVariants.filter(isColorName);
+  const visibleColors = colorVariants.slice(0, 5);
+  const moreCount = colorVariants.length - visibleColors.length;
+  const sizeCount = allVariants.length - colorVariants.length;
 
   return (
     <Link
@@ -85,8 +106,8 @@ export function ProductCard({ product, featured = false }: ProductCardProps) {
           {product.name}
         </h3>
 
-        {/* Color swatches */}
-        {visibleColors.length > 0 && (
+        {/* Color swatches + size count */}
+        {(visibleColors.length > 0 || sizeCount > 0) && (
           <div className="flex items-center gap-1.5 mt-3">
             {visibleColors.map((c, i) => (
               <span
@@ -98,6 +119,11 @@ export function ProductCard({ product, featured = false }: ProductCardProps) {
             ))}
             {moreCount > 0 && (
               <span className="text-[10px] text-ink-soft tracking-wider mr-1">+{moreCount}</span>
+            )}
+            {sizeCount > 0 && (
+              <span className="text-[10px] text-ink-soft tracking-wider mr-auto">
+                {sizeCount} מידות
+              </span>
             )}
           </div>
         )}
