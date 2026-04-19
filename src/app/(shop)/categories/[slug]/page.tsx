@@ -17,10 +17,10 @@ const categoryMeta: Record<string, { og: string; tagline: string }> = {
   slides: { og: "/images/blum/blum-slides.jpg", tagline: "מסילות Movento, Tandem ו-Blumotion" },
   "lift-systems": { og: "/images/blum/blum-lift.jpg", tagline: "מנגנוני הרמה Aventos לחזיתות עליונות" },
   bath: { og: "/images/domicile/lucy.jpg", tagline: "סדרות מלאות לחדרי רחצה מ-Domicile" },
-  handles: { og: "/images/domicile/mood.jpg", tagline: "ידיות Domicile לארונות ומטבחים — לב החנות" },
+  handles: { og: "/images/israelevitz/3-web.jpg", tagline: "ידיות Domicile לארונות ומטבחים — לב החנות" },
   accessories: { og: "/images/modaco/5F7A9697.webp", tagline: "אקססוריז לבית מ-Floralis" },
-  mirrors: { og: "/images/domicile/mood.jpg", tagline: "מראות מעוצבות לאמבטיה וסלון" },
-  bins: { og: "/images/domicile/mood.jpg", tagline: "פחי אשפה למטבח ואמבטיה" },
+  mirrors: { og: "/images/domicile/lucy.jpg", tagline: "מראות מעוצבות לאמבטיה וסלון" },
+  bins: { og: "/images/domicile/lucy.jpg", tagline: "פחי אשפה למטבח ואמבטיה" },
   legs: { og: "/images/modaco/5F7A9683.webp", tagline: "רגליים לריהוט, שולחנות ודלפקים" },
   decorative: { og: "/images/modaco/5F7A9697.webp", tagline: "פריטים דקורטיביים לבית" },
 };

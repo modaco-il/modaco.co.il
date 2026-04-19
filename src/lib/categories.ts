@@ -18,7 +18,7 @@ export const CATEGORIES: Category[] = [
     shortDesc: "ידיות לארונות, מטבחים ודלתות",
     description:
       "מבחר רחב של ידיות לארונות, מטבחים ודלתות. עיצובים מינימליסטיים, קלאסיים ויוקרתיים — בכל הגימורים. ליבת החנות שלנו.",
-    cover: "/images/domicile/mood.jpg",
+    cover: "/images/israelevitz/3-web.jpg",
     index: "01",
   },
   {
