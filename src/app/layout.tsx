@@ -35,6 +35,9 @@ export const metadata: Metadata = {
     index: true,
     follow: true,
   },
+  alternates: {
+    canonical: "https://modaco.co.il",
+  },
 };
 
 export default function RootLayout({
