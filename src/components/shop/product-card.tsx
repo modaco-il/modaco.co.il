@@ -18,9 +18,16 @@ interface ProductCardProps {
 }
 
 const HIDE_PRICE_CATEGORY_SLUGS = new Set(["faucets", "faucets-blanco", "faucets-delta"]);
-function shouldHidePrice(slug: string | undefined, name: string): boolean {
+const QUOTE_ONLY_CATEGORY_SLUGS = new Set(["cladding"]);
+function shouldHidePrice(slug: string | undefined, name: string, price: number): boolean {
   if (slug && HIDE_PRICE_CATEGORY_SLUGS.has(slug)) return true;
+  if (slug && QUOTE_ONLY_CATEGORY_SLUGS.has(slug)) return true;
+  if (!price || price <= 0) return true;
   return /ברזי|ברז(?:ים)?/.test(name);
+}
+function priceLabel(slug: string | undefined): string {
+  if (slug && QUOTE_ONLY_CATEGORY_SLUGS.has(slug)) return "להצעת מחיר";
+  return "הנחה משמעותית בסניף";
 }
 
 // Hebrew finish/color name → hex (best-effort palette)
@@ -142,8 +149,8 @@ export function ProductCard({ product, featured = false }: ProductCardProps) {
         )}
 
         <div className="mt-3 text-sm text-ink-soft font-light">
-          {shouldHidePrice(product.categorySlug, product.category) ? (
-            <span className="text-mocha">הנחה משמעותית בסניף</span>
+          {shouldHidePrice(product.categorySlug, product.category, product.price) ? (
+            <span className="text-mocha">{priceLabel(product.categorySlug)}</span>
           ) : (
             <>₪{product.price.toLocaleString()}</>
           )}

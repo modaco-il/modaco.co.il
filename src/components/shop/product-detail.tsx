@@ -84,10 +84,13 @@ export function ProductDetail({ product }: ProductDetailProps) {
   const currentPrice = selectedVariant?.priceOverride ?? product.basePrice;
   const stock = selectedVariant ? stockStatus[selectedVariant.stockStatus] : null;
   const mainImage = product.images[mainImageIdx] || product.images[0];
-  const hidePrice =
+  const isFaucet =
     product.category?.slug === "faucets" ||
     product.category?.slug === "faucets-blanco" ||
     product.category?.slug === "faucets-delta";
+  const isQuoteOnly = product.category?.slug === "cladding";
+  const hidePrice = isFaucet || isQuoteOnly || !currentPrice || currentPrice <= 0;
+  const priceMessage = isQuoteOnly ? "להצעת מחיר" : "הנחה משמעותית בסניף";
 
   return (
     <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-12 lg:py-16">
@@ -175,7 +178,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
           {hidePrice ? (
             <div className="text-2xl lg:text-3xl font-light text-mocha mb-3">
-              הנחה משמעותית בסניף
+              {priceMessage}
             </div>
           ) : (
             <div className="text-3xl font-light text-ink mb-3">
@@ -254,13 +257,13 @@ export function ProductDetail({ product }: ProductDetailProps) {
               {hidePrice ? (
                 <a
                   href={`https://wa.me/972526804945?text=${encodeURIComponent(
-                    `היי, אני מתעניין במחיר של ${product.name}`
+                    `היי, אני מתעניין ב${isQuoteOnly ? "הצעת מחיר ל" : "מחיר של "}${product.name}`
                   )}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex-1 h-11 leading-[2.75rem] text-center bg-ink text-cream text-sm tracking-wide hover:bg-mocha transition-colors"
                 >
-                  לבירור מחיר ומלאי
+                  {isQuoteOnly ? "לקבלת הצעת מחיר" : "לבירור מחיר ומלאי"}
                 </a>
               ) : (
                 <button
