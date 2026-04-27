@@ -77,14 +77,9 @@ async function downloadImage(url: string, dest: string): Promise<number> {
   return buf.length;
 }
 
-function slugFromUrl(u: string): string {
-  const m = u.match(/\/product\/([^/?]+)/);
-  if (!m) return "img";
-  try {
-    return decodeURIComponent(m[1]).slice(0, 80).replace(/[^a-z0-9-]/gi, "-");
-  } catch {
-    return m[1].slice(0, 80);
-  }
+/** Stable folder name = product id (cuid). Guarantees no collision with non-Latin slugs. */
+function folderForProduct(productId: string): string {
+  return productId;
 }
 
 async function main() {
@@ -119,17 +114,15 @@ async function main() {
       if (gallery.length === 0) continue;
       scraped++;
 
-      const sku = slugFromUrl(p.supplierUrl);
-      const productDir = path.join(outRoot, sku);
+      const folder = folderForProduct(p.id);
+      const productDir = path.join(outRoot, folder);
       mkdirSync(productDir, { recursive: true });
 
-      // Wipe existing remote-URL images for this product (they were 220x220 thumbnails)
-      const existingRemote = p.images.filter((i) => i.url.startsWith("http"));
-      if (existingRemote.length > 0) {
-        await db.productImage.deleteMany({
-          where: { id: { in: existingRemote.map((i) => i.id) } },
-        });
-        console.log(`  removed ${existingRemote.length} old remote thumbnails`);
+      // Wipe ALL existing images for this product — folder collisions in earlier
+      // run produced shared paths across multiple products. Re-creating from scratch.
+      if (p.images.length > 0) {
+        await db.productImage.deleteMany({ where: { productId: p.id } });
+        console.log(`  removed ${p.images.length} old image records`);
       }
 
       let sortOrder = 0;
@@ -147,7 +140,7 @@ async function main() {
             continue;
           }
         }
-        const dbPath = `/images/nyga/faucets/${sku}/${fname}`;
+        const dbPath = `/images/nyga/faucets/${folder}/${fname}`;
         await db.productImage.create({
           data: {
             productId: p.id,

@@ -75,43 +75,105 @@ export const orderCreatedNotify = inngest.createFunction(
         where: { id: orderId },
         include: {
           customer: { include: { user: true } },
+          address: true,
           items: { include: { variant: { include: { product: true } } } },
         },
       });
     });
 
-    // WhatsApp alert to Yarin
-    await step.run("notify-admin-whatsapp", async () => {
-      const itemsSummary = order.items
-        .map((i) => `${i.variant.product.name} x${i.quantity}`)
+    const customerName =
+      order.address?.fullName || order.customer?.user?.name || order.customer?.user?.email || "—";
+    const customerPhone = order.address?.phone || order.customer?.user?.phone || "";
+    const fullAddress = order.address
+      ? `${order.address.street}, ${order.address.city}${order.address.zipCode ? " " + order.address.zipCode : ""}`
+      : "(אין כתובת)";
+    const itemsText = order.items
+      .map((i) => `• ${i.variant.product.name} (${i.variant.name}) × ${i.quantity}  — ₪${i.total.toLocaleString()}`)
+      .join("\n");
+
+    // Email to Yarin — full picking + shipping brief
+    await step.run("email-yarin", async () => {
+      const adminUrl = `https://modaco.co.il/admin/orders/${order.id}`;
+      const wazeUrl = order.address
+        ? `https://waze.com/ul?q=${encodeURIComponent(fullAddress)}&navigate=yes`
+        : null;
+      const cleanPhone = customerPhone.replace(/[^\d]/g, "");
+      const waPhone = cleanPhone.startsWith("0") ? "972" + cleanPhone.slice(1) : cleanPhone;
+      const waUrl = customerPhone
+        ? `https://wa.me/${waPhone}?text=${encodeURIComponent(`שלום, תודה על ההזמנה ${order.orderNumber} ב-Modaco.`)}`
+        : null;
+
+      const body = [
+        `הזמנה חדשה ב-Modaco — ${order.orderNumber}`,
+        ``,
+        `לקוח: ${customerName}`,
+        customerPhone ? `טלפון: ${customerPhone}` : "",
+        `כתובת: ${fullAddress}`,
+        ``,
+        `פריטים (${order.items.length}):`,
+        itemsText,
+        ``,
+        `סה"כ: ₪${order.total.toLocaleString()}`,
+        ``,
+        `--- קישורים מהירים ---`,
+        `פאנל ניהול: ${adminUrl}`,
+        wazeUrl ? `Waze: ${wazeUrl}` : "",
+        waUrl ? `WhatsApp ללקוח: ${waUrl}` : "",
+      ]
+        .filter(Boolean)
         .join("\n");
-      console.log(
-        `[WA→Admin] הזמנה חדשה ${order.orderNumber}\n${itemsSummary}\nסה"כ: ₪${order.total}`
-      );
-      // TODO: integrate with Meta Cloud API
+
+      console.log(`[Email→Yarin]\n${body}`);
+
+      // TODO: send via Resend once RESEND_API_KEY is set
+      if (process.env.RESEND_API_KEY) {
+        try {
+          await fetch("https://api.resend.com/emails", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+            },
+            body: JSON.stringify({
+              from: "Modaco <orders@modaco.co.il>",
+              to: ["yarin@modaco.co.il"],
+              subject: `הזמנה חדשה ${order.orderNumber} — ₪${order.total.toLocaleString()}`,
+              text: body,
+            }),
+          });
+        } catch (e) {
+          console.error("Resend failed:", e);
+        }
+      }
+    });
+
+    // WhatsApp alert to Yarin (placeholder — Meta Cloud API verification pending)
+    await step.run("notify-admin-whatsapp", async () => {
+      const summary = `הזמנה חדשה ${order.orderNumber}\n${customerName}\nסה"כ ₪${order.total.toLocaleString()}\nhttps://modaco.co.il/admin/orders/${order.id}`;
+      console.log(`[WA→Admin pending Meta]\n${summary}`);
+      // TODO: integrate with Meta Cloud API once Business verified
     });
 
     // Email confirmation to customer
     await step.run("send-customer-email", async () => {
-      console.log(
-        `[Email] Order confirmation to ${order.customer.user.email}`
-      );
+      const email = order.customer?.user?.email;
+      if (!email) return;
+      console.log(`[Email→Customer] confirmation to ${email}`);
       // TODO: integrate with transactional email
     });
 
     // Create invoice
     await step.run("create-invoice", async () => {
       console.log(`[Invoice] Creating Green Invoice for ${order.orderNumber}`);
-      // TODO: integrate with Green Invoice API
+      // TODO: integrate with Green Invoice API once credentials provided
     });
 
-    // Log event
     await step.run("log-event", async () => {
       await db.orderEvent.create({
         data: {
           orderId,
           type: "notifications_sent",
-          data: { whatsapp: true, email: true, invoice: true },
+          data: { yarinEmail: true, yarinWA: !!process.env.WHATSAPP_ACCESS_TOKEN, customerEmail: !!order.customer?.user?.email, invoice: !!process.env.GREEN_INVOICE_API_KEY },
         },
       });
     });
