@@ -39,12 +39,9 @@ interface Verdict {
   reason: string;
 }
 
-async function classify(absPath: string): Promise<Verdict> {
+async function classify(source: string | Buffer): Promise<Verdict> {
   // Resize to a small bounded size for speed; preserve aspect.
-  const img = sharp(absPath).resize(200, 200, { fit: "inside" });
-  const meta = await img.metadata();
-  const w = meta.width ?? 200;
-  const h = meta.height ?? 200;
+  const img = sharp(source).resize(200, 200, { fit: "inside" });
 
   // Get raw RGBA buffer
   const { data, info } = await img.ensureAlpha().raw().toBuffer({ resolveWithObject: true });
@@ -85,8 +82,15 @@ async function classify(absPath: string): Promise<Verdict> {
   return { isLifestyle, whiteRatio: ratio, reason };
 }
 
+async function fetchBuffer(url: string): Promise<Buffer> {
+  const resp = await fetch(url, { headers: { "User-Agent": "Mozilla/5.0" } });
+  if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+  return Buffer.from(await resp.arrayBuffer());
+}
+
 async function main() {
   const onlyMissing = !process.argv.includes("--all");
+  const includeRemote = !process.argv.includes("--local-only");
   const dryRun = process.argv.includes("--dry");
 
   const where = onlyMissing ? { isLifestyle: false } : {};
@@ -95,25 +99,33 @@ async function main() {
     select: { id: true, url: true, isLifestyle: true },
   });
 
-  // Filter to local images only
   const localImages = allImages.filter((i) => i.url.startsWith("/images/"));
-  console.log(`Found ${localImages.length} local product images to analyze (${allImages.length - localImages.length} skipped — remote URLs)`);
+  const remoteImages = allImages.filter((i) => i.url.startsWith("http"));
+
+  const queue = includeRemote ? [...localImages, ...remoteImages] : localImages;
+  console.log(`Found ${queue.length} images (local=${localImages.length}, remote=${includeRemote ? remoteImages.length : 0})`);
 
   let analyzed = 0;
   let lifestyle = 0;
   let cutout = 0;
   let errors = 0;
 
-  for (const img of localImages) {
-    const absPath = path.join(PUBLIC_DIR, img.url);
+  for (const img of queue) {
     try {
-      const verdict = await classify(absPath);
+      let source: string | Buffer;
+      if (img.url.startsWith("/images/")) {
+        source = path.join(PUBLIC_DIR, img.url);
+      } else {
+        source = await fetchBuffer(img.url);
+      }
+
+      const verdict = await classify(source);
       analyzed++;
       if (verdict.isLifestyle) lifestyle++;
       else cutout++;
 
-      if (analyzed % 50 === 0) {
-        console.log(`  ${analyzed}/${localImages.length} (lifestyle=${lifestyle}, cutout=${cutout})`);
+      if (analyzed % 100 === 0) {
+        console.log(`  ${analyzed}/${queue.length} (lifestyle=${lifestyle}, cutout=${cutout})`);
       }
 
       if (!dryRun && verdict.isLifestyle !== img.isLifestyle) {
@@ -124,7 +136,7 @@ async function main() {
       }
     } catch (e) {
       errors++;
-      if (errors < 10) console.warn(`  ✗ ${img.url}: ${(e as Error).message.slice(0, 80)}`);
+      if (errors < 10) console.warn(`  ✗ ${img.url.slice(0, 80)}: ${(e as Error).message.slice(0, 80)}`);
     }
   }
 
