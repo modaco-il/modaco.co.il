@@ -111,7 +111,9 @@ export default async function SearchPage({ searchParams }: Props) {
                   product.variants.find((v) => v.isDefault)?.priceOverride ??
                   product.basePrice,
                 image: product.images[0]?.url || null,
+                imageIsLifestyle: product.images[0]?.isLifestyle ?? false,
                 category: product.category?.name || "",
+                categorySlug: product.category?.slug,
                 colors: product.variants.map((v) => v.name),
               }}
             />

@@ -103,6 +103,7 @@ export default async function CategoryPage({ params }: Props) {
       p.variants.find((v) => v.isDefault)?.priceOverride ??
       p.basePrice,
     image: p.images[0]?.url || null,
+    imageIsLifestyle: p.images[0]?.isLifestyle ?? false,
     category: p.category?.name || "",
     categorySlug: p.category?.slug,
     colors: p.variants.map((v) => v.name),

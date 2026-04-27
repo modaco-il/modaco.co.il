@@ -8,6 +8,8 @@ interface ProductCardProps {
     slug: string;
     price: number;
     image: string | null;
+    /** true = full-bleed lifestyle photo → object-cover, no padding */
+    imageIsLifestyle?: boolean;
     category: string;
     categorySlug?: string;
     colors?: string[]; // variant names like "ניקל מוברש", "שחור מט"
@@ -89,7 +91,11 @@ export function ProductCard({ product, featured = false }: ProductCardProps) {
             alt={product.name}
             fill
             sizes={featured ? "(max-width: 1024px) 50vw, 40vw" : "(max-width: 1024px) 50vw, 25vw"}
-            className={`object-contain group-hover:scale-[1.04] transition-transform duration-700 ease-out ${featured ? "p-12 lg:p-20" : "p-6"}`}
+            className={
+              product.imageIsLifestyle
+                ? "object-cover group-hover:scale-[1.04] transition-transform duration-700 ease-out"
+                : `object-contain group-hover:scale-[1.04] transition-transform duration-700 ease-out ${featured ? "p-12 lg:p-20" : "p-6"}`
+            }
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center text-ink-soft text-xs tracking-widest uppercase opacity-30">

@@ -10,6 +10,7 @@ interface ProductData {
   slug: string;
   price: number;
   image: string | null;
+  imageIsLifestyle?: boolean;
   category: string;
   categorySlug?: string;
   colors?: string[];

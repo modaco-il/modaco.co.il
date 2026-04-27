@@ -223,13 +223,16 @@ enum StockStatus {
 }
 
 model ProductImage {
-  id        String  @id @default(cuid())
-  productId String
-  variantId String?
-  url       String
-  altText   String?
-  sourceUrl String? // URL מקורי מאתר הספק
-  sortOrder Int     @default(0)
+  id          String  @id @default(cuid())
+  productId   String
+  variantId   String?
+  url         String
+  altText     String?
+  sourceUrl   String? // URL מקורי מאתר הספק
+  sortOrder   Int     @default(0)
+  // true = full-bleed lifestyle/atmosphere shot → render with object-cover, no padding.
+  // false = product cutout on white background → render with object-contain + padding.
+  isLifestyle Boolean @default(false)
 
   product Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   variant Variant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
