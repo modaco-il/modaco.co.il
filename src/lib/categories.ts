@@ -7,9 +7,26 @@ export interface Category {
   description: string;
   cover: string;
   index: string;
+  /** featured = appears in homepage bento. all visible in /catalog regardless. */
+  featured?: boolean;
+  /** size hint for bento layout */
+  bentoSize?: "xl" | "lg" | "md" | "sm";
 }
 
 export const CATEGORIES: Category[] = [
+  {
+    slug: "carpentry",
+    name: "נגרות",
+    brand: "Modaco Premium",
+    tagline: "הסיפור הראשון, בנגרות מאז 1985",
+    shortDesc: "מטבחי יוקרה מהתחלה ועד הסוף",
+    description:
+      "מטבחי יוקרה בהתאמה אישית מוחלטת. תכנון, ייצור והתקנה ב-A→Z. שילוב של נגרות איכותית עם כל הפרזול שאנו מציעים — בליווי אישי.",
+    cover: "/images/israelevitz/4-web.jpg",
+    index: "01",
+    featured: true,
+    bentoSize: "xl",
+  },
   {
     slug: "handles",
     name: "ידיות",
@@ -18,8 +35,10 @@ export const CATEGORIES: Category[] = [
     shortDesc: "ידיות לארונות, מטבחים ודלתות",
     description:
       "מבחר רחב של ידיות לארונות, מטבחים ודלתות. עיצובים מינימליסטיים, קלאסיים ויוקרתיים — בכל הגימורים. ליבת החנות שלנו.",
-    cover: "/images/israelevitz/3-web.jpg",
-    index: "01",
+    cover: "/images/domicile/categories/handles.jpg",
+    index: "02",
+    featured: true,
+    bentoSize: "lg",
   },
   {
     slug: "hinges",
@@ -29,8 +48,10 @@ export const CATEGORIES: Category[] = [
     shortDesc: "פרזול גרמני בדיוק שווייצרי",
     description:
       "צירים בסטנדרט הגבוה ביותר. סגירה רכה, תנועה שקטה, אחריות יצרן עד 25 שנה. מהציר הקליפי הקטן ועד מנגנונים של 180°.",
-    cover: "/images/blum/blum-hinges.jpg",
-    index: "02",
+    cover: "/images/domicile/categories/hinges.jpg",
+    index: "03",
+    featured: true,
+    bentoSize: "md",
   },
   {
     slug: "slides",
@@ -40,8 +61,10 @@ export const CATEGORIES: Category[] = [
     shortDesc: "תנועה שקטה, סגירה רכה",
     description:
       "מסילות נסתרות, נשלפות וטיפ-און — לעומסים של 40 ו-70 קילו, עם סגירה רכה ופתיחה קלה. כל מידה, כל גודל, התאמה אישית מוחלטת.",
-    cover: "/images/blum/blum-slides.jpg",
-    index: "03",
+    cover: "/images/domicile/categories/slides.jpg",
+    index: "04",
+    featured: true,
+    bentoSize: "md",
   },
   {
     slug: "lift-systems",
@@ -51,30 +74,10 @@ export const CATEGORIES: Category[] = [
     shortDesc: "הקלפה נפתחת בנגיעה",
     description:
       "מנגנונים סטטיים ודינמיים לחזיתות עליונות. פתיחה רכה, סגירה אילמת, התאמה לדלתות זכוכית, עץ או אלומיניום בגדלים ומשקלים שונים.",
-    cover: "/images/blum/blum-lift.jpg",
-    index: "04",
-  },
-  {
-    slug: "legs",
-    name: "רגליים לריהוט ודלפקים",
-    brand: "Modaco",
-    tagline: "היסוד הנכון לכל רהיט",
-    shortDesc: "רגליים, רגליי דלפק וגלגלים",
-    description:
-      "רגליים לשולחנות, רגליי דלפק ורגליים נמוכות לריהוט — במגוון גבהים, גימורים וסגנונות. כולל גלגלים לריהוט ניידים.",
-    cover: "/images/modaco/5F7A9768.webp",
+    cover: "/images/domicile/categories/lift-systems.jpg",
     index: "05",
-  },
-  {
-    slug: "faucets",
-    name: "ברזים",
-    brand: "Blanco · Delta",
-    tagline: "מים ששופכים עיצוב",
-    shortDesc: "ברזי מטבח Blanco ו-Delta",
-    description:
-      "ברזי מטבח ברמה אחרת — סדרות Blanco הגרמנית ו-Delta האמריקאית. עיצוב מודרני, ברזים נשלפים, מגוון גימורים וצבעים, אחריות יצרן מלאה.",
-    cover: "/images/modaco/5F7A9683.webp",
-    index: "06",
+    featured: true,
+    bentoSize: "sm",
   },
   {
     slug: "bath",
@@ -84,19 +87,101 @@ export const CATEGORIES: Category[] = [
     shortDesc: "סדרות מלאות לחדרי רחצה",
     description:
       "סדרות מלאות לחדרי רחצה — רודיום, SHELL, RIVIERA, BINOVA, RONDO, EDGE, LUCY, SANDRA, PICCOLO. גם פחים, מראות, מחממי מגבות ומחזיקי יין.",
-    cover: "/images/domicile/lucy.jpg",
+    cover: "/images/domicile/categories/bath.jpg",
+    index: "06",
+    featured: true,
+    bentoSize: "md",
+  },
+  {
+    slug: "faucets",
+    name: "ברזים",
+    brand: "Blanco · Delta",
+    tagline: "מים ששופכים עיצוב",
+    shortDesc: "ברזי מטבח Blanco ו-Delta",
+    description:
+      "ברזי מטבח ברמה אחרת — סדרות Blanco הגרמנית ו-Delta האמריקאית. עיצוב מודרני, ברזים נשלפים, מגוון גימורים וצבעים, אחריות יצרן מלאה.",
+    cover: "/images/domicile/categories/faucets.jpg",
     index: "07",
+    featured: true,
+    bentoSize: "sm",
+  },
+  {
+    slug: "legs",
+    name: "רגליים",
+    brand: "Domicile",
+    tagline: "היסוד הנכון לכל רהיט",
+    shortDesc: "רגליים, רגליי דלפק וגלגלים",
+    description:
+      "רגליים לשולחנות, רגליי דלפק ורגליים נמוכות לריהוט — במגוון גבהים, גימורים וסגנונות. כולל גלגלים לריהוט ניידים.",
+    cover: "/images/domicile/categories/legs.jpg",
+    index: "08",
+    featured: true,
+    bentoSize: "sm",
+  },
+  {
+    slug: "mirrors",
+    name: "מראות",
+    brand: "Domicile",
+    tagline: "השתקפות שמעצבת חלל",
+    shortDesc: "מראות מעוצבות לאמבטיה וסלון",
+    description:
+      "מראות מעוצבות במגוון גדלים, מסגרות וגימורים — לחדרי אמבטיה, סלון, מסדרון או חדר שינה. עגולות, מלבניות ועם מסגרות עץ או מתכת.",
+    cover: "/images/domicile/categories/mirrors.jpg",
+    index: "09",
+    featured: true,
+    bentoSize: "sm",
+  },
+  {
+    slug: "bins",
+    name: "פחים",
+    brand: "Domicile",
+    tagline: "פתרונות חכמים למטבח ולאמבט",
+    shortDesc: "פחי אשפה ופתרונות אחסון",
+    description:
+      "פחי אשפה למטבח ולאמבטיה — נסתרים בארונות או חיצוניים, במגוון נפחים וגימורים. כולל פתרונות הפרדה ומיחזור.",
+    cover: "/images/domicile/categories/bins.jpg",
+    index: "10",
+    featured: true,
+    bentoSize: "sm",
+  },
+  {
+    slug: "decorative",
+    name: "דקורטיבי",
+    brand: "Domicile · Floralis",
+    tagline: "פריטים שגומרים את הסיפור",
+    shortDesc: "אקססוריז דקורטיביים לבית",
+    description:
+      "מתלי בקבוקי יין, חלוקות סכום, מארגני משטחים ופריטים דקורטיביים מיוחדים — לטאצ' המוגמר של מטבח או חלל מעוצב.",
+    cover: "/images/domicile/categories/decorative.jpg",
+    index: "11",
+    featured: true,
+    bentoSize: "sm",
   },
   {
     slug: "accessories",
     name: "אקססוריז",
     brand: "Floralis",
     tagline: "אגרטלים, מראות ופריטי בית",
-    shortDesc: "אגרטלים, מראות ופריטי בית",
+    shortDesc: "אגרטלים, פריטי בית וריהוט קל",
     description:
-      "אקססוריז מעוצבים לבית מהמותג Floralis — אגרטלים, מראות ופריטים משלימים שמחברים בין הפרזול הטכני לתחושה ביתית מוגמרת.",
+      "אקססוריז מעוצבים לבית מהמותג Floralis — אגרטלים, פריטים משלימים שמחברים בין הפרזול הטכני לתחושה ביתית מוגמרת.",
     cover: "/images/modaco/5F7A9697.webp",
-    index: "08",
+    index: "12",
+    featured: true,
+    bentoSize: "md",
+  },
+  {
+    slug: "cladding",
+    name: "לוח גמיש לחיפוי",
+    brand: "Domicile",
+    tagline: "חיפוי בכל צורה ומידה",
+    shortDesc: "לוחות גמישים לחיפוי קירות",
+    description:
+      "לוחות גמישים לחיפוי קירות, חזיתות ארונות ומשטחים מעוקלים. מגוון טקסטורות וגימורים — פתרון אלגנטי למקומות שלוחות קשיחות לא מתאימות.",
+    cover: "/images/domicile/categories/cladding.jpg",
+    index: "13",
+    featured: true,
+    bentoSize: "sm",
   },
   {
     slug: "aluminum",
@@ -107,17 +192,8 @@ export const CATEGORIES: Category[] = [
     description:
       "פרופילי אלומיניום בעובי 19 מ\"מ עם משטחי זכוכית. לחזיתות ארונות, ויטרינות, מחיצות חלל ודלתות הזזה. כל פרופיל נחתך בהתאמה אישית.",
     cover: "/images/israelevitz/2-web.jpg",
-    index: "09",
-  },
-  {
-    slug: "carpentry",
-    name: "נגרות",
-    brand: "Modaco Premium",
-    tagline: "הסיפור הראשון, בנגרות מאז 1985",
-    shortDesc: "מטבחי יוקרה מהתחלה ועד הסוף",
-    description:
-      "מטבחי יוקרה בהתאמה אישית מוחלטת. תכנון, ייצור והתקנה ב-A→Z. שילוב של נגרות איכותית עם כל הפרזול שאנו מציעים — בליווי אישי.",
-    cover: "/images/israelevitz/4-web.jpg",
-    index: "10",
+    index: "14",
+    featured: true,
+    bentoSize: "md",
   },
 ];

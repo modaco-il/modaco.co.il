@@ -113,7 +113,33 @@ function UserPlusIcon() {
   );
 }
 
-const categories = CATEGORIES;
+const categories = CATEGORIES.filter((c) => c.featured);
+
+/**
+ * Bento layout — 14 cards, 12-col grid, editorial flow.
+ * Pattern is positional so visual rhythm stays consistent regardless of category labels.
+ */
+const BENTO_LAYOUT: Array<{ desktop: string; mobile: string; size: "xl" | "lg" | "md" | "sm" }> = [
+  // Row 1-2: Carpentry flagship (xl) + Handles (lg)
+  { desktop: "lg:col-span-8 lg:row-span-2", mobile: "col-span-2 row-span-2", size: "xl" },
+  { desktop: "lg:col-span-4 lg:row-span-2", mobile: "col-span-2 row-span-1", size: "lg" },
+  // Row 3-4: Three medium tiles
+  { desktop: "lg:col-span-4 lg:row-span-2", mobile: "col-span-1 row-span-1", size: "md" },
+  { desktop: "lg:col-span-4 lg:row-span-2", mobile: "col-span-1 row-span-1", size: "md" },
+  { desktop: "lg:col-span-4 lg:row-span-2", mobile: "col-span-1 row-span-1", size: "md" },
+  // Row 5: Four small tiles
+  { desktop: "lg:col-span-3 lg:row-span-1", mobile: "col-span-1 row-span-1", size: "sm" },
+  { desktop: "lg:col-span-3 lg:row-span-1", mobile: "col-span-1 row-span-1", size: "sm" },
+  { desktop: "lg:col-span-3 lg:row-span-1", mobile: "col-span-1 row-span-1", size: "sm" },
+  { desktop: "lg:col-span-3 lg:row-span-1", mobile: "col-span-1 row-span-1", size: "sm" },
+  // Row 6: Four small tiles
+  { desktop: "lg:col-span-3 lg:row-span-1", mobile: "col-span-1 row-span-1", size: "sm" },
+  { desktop: "lg:col-span-3 lg:row-span-1", mobile: "col-span-1 row-span-1", size: "sm" },
+  { desktop: "lg:col-span-3 lg:row-span-1", mobile: "col-span-1 row-span-1", size: "sm" },
+  { desktop: "lg:col-span-3 lg:row-span-1", mobile: "col-span-1 row-span-1", size: "sm" },
+  // Row 7: Aluminum full-width finisher
+  { desktop: "lg:col-span-12 lg:row-span-1", mobile: "col-span-2 row-span-1", size: "md" },
+];
 
 export default function HomePage() {
   return (
@@ -224,28 +250,20 @@ export default function HomePage() {
           </Link>
         </div>
 
-        {/* Bento grid: 12 cols on desktop, varied heights and spans */}
+        {/* Bento grid — every featured category renders. Positional layout via BENTO_LAYOUT. */}
         <div className="grid grid-cols-2 lg:grid-cols-12 gap-3 lg:gap-4 auto-rows-[140px] lg:auto-rows-[200px]">
-          {/* Carpentry — flagship */}
-          <BentoCard cat={categories[9]} spanDesktop="lg:col-span-8 lg:row-span-2" spanMobile="col-span-2 row-span-2" size="xl" />
-          {/* Handles — vertical secondary */}
-          <BentoCard cat={categories[0]} spanDesktop="lg:col-span-4 lg:row-span-2" spanMobile="col-span-2 row-span-1" size="lg" />
-          {/* Hinges */}
-          <BentoCard cat={categories[1]} spanDesktop="lg:col-span-5 lg:row-span-2" spanMobile="col-span-1 row-span-1" size="md" />
-          {/* Slides */}
-          <BentoCard cat={categories[2]} spanDesktop="lg:col-span-4 lg:row-span-2" spanMobile="col-span-1 row-span-1" size="md" />
-          {/* Faucets */}
-          <BentoCard cat={categories[5]} spanDesktop="lg:col-span-3 lg:row-span-2" spanMobile="col-span-1 row-span-1" size="sm" />
-          {/* Bath */}
-          <BentoCard cat={categories[6]} spanDesktop="lg:col-span-3 lg:row-span-2" spanMobile="col-span-1 row-span-1" size="sm" />
-          {/* Lift systems */}
-          <BentoCard cat={categories[3]} spanDesktop="lg:col-span-3 lg:row-span-1" spanMobile="col-span-1 row-span-1" size="sm" />
-          {/* Legs */}
-          <BentoCard cat={categories[4]} spanDesktop="lg:col-span-3 lg:row-span-1" spanMobile="col-span-1 row-span-1" size="sm" />
-          {/* Accessories */}
-          <BentoCard cat={categories[7]} spanDesktop="lg:col-span-3 lg:row-span-1" spanMobile="col-span-1 row-span-1" size="sm" />
-          {/* Aluminum — wide */}
-          <BentoCard cat={categories[8]} spanDesktop="lg:col-span-6 lg:row-span-1" spanMobile="col-span-2 row-span-1" size="md" />
+          {categories.map((cat, i) => {
+            const layout = BENTO_LAYOUT[i] ?? BENTO_LAYOUT[BENTO_LAYOUT.length - 1];
+            return (
+              <BentoCard
+                key={cat.slug}
+                cat={cat}
+                spanDesktop={layout.desktop}
+                spanMobile={layout.mobile}
+                size={layout.size}
+              />
+            );
+          })}
         </div>
       </section>
 

@@ -84,6 +84,10 @@ export function ProductDetail({ product }: ProductDetailProps) {
   const currentPrice = selectedVariant?.priceOverride ?? product.basePrice;
   const stock = selectedVariant ? stockStatus[selectedVariant.stockStatus] : null;
   const mainImage = product.images[mainImageIdx] || product.images[0];
+  const hidePrice =
+    product.category?.slug === "faucets" ||
+    product.category?.slug === "faucets-blanco" ||
+    product.category?.slug === "faucets-delta";
 
   return (
     <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-12 lg:py-16">
@@ -169,9 +173,15 @@ export function ProductDetail({ product }: ProductDetailProps) {
             {product.name}
           </h1>
 
-          <div className="text-3xl font-light text-ink mb-3">
-            ₪{currentPrice.toLocaleString()}
-          </div>
+          {hidePrice ? (
+            <div className="text-2xl lg:text-3xl font-light text-mocha mb-3">
+              הנחה משמעותית בסניף
+            </div>
+          ) : (
+            <div className="text-3xl font-light text-ink mb-3">
+              ₪{currentPrice.toLocaleString()}
+            </div>
+          )}
 
           {stock && (
             <p className={`text-sm font-light mb-10 ${stock.color}`}>
@@ -241,12 +251,25 @@ export function ProductDetail({ product }: ProductDetailProps) {
                   +
                 </button>
               </div>
-              <button
-                disabled={selectedVariant?.stockStatus === "OUT_OF_STOCK"}
-                className="flex-1 h-11 bg-ink text-cream text-sm tracking-wide hover:bg-mocha transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                הוסף לסל — ₪{(currentPrice * quantity).toLocaleString()}
-              </button>
+              {hidePrice ? (
+                <a
+                  href={`https://wa.me/972526804945?text=${encodeURIComponent(
+                    `היי, אני מתעניין במחיר של ${product.name}`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 h-11 leading-[2.75rem] text-center bg-ink text-cream text-sm tracking-wide hover:bg-mocha transition-colors"
+                >
+                  לבירור מחיר ומלאי
+                </a>
+              ) : (
+                <button
+                  disabled={selectedVariant?.stockStatus === "OUT_OF_STOCK"}
+                  className="flex-1 h-11 bg-ink text-cream text-sm tracking-wide hover:bg-mocha transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  הוסף לסל — ₪{(currentPrice * quantity).toLocaleString()}
+                </button>
+              )}
             </div>
             <a
               href={`https://wa.me/972526804945?text=${encodeURIComponent(

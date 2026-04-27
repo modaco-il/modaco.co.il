@@ -1,28 +1,30 @@
 import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
-import Link from "next/link";
-import { ProductCard } from "@/components/shop/product-card";
 import { Reveal } from "@/components/shop/reveal";
+import { InfiniteProducts } from "@/components/shop/infinite-products";
 
 interface Props {
   params: Promise<{ slug: string }>;
-  searchParams: Promise<{ page?: string }>;
 }
 
 const PAGE_SIZE = 24;
 
 const categoryMeta: Record<string, { og: string; tagline: string }> = {
-  hinges: { og: "/images/blum/blum-hinges.jpg", tagline: "צירי Blum ו-Domicile באיכות שווייצרית" },
-  slides: { og: "/images/blum/blum-slides.jpg", tagline: "מסילות Movento, Tandem ו-Blumotion" },
-  "lift-systems": { og: "/images/blum/blum-lift.jpg", tagline: "מנגנוני הרמה Aventos לחזיתות עליונות" },
-  bath: { og: "/images/domicile/lucy.jpg", tagline: "סדרות מלאות לחדרי רחצה מ-Domicile" },
-  handles: { og: "/images/israelevitz/3-web.jpg", tagline: "ידיות Domicile לארונות ומטבחים — לב החנות" },
+  handles: { og: "/images/domicile/categories/handles.jpg", tagline: "ידיות Domicile לארונות ומטבחים — לב החנות" },
+  hinges: { og: "/images/domicile/categories/hinges.jpg", tagline: "צירי Blum ו-Domicile באיכות שווייצרית" },
+  slides: { og: "/images/domicile/categories/slides.jpg", tagline: "מסילות Movento, Tandem ו-Blumotion" },
+  "lift-systems": { og: "/images/domicile/categories/lift-systems.jpg", tagline: "מנגנוני הרמה Aventos לחזיתות עליונות" },
+  bath: { og: "/images/domicile/categories/bath.jpg", tagline: "סדרות מלאות לחדרי רחצה מ-Domicile" },
+  faucets: { og: "/images/domicile/categories/faucets.jpg", tagline: "ברזי מטבח Blanco ו-Delta — מים ששופכים עיצוב" },
+  "faucets-blanco": { og: "/images/domicile/categories/faucets.jpg", tagline: "ברזי מטבח Blanco — איכות גרמנית" },
+  "faucets-delta": { og: "/images/domicile/categories/faucets.jpg", tagline: "ברזי מטבח Delta — עיצוב אמריקאי" },
+  legs: { og: "/images/domicile/categories/legs.jpg", tagline: "רגליים לריהוט, שולחנות ודלפקים" },
+  mirrors: { og: "/images/domicile/categories/mirrors.jpg", tagline: "מראות מעוצבות לאמבטיה וסלון" },
+  bins: { og: "/images/domicile/categories/bins.jpg", tagline: "פחי אשפה למטבח ולאמבטיה" },
+  decorative: { og: "/images/domicile/categories/decorative.jpg", tagline: "פריטים דקורטיביים לבית — מתלי יין, חלוקות, מארגנים" },
   accessories: { og: "/images/modaco/5F7A9697.webp", tagline: "אקססוריז לבית מ-Floralis" },
-  mirrors: { og: "/images/domicile/lucy.jpg", tagline: "מראות מעוצבות לאמבטיה וסלון" },
-  bins: { og: "/images/domicile/lucy.jpg", tagline: "פחי אשפה למטבח ואמבטיה" },
-  legs: { og: "/images/modaco/5F7A9683.webp", tagline: "רגליים לריהוט, שולחנות ודלפקים" },
-  decorative: { og: "/images/modaco/5F7A9697.webp", tagline: "פריטים דקורטיביים לבית" },
+  cladding: { og: "/images/domicile/categories/cladding.jpg", tagline: "לוחות גמישים לחיפוי קירות וחזיתות" },
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -43,10 +45,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function CategoryPage({ params, searchParams }: Props) {
+export default async function CategoryPage({ params }: Props) {
   const { slug: raw } = await params;
   const slug = decodeURIComponent(raw);
-  const { page: pageParam } = await searchParams;
 
   const category = await db.category.findUnique({
     where: { slug },
@@ -80,30 +81,32 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     images: { some: {} },
   };
 
-  const totalCount = await db.product.count({ where: productWhere });
+  const [totalCount, products] = await Promise.all([
+    db.product.count({ where: productWhere }),
+    db.product.findMany({
+      where: productWhere,
+      include: {
+        images: { take: 1, orderBy: { sortOrder: "asc" } },
+        category: true,
+        variants: { orderBy: { sortOrder: "asc" } },
+      },
+      orderBy: [{ featured: "desc" }, { sortOrder: "asc" }],
+      take: PAGE_SIZE,
+    }),
+  ]);
 
-  const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
-  const page = Math.max(1, Math.min(totalPages, Number(pageParam) || 1));
-  const skip = (page - 1) * PAGE_SIZE;
-
-  const products = await db.product.findMany({
-    where: productWhere,
-    include: {
-      images: { take: 1, orderBy: { sortOrder: "asc" } },
-      category: true,
-      variants: { orderBy: { sortOrder: "asc" } },
-    },
-    orderBy: [{ featured: "desc" }, { sortOrder: "asc" }],
-    skip,
-    take: PAGE_SIZE,
-  });
-
-  // Featured span pattern within page only (index relative to the current page)
-  const featuredIndex = (i: number) =>
-    i > 0 && i % 7 === 0 && products[i].images.length > 0;
-
-  const firstOnPage = skip + 1;
-  const lastOnPage = Math.min(skip + products.length, totalCount);
+  const initialItems = products.map((p) => ({
+    id: p.id,
+    name: p.name,
+    slug: p.slug,
+    price:
+      p.variants.find((v) => v.isDefault)?.priceOverride ??
+      p.basePrice,
+    image: p.images[0]?.url || null,
+    category: p.category?.name || "",
+    categorySlug: p.category?.slug,
+    colors: p.variants.map((v) => v.name),
+  }));
 
   return (
     <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-20 lg:py-28">
@@ -116,9 +119,7 @@ export default async function CategoryPage({ params, searchParams }: Props) {
           </h1>
           <p className="text-ink-soft font-light text-base">
             {totalCount > 0
-              ? totalPages > 1
-                ? `מציגים ${firstOnPage}–${lastOnPage} מתוך ${totalCount} מוצרים`
-                : `${totalCount} מוצרים בקטלוג`
+              ? `${totalCount} מוצרים בקטלוג`
               : "אין מוצרים בקטגוריה"}
           </p>
         </Reveal>
@@ -139,140 +140,20 @@ export default async function CategoryPage({ params, searchParams }: Props) {
         </div>
       )}
 
-      {/* Editorial grid */}
-      {products.length > 0 ? (
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12 lg:gap-x-8 lg:gap-y-16 auto-rows-auto">
-          {products.map((product, i) => {
-            const isFeatured = featuredIndex(i);
-            const delay = (i % 4) * 80;
-            return (
-              <Reveal
-                key={product.id}
-                delay={delay}
-                className={isFeatured ? "lg:col-span-2 lg:row-span-2" : ""}
-              >
-                <ProductCard
-                  featured={isFeatured}
-                  product={{
-                    id: product.id,
-                    name: product.name,
-                    slug: product.slug,
-                    price:
-                      product.variants.find((v) => v.isDefault)?.priceOverride ??
-                      product.basePrice,
-                    image: product.images[0]?.url || null,
-                    category: product.category?.name || "",
-                    colors: product.variants.map((v) => v.name),
-                  }}
-                />
-              </Reveal>
-            );
-          })}
-        </div>
+      {totalCount > 0 ? (
+        <InfiniteProducts
+          initialItems={initialItems}
+          totalCount={totalCount}
+          categorySlug={slug}
+          pageSize={PAGE_SIZE}
+        />
       ) : (
         <div className="text-center py-32 text-ink-soft font-light">
           <p className="text-lg">עדיין אין מוצרים בקטגוריה זו</p>
           <p className="text-sm mt-2">מוצרים חדשים מתווספים בקרוב</p>
         </div>
       )}
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <Pagination
-          slug={slug}
-          page={page}
-          totalPages={totalPages}
-        />
-      )}
     </div>
   );
 }
 
-function Pagination({
-  slug,
-  page,
-  totalPages,
-}: {
-  slug: string;
-  page: number;
-  totalPages: number;
-}) {
-  const linkFor = (p: number) =>
-    p === 1 ? `/categories/${slug}` : `/categories/${slug}?page=${p}`;
-
-  // Build page numbers: always show 1 and totalPages; show window around current
-  const pages = new Set<number>();
-  pages.add(1);
-  pages.add(totalPages);
-  for (let p = page - 2; p <= page + 2; p++) {
-    if (p >= 1 && p <= totalPages) pages.add(p);
-  }
-  const sorted = Array.from(pages).sort((a, b) => a - b);
-
-  return (
-    <nav
-      className="mt-20 pt-10 border-t border-bone flex items-center justify-between flex-wrap gap-4"
-      aria-label="ניווט בין עמודים"
-      dir="rtl"
-    >
-      <div className="flex items-center gap-2 flex-wrap">
-        {page > 1 ? (
-          <Link
-            href={linkFor(page - 1)}
-            className="px-4 h-10 flex items-center text-sm text-ink-soft hover:text-mocha transition-colors border border-bone hover:border-mocha"
-          >
-            → הקודם
-          </Link>
-        ) : (
-          <span className="px-4 h-10 flex items-center text-sm text-ink-soft/40 border border-bone/50 cursor-not-allowed">
-            → הקודם
-          </span>
-        )}
-
-        <div className="flex items-center gap-1">
-          {sorted.map((p, i) => {
-            const prev = sorted[i - 1];
-            const showGap = prev !== undefined && p - prev > 1;
-            return (
-              <span key={p} className="flex items-center gap-1">
-                {showGap && <span className="text-ink-soft/40 px-1">…</span>}
-                {p === page ? (
-                  <span
-                    className="w-10 h-10 flex items-center justify-center text-sm font-medium bg-ink text-cream"
-                    aria-current="page"
-                  >
-                    {p}
-                  </span>
-                ) : (
-                  <Link
-                    href={linkFor(p)}
-                    className="w-10 h-10 flex items-center justify-center text-sm text-ink-soft hover:text-mocha hover:bg-cream-deep transition-colors"
-                  >
-                    {p}
-                  </Link>
-                )}
-              </span>
-            );
-          })}
-        </div>
-
-        {page < totalPages ? (
-          <Link
-            href={linkFor(page + 1)}
-            className="px-4 h-10 flex items-center text-sm text-ink-soft hover:text-mocha transition-colors border border-bone hover:border-mocha"
-          >
-            הבא ←
-          </Link>
-        ) : (
-          <span className="px-4 h-10 flex items-center text-sm text-ink-soft/40 border border-bone/50 cursor-not-allowed">
-            הבא ←
-          </span>
-        )}
-      </div>
-
-      <div className="text-xs tracking-[0.2em] uppercase text-ink-soft">
-        עמוד {page} מתוך {totalPages}
-      </div>
-    </nav>
-  );
-}

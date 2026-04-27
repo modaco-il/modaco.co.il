@@ -9,9 +9,16 @@ interface ProductCardProps {
     price: number;
     image: string | null;
     category: string;
+    categorySlug?: string;
     colors?: string[]; // variant names like "ניקל מוברש", "שחור מט"
   };
   featured?: boolean;
+}
+
+const HIDE_PRICE_CATEGORY_SLUGS = new Set(["faucets", "faucets-blanco", "faucets-delta"]);
+function shouldHidePrice(slug: string | undefined, name: string): boolean {
+  if (slug && HIDE_PRICE_CATEGORY_SLUGS.has(slug)) return true;
+  return /ברזי|ברז(?:ים)?/.test(name);
 }
 
 // Hebrew finish/color name → hex (best-effort palette)
@@ -129,7 +136,11 @@ export function ProductCard({ product, featured = false }: ProductCardProps) {
         )}
 
         <div className="mt-3 text-sm text-ink-soft font-light">
-          ₪{product.price.toLocaleString()}
+          {shouldHidePrice(product.categorySlug, product.category) ? (
+            <span className="text-mocha">הנחה משמעותית בסניף</span>
+          ) : (
+            <>₪{product.price.toLocaleString()}</>
+          )}
         </div>
       </div>
     </Link>
