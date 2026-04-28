@@ -89,9 +89,9 @@ export function ProductCard({ product, featured = false }: ProductCardProps) {
   return (
     <Link
       href={`/products/${product.slug}`}
-      className="group block h-full"
+      className="group flex flex-col h-full"
     >
-      <div className={`img-frame relative overflow-hidden border border-bone group-hover:border-mocha/40 transition-colors ${featured ? "aspect-[4/5]" : "aspect-square"}`}>
+      <div className={`img-frame relative overflow-hidden border border-bone group-hover:border-mocha/40 transition-colors ${featured ? "flex-1 min-h-0" : "aspect-square shrink-0"}`}>
         {product.image ? (
           <Image
             src={product.image}
@@ -118,7 +118,7 @@ export function ProductCard({ product, featured = false }: ProductCardProps) {
         )}
       </div>
 
-      <div className="pt-5 pb-2">
+      <div className="pt-5 pb-2 shrink-0">
         <div className="text-[10px] tracking-[0.25em] uppercase text-mocha mb-2">
           {product.category}
         </div>

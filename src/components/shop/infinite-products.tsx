@@ -76,7 +76,7 @@ export function InfiniteProducts({ initialItems, totalCount, categorySlug, pageS
             <Reveal
               key={p.id}
               delay={Math.min(delay, 240)}
-              className={isFeatured ? "lg:col-span-2 lg:row-span-2" : ""}
+              className={`h-full ${isFeatured ? "lg:col-span-2 lg:row-span-2" : ""}`}
             >
               <ProductCard featured={isFeatured} product={p} />
             </Reveal>
