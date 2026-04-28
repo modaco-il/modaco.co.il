@@ -91,7 +91,9 @@ export function ProductCard({ product, featured = false }: ProductCardProps) {
       href={`/products/${product.slug}`}
       className="group flex flex-col h-full"
     >
-      <div className={`img-frame relative overflow-hidden border border-bone group-hover:border-mocha/40 transition-colors ${featured ? "flex-1 min-h-0" : "aspect-square shrink-0"}`}>
+      <div className={`img-frame relative overflow-hidden border border-bone group-hover:border-mocha/40 transition-colors ${
+        product.imageIsLifestyle ? "" : "bg-white"
+      } ${featured ? "flex-1 min-h-0" : "aspect-square shrink-0"}`}>
         {product.image ? (
           <Image
             src={product.image}
