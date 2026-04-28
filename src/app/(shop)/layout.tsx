@@ -292,12 +292,20 @@ export default function ShopLayout({
                   </a>
                 </li>
                 <li>
-                  <a href="tel:0526804945" className="hover:text-mocha-soft transition-colors block font-display text-lg text-cream" dir="ltr">
+                  <a
+                    href="tel:0526804945"
+                    className="hover:text-mocha-soft transition-colors inline-block font-display text-lg text-cream"
+                    dir="ltr"
+                  >
                     052-680-4945
                   </a>
                 </li>
                 <li>
-                  <a href="mailto:yarin@modaco.co.il" className="hover:text-mocha-soft transition-colors break-all">
+                  <a
+                    href="mailto:yarin@modaco.co.il"
+                    className="hover:text-mocha-soft transition-colors inline-block break-all"
+                    dir="ltr"
+                  >
                     yarin@modaco.co.il
                   </a>
                 </li>
