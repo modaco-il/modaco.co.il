@@ -8,6 +8,16 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+// Same defensive decode as products/[slug] — clients sending raw UTF-8
+// bytes would crash decodeURIComponent and return 500. Treat as 404.
+function safeDecode(raw: string): string | null {
+  try {
+    return decodeURIComponent(raw);
+  } catch {
+    return null;
+  }
+}
+
 const PAGE_SIZE = 24;
 
 const categoryMeta: Record<string, { og: string; tagline: string }> = {
@@ -29,7 +39,8 @@ const categoryMeta: Record<string, { og: string; tagline: string }> = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug: raw } = await params;
-  const slug = decodeURIComponent(raw);
+  const slug = safeDecode(raw);
+  if (!slug) return {};
   const category = await db.category.findUnique({ where: { slug } });
   if (!category) return {};
   const meta = categoryMeta[slug] || { og: "/images/israelevitz/1-web.jpg", tagline: `${category.name} — מוצרים מהמותגים המובילים` };
@@ -47,7 +58,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function CategoryPage({ params }: Props) {
   const { slug: raw } = await params;
-  const slug = decodeURIComponent(raw);
+  const slug = safeDecode(raw);
+  if (!slug) notFound();
 
   const category = await db.category.findUnique({
     where: { slug },

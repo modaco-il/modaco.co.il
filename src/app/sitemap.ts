@@ -5,6 +5,14 @@ import type { MetadataRoute } from "next";
 
 const BASE_URL = "https://modaco.co.il";
 
+// sitemaps.org spec requires URL-encoding non-ASCII chars in <loc>. Hebrew
+// slugs serialized raw cause two problems: (1) Googlebot may handle them
+// inconsistently, (2) basic HTTP clients that don't auto-encode hit the
+// site with raw UTF-8 bytes — which produced 500s on /products/[slug]
+// because decodeURIComponent rejects malformed sequences.
+const encodeSlug = (slug: string): string =>
+  slug.split("/").map(encodeURIComponent).join("/");
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Static pages
   const staticPages: MetadataRoute.Sitemap = [
@@ -53,7 +61,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     select: { slug: true, updatedAt: true },
   });
   const productPages: MetadataRoute.Sitemap = products.map((product) => ({
-    url: `${BASE_URL}/products/${product.slug}`,
+    url: `${BASE_URL}/products/${encodeSlug(product.slug)}`,
     lastModified: product.updatedAt,
     changeFrequency: "weekly",
     priority: 0.7,

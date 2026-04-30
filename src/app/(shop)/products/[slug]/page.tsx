@@ -7,9 +7,23 @@ interface Props {
   params: Promise<{ slug: string }>;
 }
 
+// decodeURIComponent throws on malformed UTF-8 (e.g. raw Hebrew bytes from
+// clients that don't pre-encode). A 500 from the renderer is the worst
+// possible UX — the user just sees a blank error. Treat any decode failure
+// as "not found" instead. Browsers always send pre-encoded URLs, so this
+// only affects misbehaving scrapers/curl/server-to-server callers.
+function safeDecode(raw: string): string | null {
+  try {
+    return decodeURIComponent(raw);
+  } catch {
+    return null;
+  }
+}
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug: raw } = await params;
-  const slug = decodeURIComponent(raw);
+  const slug = safeDecode(raw);
+  if (!slug) return {};
   const product = await db.product.findUnique({
     where: { slug, status: "ACTIVE" },
     include: { images: { take: 1, orderBy: { sortOrder: "asc" } } },
@@ -35,7 +49,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProductPage({ params }: Props) {
   const { slug: raw } = await params;
-  const slug = decodeURIComponent(raw);
+  const slug = safeDecode(raw);
+  if (!slug) notFound();
 
   const product = await db.product.findUnique({
     where: { slug, status: "ACTIVE" },
