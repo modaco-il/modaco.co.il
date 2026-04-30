@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import NextImage from "next/image";
+import { SafeImage } from "./safe-image";
 import { ProductCard } from "./product-card";
 
 interface Variant {
@@ -19,6 +20,7 @@ interface Image {
   id: string;
   url: string;
   altText: string | null;
+  isLifestyle: boolean;
 }
 
 interface CrossSell {
@@ -117,16 +119,16 @@ export function ProductDetail({ product }: ProductDetailProps) {
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
         {/* Images */}
         <div className="space-y-4">
-          <div className="aspect-square img-frame border border-bone overflow-hidden relative group">
+          <div className="aspect-square img-frame border border-bone overflow-hidden relative group bg-white">
             {mainImage ? (
-              <NextImage
+              <SafeImage
                 key={mainImage.id}
                 src={mainImage.url}
                 alt={mainImage.altText || product.name}
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 priority
-                className="object-contain p-12 transition-opacity duration-300"
+                className={mainImage.isLifestyle ? "object-cover transition-opacity duration-300" : "object-contain p-12 transition-opacity duration-300"}
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-ink-soft/30 text-xs tracking-widest uppercase">
@@ -149,17 +151,17 @@ export function ProductDetail({ product }: ProductDetailProps) {
                   key={img.id}
                   type="button"
                   onClick={() => setMainImageIdx(i)}
-                  className={`relative aspect-square img-frame border overflow-hidden transition-colors ${
+                  className={`relative aspect-square img-frame border overflow-hidden transition-colors bg-white ${
                     mainImageIdx === i ? "border-mocha" : "border-bone hover:border-mocha/50"
                   }`}
                   aria-label={`תמונה ${i + 1}`}
                 >
-                  <NextImage
+                  <SafeImage
                     src={img.url}
                     alt={img.altText || `תמונה ${i + 1}`}
                     fill
                     sizes="120px"
-                    className="object-contain p-3"
+                    className={img.isLifestyle ? "object-cover" : "object-contain p-3"}
                   />
                 </button>
               ))}

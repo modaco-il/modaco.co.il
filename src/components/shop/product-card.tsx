@@ -1,5 +1,5 @@
 import Link from "next/link";
-import Image from "next/image";
+import { SafeImage } from "@/components/shop/safe-image";
 
 interface ProductCardProps {
   product: {
@@ -95,7 +95,7 @@ export function ProductCard({ product, featured = false }: ProductCardProps) {
         product.imageIsLifestyle ? "" : "bg-white"
       } ${featured ? "flex-1 min-h-0" : "aspect-square shrink-0"}`}>
         {product.image ? (
-          <Image
+          <SafeImage
             src={product.image}
             alt={product.name}
             fill
