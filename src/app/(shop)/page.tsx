@@ -160,18 +160,18 @@ export default function HomePage() {
         <div className="relative z-10 h-full flex flex-col justify-end lg:justify-center pb-24 lg:pb-0">
           <div className="max-w-[1400px] mx-auto px-6 lg:px-12 w-full">
             <div className="max-w-2xl lg:max-w-4xl lg:mx-auto hero-text lg:text-center">
-              <div className="eyebrow text-mocha-soft mb-6">למעלה מ-40 שנה</div>
+              <div className="eyebrow text-mocha-soft mb-6">Modaco · מודקו · מאז 1985</div>
               <h1
                 className="font-display text-cream text-5xl lg:text-7xl leading-[1.05] mb-8"
                 style={{ fontWeight: 500 }}
               >
-                פרזול ואקססוריז<br />
+                Modaco — מודקו<br />
                 <span className="text-mocha-soft" style={{ fontWeight: 300 }}>
-                  ברמה אחרת
+                  פרזול ואקססוריז ברמה אחרת
                 </span>
               </h1>
               <p className="text-cream text-lg lg:text-xl font-light leading-relaxed max-w-xl lg:mx-auto mb-12">
-                המותגים המובילים בעולם, נבחרים בקפידה — לבית, למטבח ולכל חלל שמגיע לו את הטוב ביותר.
+                Modaco (מודקו) — למעלה מ-40 שנה של מומחיות בפרזול ואקססוריז לבית. המותגים המובילים בעולם, נבחרים בקפידה — לבית, למטבח ולכל חלל שמגיע לו את הטוב ביותר.
               </p>
               <div className="flex flex-col lg:flex-row gap-3 lg:justify-center">
                 <Link

@@ -64,6 +64,14 @@ export const metadata: Metadata = {
       "x-default": "https://modaco.co.il",
     },
   },
+  // Verification — fill these in once GSC / Bing accounts give us tokens.
+  // Until then, env-based fallback so we don't redeploy for verification.
+  verification: {
+    google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION,
+    other: {
+      "msvalidate.01": process.env.NEXT_PUBLIC_BING_VERIFICATION ?? "",
+    },
+  },
 };
 
 export default function RootLayout({
