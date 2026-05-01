@@ -99,8 +99,21 @@ export default function RootLayout({
                   "@type": ["LocalBusiness", "Store", "HomeGoodsStore"],
                   "@id": "https://modaco.co.il/#organization",
                   name: "Modaco",
-                  alternateName: ["מודקו", "Modaco — מודקו"],
+                  // Aliases that the brand has been known by over the years.
+                  // "מטבחי קובי" is the older name (Kobi's Kitchens, after founder
+                  // Kobi Moyal). Including it here helps Google merge the old
+                  // Facebook page (facebook.com/modaco2000 — branded "מטבחי קובי
+                  // | Bet Shemesh") into the same entity as modaco.co.il, so the
+                  // ~25 years of accrued authority on that page transfers to us.
+                  alternateName: [
+                    "מודקו",
+                    "Modaco — מודקו",
+                    "מטבחי קובי",
+                    "מטבחי קובי בית שמש",
+                  ],
                   legalName: "Modaco",
+                  foundingDate: "1985",
+                  founder: { "@type": "Person", name: "קובי מויאל" },
                   url: "https://modaco.co.il",
                   logo: {
                     "@type": "ImageObject",
@@ -152,14 +165,19 @@ export default function RootLayout({
                       closes: "13:00",
                     },
                   ],
-                  // sameAs binds the "Modaco / מודקו" brand entity to its external
-                  // profiles in Google's Knowledge Graph. WhatsApp is verified;
-                  // Facebook / Instagram / Google Business Profile / Wikidata get added
-                  // via NEXT_PUBLIC_SAMEAS_URLS env (comma-separated) once Yarin sends
-                  // the canonical URLs. We do NOT guess — invalid sameAs hurts more than
-                  // it helps.
+                  // sameAs binds Google's "מודקו" / "Modaco" brand entity to every
+                  // external profile we own. The Facebook page facebook.com/modaco2000
+                  // ("מטבחי קובי | Bet Shemesh") is the original 25-year-old social
+                  // presence — declaring it here is critical so Google merges its
+                  // accrued authority into modaco.co.il instead of treating them as
+                  // separate brands competing for the same query.
+                  // Additional profiles (Instagram, Google Business, Wikidata, b144
+                  // listing, etc) get added via NEXT_PUBLIC_SAMEAS_URLS env once Yarin
+                  // sends them. We do NOT guess unknown URLs — invalid sameAs hurts.
                   sameAs: [
                     "https://wa.me/972526804945",
+                    "https://www.facebook.com/modaco2000",
+                    "https://he-il.facebook.com/modaco2000/",
                     ...(process.env.NEXT_PUBLIC_SAMEAS_URLS?.split(",")
                       .map((s) => s.trim())
                       .filter(Boolean) ?? []),
@@ -224,6 +242,14 @@ export default function RootLayout({
                       acceptedAnswer: {
                         "@type": "Answer",
                         text: "מודקו (Modaco) הוא מותג ישראלי מוביל בתחום הפרזול והאקססוריז לבית, פעיל מ-1985. החנות הראשית של מודקו נמצאת באומן 1, בית שמש, ומציעה פרזול של Blum, Domicile, Movento, Blanco ו-Delta — כולל מטבחי יוקרה בהתאמה אישית.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: 'האם מודקו זה אותו עסק כמו "מטבחי קובי"?',
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "כן. מטבחי קובי הוא השם המקורי של העסק על שם המייסד קובי מויאל, פעיל מ-1985 בבית שמש. עם הצטרפותו של ירין מויאל להובלת העסק והרחבת הפעילות לקטלוג פרזול ואקססוריז מלא, העסק עבר ל-מודקו (Modaco). אותם בעלים, אותו אולם תצוגה ברחוב האומן 1 בבית שמש, אותה מומחיות של 40+ שנה.",
                       },
                     },
                     {
