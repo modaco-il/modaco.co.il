@@ -4,8 +4,8 @@ import "./globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL("https://modaco.co.il"),
   title: {
-    default: "Modaco — מודקו — פרזול ואקססוריז לבית",
-    template: "%s | Modaco — מודקו",
+    default: "מודקו | Modaco — פרזול ואקססוריז לבית · אולם תצוגה בבית שמש",
+    template: "%s | מודקו · Modaco",
   },
   description:
     "Modaco (מודקו) — למעלה מ-40 שנה של מומחיות בפרזול ואקססוריז לבית. צירים, מסילות, ידיות, ברזי מטבח, רגליים ואקססוריז מהמותגים המובילים בעולם — Blum, Domicile, Movento. אולם תצוגה רחב + סדנת נגרות.",
@@ -152,7 +152,18 @@ export default function RootLayout({
                       closes: "13:00",
                     },
                   ],
-                  sameAs: ["https://wa.me/972526804945"],
+                  // sameAs binds the "Modaco / מודקו" brand entity to its external
+                  // profiles in Google's Knowledge Graph. WhatsApp is verified;
+                  // Facebook / Instagram / Google Business Profile / Wikidata get added
+                  // via NEXT_PUBLIC_SAMEAS_URLS env (comma-separated) once Yarin sends
+                  // the canonical URLs. We do NOT guess — invalid sameAs hurts more than
+                  // it helps.
+                  sameAs: [
+                    "https://wa.me/972526804945",
+                    ...(process.env.NEXT_PUBLIC_SAMEAS_URLS?.split(",")
+                      .map((s) => s.trim())
+                      .filter(Boolean) ?? []),
+                  ],
                   knowsAbout: [
                     "פרזול לבית",
                     "פרזול מטבחים",
@@ -202,6 +213,52 @@ export default function RootLayout({
                   logo: "https://modaco.co.il/logo.png",
                   description:
                     "Modaco (מודקו) — מותג ישראלי מוביל לפרזול ואקססוריז לבית, מאז 1985.",
+                },
+                {
+                  "@type": "FAQPage",
+                  "@id": "https://modaco.co.il/#faq",
+                  mainEntity: [
+                    {
+                      "@type": "Question",
+                      name: "מי זה מודקו?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "מודקו (Modaco) הוא מותג ישראלי מוביל בתחום הפרזול והאקססוריז לבית, פעיל מ-1985. החנות הראשית של מודקו נמצאת באומן 1, בית שמש, ומציעה פרזול של Blum, Domicile, Movento, Blanco ו-Delta — כולל מטבחי יוקרה בהתאמה אישית.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: "איפה אולם התצוגה של מודקו?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "אולם התצוגה של מודקו נמצא ברחוב האומן 1 בבית שמש (מיקוד 9906101). פתוח ראשון עד חמישי 09:00–18:00, ושישי 09:00–13:00.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: "אילו מותגים מוכרת מודקו?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "מודקו מוכרת את המותגים המובילים בעולם בתחום הפרזול ואקססוריז לבית: Blum (אוסטריה — צירים, מסילות Movento ו-Tandem, מנגנוני הרמה Aventos), Domicile (ידיות, אקססוריז לאמבטיה, מראות, פחים, רגליים, לוח גמיש לחיפוי FLEX CNC), Blanco ו-Delta (ברזי מטבח), ו-Floralis (אגרטלים ופריטי בית).",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: "האם מודקו מייצרת מטבחים בהתאמה אישית?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "כן. מודקו מתכננת ומייצרת מטבחי יוקרה בהתאמה אישית מוחלטת, בליווי מקצועי מהשלב הראשון ועד ההתקנה. השילוב של נגרות איכותית עם פרזול מתקדם של Blum ו-Domicile מאפשר התאמה לכל חלל ולכל סגנון.",
+                      },
+                    },
+                    {
+                      "@type": "Question",
+                      name: "האם מודקו נותנת הנחה לאדריכלים ואנשי מקצוע?",
+                      acceptedAnswer: {
+                        "@type": "Answer",
+                        text: "כן. אדריכלים, מעצבים פנים, קבלנים ובעלי מקצוע נהנים מהנחה של 15% על כל הקטלוג של מודקו, בכפוף להרשמה כמשתמש B2B באתר.",
+                      },
+                    },
+                  ],
                 },
               ],
             }),
