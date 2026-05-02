@@ -32,16 +32,20 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!product) return {};
 
   const image = product.images[0]?.url;
+  // Always lead the meta description with the brand so every product page in the
+  // crawl carries a "מודקו" anchor in the SERP snippet, regardless of whether
+  // the seller wrote a custom seoDescription.
+  const baseDesc =
+    product.seoDescription ||
+    product.description?.slice(0, 140) ||
+    `${product.name} — פרזול ואקססוריז לבית מהמותגים המובילים בעולם.`;
   return {
-    title: product.seoTitle || product.name,
-    description:
-      product.seoDescription ||
-      product.description?.slice(0, 160) ||
-      `${product.name} — פרזול ואקססוריז לבית מהמותגים המובילים בעולם | Modaco`,
+    title: `${product.seoTitle || product.name} | מודקו`,
+    description: `${baseDesc} זמין לרכישה במודקו (Modaco) — אולם תצוגה ברחוב האומן 1, בית שמש.`,
     openGraph: {
-      title: product.name,
-      description: product.description?.slice(0, 160),
-      images: image ? [{ url: image, alt: product.name }] : undefined,
+      title: `${product.name} | מודקו · Modaco`,
+      description: baseDesc,
+      images: image ? [{ url: image, alt: `${product.name} — מודקו` }] : undefined,
       type: "website",
     },
   };

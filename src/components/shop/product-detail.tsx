@@ -96,10 +96,12 @@ export function ProductDetail({ product }: ProductDetailProps) {
 
   return (
     <div className="max-w-[1400px] mx-auto px-6 lg:px-12 py-12 lg:py-16">
-      {/* Breadcrumb */}
+      {/* Breadcrumb — leads with brand "מודקו" so every product page reinforces the
+          entity binding for Google. Replaces a generic "ראשי" that contributed
+          nothing to the brand authority on /products/* */}
       <nav className="flex items-center gap-2 text-xs tracking-wider text-ink-soft/60 mb-12 uppercase">
         <Link href="/" className="hover:text-mocha transition-colors">
-          ראשי
+          מודקו
         </Link>
         <span>/</span>
         {product.category && (
@@ -304,6 +306,11 @@ export function ProductDetail({ product }: ProductDetailProps) {
           <div className="mb-10">
             <div className="eyebrow mb-4">מפרט</div>
             <dl className="divide-y divide-bone text-sm">
+              {/* "נמכר ע״י: מודקו" — single brand mention on every one of the 1056+
+                  product pages. SEO leverage point: turns the entire catalog into
+                  a thousand pages where Google sees "מודקו" inside structured spec
+                  content, not just in nav. */}
+              <SpecRow label="נמכר ע״י" value="מודקו" />
               {product.supplier && (
                 <SpecRow label="מותג" value={product.supplier.name} />
               )}
@@ -327,7 +334,7 @@ export function ProductDetail({ product }: ProductDetailProps) {
                 value={stock?.label || "בדיקה"}
                 valueColor={stock?.color}
               />
-              <SpecRow label="משלוח" value="לכל הארץ" />
+              <SpecRow label="משלוח" value="מודקו לכל הארץ" />
             </dl>
           </div>
 

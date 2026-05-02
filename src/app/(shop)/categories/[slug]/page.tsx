@@ -1,6 +1,7 @@
 import { db } from "@/lib/db";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
+import Link from "next/link";
 import { Reveal } from "@/components/shop/reveal";
 import { InfiniteProducts } from "@/components/shop/infinite-products";
 
@@ -45,12 +46,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!category) return {};
   const meta = categoryMeta[slug] || { og: "/images/israelevitz/1-web.jpg", tagline: `${category.name} — מוצרים מהמותגים המובילים` };
   return {
-    title: category.name,
-    description: `${category.name} — ${meta.tagline}. Modaco — למעלה מ-40 שנה של מומחיות בפרזול ואקססוריז לבית.`,
+    title: `${category.name} | מודקו`,
+    description: `${category.name} מבית מודקו (Modaco) — ${meta.tagline}. למעלה מ-40 שנה של מומחיות בפרזול ואקססוריז לבית. אולם תצוגה ברחוב האומן 1, בית שמש.`,
     openGraph: {
-      title: `${category.name} | Modaco`,
-      description: meta.tagline,
-      images: [{ url: meta.og, alt: category.name }],
+      title: `${category.name} | מודקו · Modaco`,
+      description: `${meta.tagline} — מודקו (Modaco)`,
+      images: [{ url: meta.og, alt: `${category.name} — מודקו` }],
       type: "website",
     },
   };
@@ -126,13 +127,20 @@ export default async function CategoryPage({ params }: Props) {
       {/* Category header */}
       <div className="mb-16 lg:mb-20">
         <Reveal>
-          <div className="eyebrow mb-5">קטגוריה</div>
+          {/* Breadcrumb-style brand pin — every category page on the site now starts
+              with "מודקו · {category}", so the brand appears in visible text + page
+              h1 surroundings on all 14 category landing pages. */}
+          <div className="eyebrow mb-5">
+            <Link href="/" className="hover:text-mocha transition-colors">מודקו</Link>
+            <span className="mx-2 opacity-40">·</span>
+            <span>קטגוריה</span>
+          </div>
           <h1 className="font-display font-bold text-5xl lg:text-7xl text-ink mb-4">
             {category.name}
           </h1>
-          <p className="text-ink-soft font-light text-base">
+          <p className="text-ink-soft font-light text-base max-w-2xl leading-loose">
             {totalCount > 0
-              ? `${totalCount} מוצרים בקטלוג`
+              ? `${category.name} מבית מודקו (Modaco) — ${totalCount} מוצרים בקטלוג. ${categoryMeta[slug]?.tagline ?? "פרזול ואקססוריז לבית מהמותגים המובילים בעולם"}.`
               : "אין מוצרים בקטגוריה"}
           </p>
         </Reveal>
