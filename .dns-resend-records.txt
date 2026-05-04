@@ -1,0 +1,34 @@
+## Resend DNS Records for modaco.co.il (eu-west-1, Ireland)
+## Domain ID: c27bc44b-7d19-49c0-ab92-3f198ee4307a
+## Captured: 2026-05-03
+
+# 1. DKIM (REQUIRED)
+TYPE: TXT
+NAME: resend._domainkey
+VALUE: p=MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCoaADA0ivCkLydooMub9meIKMiaxd2ALL5wfItHh47Vkw4InwGgw45885f5SsxfdFBFw3ZwJQbXqU7ojYWKOzYNDXygQVTpb8jiDSOcLIU9HhE9h6T4zY96jBV8q3EN46NW0kbQUzz3zjZLceIzJNvZhLuRh9kkVsKxzJ+5i0VNQIDAQAB
+TTL: Auto
+
+# 2. SPF on send subdomain (REQUIRED)
+TYPE: TXT
+NAME: send
+VALUE: v=spf1 include:amazonses.com ~all
+TTL: Auto
+
+# 3. MX on send subdomain (REQUIRED — bounce/feedback)
+TYPE: MX
+NAME: send
+VALUE: feedback-smtp.eu-west-1.amazonses.com
+PRIORITY: 10
+TTL: Auto
+
+# 4. DMARC at root (RECOMMENDED)
+TYPE: TXT
+NAME: _dmarc
+VALUE: v=DMARC1; p=none;
+TTL: Auto
+
+# 5. MX at root for inbound — DO NOT ADD!
+# This conflicts with Google Workspace's existing MX (smtp.google.com).
+# Modaco uses Google Workspace for receiving mail at yarin@modaco.co.il —
+# adding inbound-smtp.eu-west-1.amazonaws.com here would break that.
+# Only add if Yarin chooses to migrate inbound to Resend (not happening now).
