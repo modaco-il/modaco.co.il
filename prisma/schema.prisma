@@ -141,12 +141,23 @@ model Supplier {
 }
 
 model Category {
-  id       String  @id @default(cuid())
-  parentId String?
-  name     String
-  slug     String  @unique
-  image    String?
-  sortOrder Int    @default(0)
+  id        String  @id @default(cuid())
+  parentId  String?
+  name      String
+  slug      String  @unique
+  // Display metadata — populated for the 14 hand-curated categories,
+  // optional for ad-hoc ones created via the admin agent.
+  // Reads: homepage bento, /catalog, footer, header desktop strip.
+  brand       String?  // e.g. "Domicile", "Blum · Domicile"
+  tagline     String?  // short subtitle on bento card
+  shortDesc   String?  // 1-liner on smaller surfaces
+  description String?  // long-form on /categories/[slug]
+  cover       String?  // hero image path (/images/...)
+  indexLabel  String?  // "01", "02" — appears on /catalog
+  featured    Boolean  @default(false) // shows on homepage bento
+  bentoSize   String?  // "xl" | "lg" | "md" | "sm"
+  image       String?  // legacy field — kept to avoid breaking migration
+  sortOrder   Int      @default(0)
 
   parent   Category?  @relation("CategoryTree", fields: [parentId], references: [id])
   children Category[] @relation("CategoryTree")

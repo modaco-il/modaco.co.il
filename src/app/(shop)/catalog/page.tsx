@@ -2,15 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
 import { db } from "@/lib/db";
-import { CATEGORIES } from "@/lib/categories";
+import { getCategories } from "@/lib/categories";
 
 export const metadata: Metadata = {
   title: "הקטלוג המלא",
   description:
     "כל הקטגוריות במקום אחד. צירים, מסילות, מנגנוני הרמה, אקססוריז, אלומיניום ונגרות — מהמותגים המובילים בעולם.",
 };
-
-const entries = CATEGORIES;
 
 async function getCounts(): Promise<Record<string, number>> {
   const counts = await db.product.groupBy({
@@ -32,7 +30,7 @@ async function getCounts(): Promise<Record<string, number>> {
 }
 
 export default async function CatalogPage() {
-  const counts = await getCounts();
+  const [counts, entries] = await Promise.all([getCounts(), getCategories()]);
 
   return (
     <article>

@@ -2,9 +2,15 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { CATEGORIES } from "@/lib/categories";
+import type { Category } from "@/lib/categories";
 
-export function CategoryRail({ transparent = false }: { transparent?: boolean }) {
+export function CategoryRail({
+  transparent = false,
+  categories,
+}: {
+  transparent?: boolean;
+  categories: Category[];
+}) {
   const pathname = usePathname() || "";
   const textBase = transparent
     ? "text-cream/75 hover:text-cream"
@@ -18,7 +24,7 @@ export function CategoryRail({ transparent = false }: { transparent?: boolean })
       className="hidden lg:flex fixed top-1/2 -translate-y-1/2 right-3 xl:right-5 z-30 flex-col gap-0.5 pointer-events-auto"
       dir="rtl"
     >
-      {CATEGORIES.map((cat) => {
+      {categories.map((cat) => {
         const href = `/categories/${cat.slug}`;
         const active = pathname === href;
         return (

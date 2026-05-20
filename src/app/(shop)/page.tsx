@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { CATEGORIES, type Category } from "@/lib/categories";
+import { getCategories, type Category } from "@/lib/categories";
 
 function BentoCard({
   cat,
@@ -113,8 +113,6 @@ function UserPlusIcon() {
   );
 }
 
-const categories = CATEGORIES.filter((c) => c.featured);
-
 /**
  * Bento layout — 14 cards, 12-col grid, editorial flow.
  * Pattern is positional so visual rhythm stays consistent regardless of category labels.
@@ -141,7 +139,9 @@ const BENTO_LAYOUT: Array<{ desktop: string; mobile: string; size: "xl" | "lg" |
   { desktop: "lg:col-span-12 lg:row-span-1", mobile: "col-span-2 row-span-1", size: "md" },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  const all = await getCategories();
+  const categories = all.filter((c) => c.featured);
   return (
     <div>
       {/* Hero — full-bleed editorial */}

@@ -1,3 +1,21 @@
+/**
+ * Category source-of-truth strategy:
+ *
+ * The 14 curated categories Yarin opened the store with live in the static
+ * CATEGORIES array below. Every storefront surface (bento, footer, header,
+ * /catalog) used to import that array directly.
+ *
+ * To let the admin agent add NEW categories that appear on every surface
+ * without redeploying, the storefront chrome now reads from the DB via
+ * `getCategories()` (cached). The static array remains as the schema +
+ * fallback when the DB query fails or hasn't been backfilled yet.
+ *
+ * Type kept loose (cover/brand/etc. optional) so DB rows created by the
+ * agent — which may not have all metadata yet — still type-check.
+ */
+import { db } from "@/lib/db";
+import { unstable_cache } from "next/cache";
+
 export interface Category {
   slug: string;
   name: string;
@@ -12,6 +30,41 @@ export interface Category {
   /** size hint for bento layout */
   bentoSize?: "xl" | "lg" | "md" | "sm";
 }
+
+/**
+ * Server-only: fetch categories from DB. Cached for 60s so the bento +
+ * footer + header don't hit Postgres on every request — when Yarin adds
+ * a category via the agent it appears within a minute.
+ */
+export const getCategories = unstable_cache(
+  async (): Promise<Category[]> => {
+    try {
+      const rows = await db.category.findMany({
+        where: { parentId: null }, // top-level only (subcategories filtered out)
+        orderBy: { sortOrder: "asc" },
+      });
+      return rows.map((r): Category => ({
+        slug: r.slug,
+        name: r.name,
+        brand: r.brand ?? "",
+        tagline: r.tagline ?? "",
+        shortDesc: r.shortDesc ?? "",
+        description: r.description ?? "",
+        cover: r.cover ?? "/images/israelevitz/1-web.jpg",
+        index: r.indexLabel ?? String(r.sortOrder).padStart(2, "0"),
+        featured: r.featured,
+        bentoSize: (r.bentoSize as Category["bentoSize"]) ?? "sm",
+      }));
+    } catch (err) {
+      // DB unreachable during build — fall back to the curated static list
+      // so the deploy doesn't fail
+      console.warn("getCategories: DB unreachable, falling back to static CATEGORIES", err);
+      return CATEGORIES;
+    }
+  },
+  ["modaco-categories"],
+  { revalidate: 60, tags: ["categories"] },
+);
 
 export const CATEGORIES: Category[] = [
   {

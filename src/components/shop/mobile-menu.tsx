@@ -3,14 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
-import { CATEGORIES } from "@/lib/categories";
-
-const items = CATEGORIES.map((cat) => ({
-  href: `/categories/${cat.slug}`,
-  label: cat.name,
-  brand: cat.brand,
-  img: cat.cover,
-}));
+import type { Category } from "@/lib/categories";
 
 const secondaryItems = [
   { href: "/catalog", label: "הקטלוג המלא" },
@@ -19,7 +12,21 @@ const secondaryItems = [
   { href: "/search", label: "חיפוש" },
 ];
 
-export function MobileMenu({ open, onClose }: { open: boolean; onClose: () => void }) {
+export function MobileMenu({
+  open,
+  onClose,
+  categories,
+}: {
+  open: boolean;
+  onClose: () => void;
+  categories: Category[];
+}) {
+  const items = categories.map((cat) => ({
+    href: `/categories/${cat.slug}`,
+    label: cat.name,
+    brand: cat.brand,
+    img: cat.cover,
+  }));
   const [activeIdx, setActiveIdx] = useState(0);
   const navRef = useRef<HTMLElement>(null);
 

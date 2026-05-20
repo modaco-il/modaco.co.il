@@ -4,6 +4,7 @@
  * small + idempotent: the agent composes them, not the other way around.
  */
 import { db } from "@/lib/db";
+import { revalidatePath } from "next/cache";
 import { scrapeNygaProduct, scrapeNygaCollection } from "@/lib/scrapers/nyga";
 import { scrapeFloralProduct, scrapeFloralCollection } from "@/lib/scrapers/floralis";
 import { scrapeDomicileProduct, scrapeDomicileCategory } from "@/lib/scrapers/domicile";
@@ -272,16 +273,79 @@ export async function mark_out_of_stock(args: { productId: string; outOfStock: b
 export async function add_category(args: {
   slug: string;
   name: string;
+  brand?: string;
+  tagline?: string;
+  shortDesc?: string;
+  description?: string;
+  cover?: string;
+  featured?: boolean;
+  bentoSize?: "xl" | "lg" | "md" | "sm";
   sortOrder?: number;
 }) {
   const existing = await db.category.findUnique({ where: { slug: args.slug } });
   if (existing) {
     return { status: "exists", category: existing };
   }
-  const created = await db.category.create({
-    data: { slug: args.slug, name: args.name, sortOrder: args.sortOrder ?? 99 },
+  // Compute next indexLabel based on current max
+  const lastByOrder = await db.category.findFirst({
+    orderBy: { sortOrder: "desc" },
+    select: { sortOrder: true },
   });
-  return { status: "created", category: created };
+  const nextOrder = args.sortOrder ?? (lastByOrder?.sortOrder ?? 0) + 1;
+  const created = await db.category.create({
+    data: {
+      slug: args.slug,
+      name: args.name,
+      brand: args.brand,
+      tagline: args.tagline,
+      shortDesc: args.shortDesc,
+      description: args.description,
+      cover: args.cover,
+      featured: args.featured ?? true,
+      bentoSize: args.bentoSize ?? "sm",
+      indexLabel: String(nextOrder).padStart(2, "0"),
+      sortOrder: nextOrder,
+    },
+  });
+  // Bust the storefront's getCategories() cache so the new category appears
+  // on header/footer/bento immediately on next request
+  // Categories appear on every storefront page chrome — wipe the entire layout cache
+  revalidatePath("/", "layout");
+  return {
+    status: "created",
+    category: created,
+    note: "הקטגוריה זמינה מיידית באתר (cache revalidated). תופיע בכותרת, בפוטר, בדף הבית ובקטלוג.",
+  };
+}
+
+/* ------------------------------------------------------------------ */
+/* Tool: update_category — edit existing category metadata             */
+/* ------------------------------------------------------------------ */
+
+export async function update_category(args: {
+  slug: string;
+  name?: string;
+  brand?: string;
+  tagline?: string;
+  shortDesc?: string;
+  description?: string;
+  cover?: string;
+  featured?: boolean;
+  bentoSize?: "xl" | "lg" | "md" | "sm";
+  sortOrder?: number;
+}) {
+  const { slug, ...rest } = args;
+  const data: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(rest)) {
+    if (v !== undefined) data[k] = v;
+  }
+  if (Object.keys(data).length === 0) {
+    return { status: "noop", reason: "no changes provided" };
+  }
+  const updated = await db.category.update({ where: { slug }, data });
+  // Categories appear on every storefront page chrome — wipe the entire layout cache
+  revalidatePath("/", "layout");
+  return { status: "updated", category: updated };
 }
 
 /* ------------------------------------------------------------------ */
@@ -375,15 +439,44 @@ export const toolDefinitions = [
   },
   {
     name: "add_category",
-    description: "Create a new product category. Slug must be unique kebab-case English; name is the Hebrew display label.",
+    description:
+      "Create a new product category. Slug is the URL-safe kebab-case English id; name is the Hebrew display label. Optional metadata (brand, tagline, shortDesc, description, cover, featured, bentoSize) controls how the category appears in the homepage bento, footer, header desktop strip, and /catalog. Cover should be a /images/... path. After creating, the storefront updates within ~60s via the categories cache.",
     input_schema: {
       type: "object" as const,
       properties: {
         slug: { type: "string", description: "URL-safe slug, e.g. 'bath-mirrors'" },
-        name: { type: "string", description: "Hebrew display name" },
-        sortOrder: { type: "number" },
+        name: { type: "string", description: "Hebrew display name, e.g. 'מראות לאמבט'" },
+        brand: { type: "string", description: "Supplier brand, e.g. 'Domicile' or 'Blanco · Delta'" },
+        tagline: { type: "string", description: "Short Hebrew tagline shown under the H1" },
+        shortDesc: { type: "string", description: "One-line description for small cards" },
+        description: { type: "string", description: "Long-form paragraph for the category page" },
+        cover: { type: "string", description: "Hero image path, e.g. '/images/domicile/categories/handles.jpg'" },
+        featured: { type: "boolean", description: "Show in homepage bento (default true)" },
+        bentoSize: { type: "string", enum: ["xl", "lg", "md", "sm"], description: "Size hint for the bento card (default 'sm')" },
+        sortOrder: { type: "number", description: "Numeric position in the lists (lower = earlier). Auto-assigned if omitted." },
       },
       required: ["slug", "name"],
+    },
+  },
+  {
+    name: "update_category",
+    description:
+      "Edit metadata on an existing category (name, brand, tagline, cover image, featured flag, bento size, sort order). Pass only the fields you want to change. Storefront updates within ~60s.",
+    input_schema: {
+      type: "object" as const,
+      properties: {
+        slug: { type: "string", description: "Existing category slug to edit" },
+        name: { type: "string" },
+        brand: { type: "string" },
+        tagline: { type: "string" },
+        shortDesc: { type: "string" },
+        description: { type: "string" },
+        cover: { type: "string" },
+        featured: { type: "boolean" },
+        bentoSize: { type: "string", enum: ["xl", "lg", "md", "sm"] },
+        sortOrder: { type: "number" },
+      },
+      required: ["slug"],
     },
   },
 ];
@@ -413,7 +506,36 @@ const dispatch: Record<string, (args: Record<string, unknown>) => Promise<unknow
     ),
   mark_out_of_stock: (a) =>
     mark_out_of_stock(a as { productId: string; outOfStock: boolean }),
-  add_category: (a) => add_category(a as { slug: string; name: string; sortOrder?: number }),
+  add_category: (a) =>
+    add_category(
+      a as {
+        slug: string;
+        name: string;
+        brand?: string;
+        tagline?: string;
+        shortDesc?: string;
+        description?: string;
+        cover?: string;
+        featured?: boolean;
+        bentoSize?: "xl" | "lg" | "md" | "sm";
+        sortOrder?: number;
+      },
+    ),
+  update_category: (a) =>
+    update_category(
+      a as {
+        slug: string;
+        name?: string;
+        brand?: string;
+        tagline?: string;
+        shortDesc?: string;
+        description?: string;
+        cover?: string;
+        featured?: boolean;
+        bentoSize?: "xl" | "lg" | "md" | "sm";
+        sortOrder?: number;
+      },
+    ),
 };
 
 export async function runTool(name: string, args: Record<string, unknown>): Promise<unknown> {
