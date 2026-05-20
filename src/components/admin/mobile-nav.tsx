@@ -7,15 +7,15 @@ import {
   Package,
   ShoppingCart,
   Users,
-  FolderTree,
+  Sparkles,
 } from "lucide-react";
 
 const navItems = [
   { href: "/admin/dashboard", label: "דשבורד", icon: LayoutDashboard },
+  { href: "/admin/agent", label: "סוכן", icon: Sparkles },
   { href: "/admin/products", label: "מוצרים", icon: Package },
   { href: "/admin/orders", label: "הזמנות", icon: ShoppingCart },
   { href: "/admin/customers", label: "לקוחות", icon: Users },
-  { href: "/admin/categories", label: "קטגוריות", icon: FolderTree },
 ];
 
 export function AdminMobileNav() {

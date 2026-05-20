@@ -9,10 +9,12 @@ import {
   Users,
   FolderTree,
   Settings,
+  Sparkles,
 } from "lucide-react";
 
 const navItems = [
   { href: "/admin/dashboard", label: "דשבורד", icon: LayoutDashboard },
+  { href: "/admin/agent", label: "סוכן AI", icon: Sparkles, highlight: true },
   { href: "/admin/products", label: "מוצרים", icon: Package },
   { href: "/admin/orders", label: "הזמנות", icon: ShoppingCart },
   { href: "/admin/customers", label: "לקוחות", icon: Users },
