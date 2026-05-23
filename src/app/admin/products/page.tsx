@@ -4,6 +4,7 @@ import Link from "next/link";
 import { db } from "@/lib/db";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { ProductRowActions } from "@/components/admin/product-row-actions";
 
 interface Props {
   searchParams: Promise<{ q?: string; category?: string; status?: string }>;
@@ -38,7 +39,10 @@ export default async function ProductsPage({ searchParams }: Props) {
       where,
       include: {
         category: { select: { name: true, slug: true } },
-        variants: { take: 1, where: { isDefault: true } },
+        // Take all variants for the row so we can detect OOS even if the
+        // default variant isn't the one that's out of stock — typical case
+        // is when only one size is out.
+        variants: { select: { priceOverride: true, stockStatus: true, isDefault: true } },
         images: { take: 1, orderBy: { sortOrder: "asc" } },
       },
       orderBy: { updatedAt: "desc" },
@@ -101,14 +105,21 @@ export default async function ProductsPage({ searchParams }: Props) {
 
       <div className="space-y-3">
         {products.map((p) => {
-          const price = p.variants[0]?.priceOverride ?? p.basePrice;
+          const defaultVar = p.variants.find((v) => v.isDefault) ?? p.variants[0];
+          const price = defaultVar?.priceOverride ?? p.basePrice;
+          // Any variant out → flag the row as "אזל". Toggle restores all.
+          const isOutOfStock = p.variants.some((v) => v.stockStatus === "OUT_OF_STOCK");
           return (
-            <Link
+            <div
               key={p.id}
-              href={`/admin/products/${p.id}`}
-              className="block bg-white border border-gray-200 rounded-lg p-4 hover:border-blue-500"
+              className="relative bg-white border border-gray-200 rounded-lg p-4 hover:border-blue-500 transition-colors"
             >
-              <div className="flex items-center gap-4">
+              <Link
+                href={`/admin/products/${p.id}`}
+                className="absolute inset-0 z-0"
+                aria-label={`ערוך ${p.name}`}
+              />
+              <div className="relative z-10 flex items-center gap-4 pointer-events-none">
                 <div className="w-16 h-16 bg-gray-100 rounded flex-shrink-0 overflow-hidden">
                   {p.images[0] ? (
                     /* eslint-disable-next-line @next/next/no-img-element */
@@ -129,11 +140,23 @@ export default async function ProductsPage({ searchParams }: Props) {
                     <span className={`px-2 py-0.5 rounded text-xs ${statusConfig[p.status].className}`}>
                       {statusConfig[p.status].label}
                     </span>
+                    {isOutOfStock && (
+                      <span className="px-2 py-0.5 rounded text-xs bg-amber-100 text-amber-800">
+                        אזל
+                      </span>
+                    )}
                   </div>
                 </div>
                 <div className="text-left font-bold">₪{price.toLocaleString()}</div>
               </div>
-            </Link>
+              <div className="relative z-20 flex justify-end mt-3 pt-3 border-t border-gray-100 pointer-events-auto">
+                <ProductRowActions
+                  productId={p.id}
+                  status={p.status as "ACTIVE" | "DRAFT" | "ARCHIVED"}
+                  isOutOfStock={isOutOfStock}
+                />
+              </div>
+            </div>
           );
         })}
         {products.length === 0 && (
