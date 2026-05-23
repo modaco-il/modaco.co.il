@@ -228,9 +228,6 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Trust ribbon — marquee */}
-      <TrustRibbon />
-
       {/* Categories — bento collage */}
       <section className="max-w-[1400px] mx-auto px-6 lg:px-12 py-24 lg:py-32">
         <div className="flex items-end justify-between mb-12 lg:mb-16 flex-wrap gap-6">
@@ -425,59 +422,3 @@ export default async function HomePage() {
   );
 }
 
-const trustItems: Array<{ brand?: string; text?: string; number?: string; label?: string }> = [
-  { number: "40+", label: "שנות מומחיות" },
-  { number: "200+", label: "מוצרים בקטלוג" },
-  { brand: "MOVENTO", label: "טכנולוגיה אוסטרית" },
-  { text: "SINCE 1985", label: "מטבחי יוקרה" },
-  { brand: "AVENTOS", label: "מנגנוני הרמה" },
-  { text: "B2B", label: "רשת אנשי מקצוע" },
-  { text: "B2C", label: "אולם תצוגה רחב" },
-];
-
-function TrustItem({ item }: { item: (typeof trustItems)[number] }) {
-  const primary = item.brand || item.text || item.number || "";
-  const isNumber = !!item.number;
-  return (
-    <span className="inline-flex items-baseline gap-3 mx-8 shrink-0">
-      <span
-        className={`text-2xl lg:text-3xl tracking-tight ${isNumber ? "font-display font-light" : "font-bold tracking-wider"}`}
-        style={{ color: "#FAF6F0" }}
-      >
-        {primary}
-      </span>
-      <span
-        className="text-[11px] tracking-[0.28em] uppercase font-medium"
-        style={{ color: "#D9C3A5" }}
-      >
-        {item.label}
-      </span>
-    </span>
-  );
-}
-
-function TrustRibbon() {
-  const doubled = [...trustItems, ...trustItems];
-  return (
-    <section
-      className="relative overflow-hidden marquee-pause"
-      style={{ background: "#0A0908" }}
-      aria-label="מותגים ונתונים"
-    >
-      <div className="marquee-track flex py-7 lg:py-10 whitespace-nowrap" dir="ltr">
-        {doubled.map((item, i) => (
-          <span key={i} className="flex items-baseline">
-            <TrustItem item={item} />
-            <span
-              className="text-xl opacity-30 select-none"
-              style={{ color: "#D9C3A5" }}
-              aria-hidden
-            >
-              ◆
-            </span>
-          </span>
-        ))}
-      </div>
-    </section>
-  );
-}
