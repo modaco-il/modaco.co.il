@@ -5,6 +5,7 @@ import { db } from "@/lib/db";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { ProductRowActions } from "@/components/admin/product-row-actions";
+import { InlinePriceEdit } from "@/components/admin/inline-price-edit";
 
 interface Props {
   searchParams: Promise<{ q?: string; category?: string; status?: string }>;
@@ -156,7 +157,9 @@ export default async function ProductsPage({ searchParams }: Props) {
                     )}
                   </div>
                 </div>
-                <div className="text-left font-bold">₪{price.toLocaleString()}</div>
+                <div className="text-left pointer-events-auto relative z-20">
+                  <InlinePriceEdit productId={p.id} basePrice={p.basePrice} />
+                </div>
               </div>
               <div className="relative z-20 flex justify-end mt-3 pt-3 border-t border-gray-100 pointer-events-auto">
                 <ProductRowActions

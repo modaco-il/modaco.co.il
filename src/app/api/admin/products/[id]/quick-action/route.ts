@@ -1,12 +1,13 @@
 /**
  * Inline quick-actions for a product from the admin product list.
- * Lets Yarin flip stock + archive without opening the product page or chatting
- * with the agent. POST body shape:
+ * Lets Yarin flip stock + archive + edit price without opening the product
+ * page or chatting with the agent. POST body shape:
  *
  *   { action: "toggle_out_of_stock" }      → flips every variant between
  *                                            OUT_OF_STOCK and AT_SUPPLIER
  *   { action: "archive" }                   → status → ARCHIVED (hides from shop)
  *   { action: "restore" }                   → status → ACTIVE
+ *   { action: "set_price", price: number }  → basePrice = price
  *
  * ADMIN-only. Revalidates the storefront so the change shows up immediately.
  */
@@ -15,8 +16,8 @@ import { auth } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
-type Action = "toggle_out_of_stock" | "archive" | "restore";
-const ALLOWED: Action[] = ["toggle_out_of_stock", "archive", "restore"];
+type Action = "toggle_out_of_stock" | "archive" | "restore" | "set_price";
+const ALLOWED: Action[] = ["toggle_out_of_stock", "archive", "restore", "set_price"];
 
 export async function POST(
   req: NextRequest,
@@ -72,6 +73,20 @@ export async function POST(
     await db.product.update({ where: { id }, data: { status: "ACTIVE" } });
     revalidatePath("/", "layout");
     return NextResponse.json({ ok: true, status: "ACTIVE" });
+  }
+
+  if (action === "set_price") {
+    const price = Number(body?.price);
+    if (!Number.isFinite(price) || price < 0) {
+      return NextResponse.json({ error: "invalid price" }, { status: 400 });
+    }
+    const updated = await db.product.update({
+      where: { id },
+      data: { basePrice: price },
+      select: { basePrice: true },
+    });
+    revalidatePath("/", "layout");
+    return NextResponse.json({ ok: true, basePrice: updated.basePrice });
   }
 
   return NextResponse.json({ error: "unreachable" }, { status: 500 });
