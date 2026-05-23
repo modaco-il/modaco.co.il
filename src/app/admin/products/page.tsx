@@ -58,13 +58,22 @@ export default async function ProductsPage({ searchParams }: Props) {
     <div className="space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
         <h1 className="text-2xl font-bold">מוצרים</h1>
-        <Link
-          href="/admin/products/new"
-          className="inline-flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-lg text-sm hover:bg-gray-700"
-        >
-          <span>+</span>
-          מוצר חדש
-        </Link>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/admin/products/from-url"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-lg text-sm font-medium shadow-sm"
+          >
+            <span aria-hidden>✨</span>
+            הוסף מקישור ספק
+          </Link>
+          <Link
+            href="/admin/products/new"
+            className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 rounded-lg text-sm"
+          >
+            <span>+</span>
+            ידני
+          </Link>
+        </div>
       </div>
 
       <form method="GET" className="bg-white border border-gray-200 rounded-lg p-4 space-y-3">
