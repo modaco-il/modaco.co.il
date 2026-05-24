@@ -281,7 +281,7 @@ function Kpi({
         {label}
       </div>
       <div
-        className={`text-2xl font-bold mt-1 ${
+        className={`text-2xl font-bold mt-1 tabular-nums truncate ${
           warning
             ? "text-amber-700"
             : accent

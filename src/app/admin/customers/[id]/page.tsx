@@ -134,8 +134,8 @@ export default async function CustomerDetailPage({ params }: Props) {
         </div>
       </header>
 
-      {/* Stats */}
-      <div className="grid grid-cols-3 gap-3">
+      {/* Stats — 1col on phone (LTV can be 8+ digits), 3col on tablet+ */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
         <Stat label="הזמנות" value={customer.orders.length} />
         <Stat label="הזמנות שולמו" value={paidCount} />
         <Stat label="ערך לקוח" value={`₪${totalSpent.toLocaleString()}`} accent />
@@ -264,7 +264,7 @@ function Stat({
     >
       <div className="text-xs text-gray-500 uppercase tracking-wide">{label}</div>
       <div
-        className={`text-2xl font-bold mt-1 ${accent ? "text-blue-700" : "text-gray-900"}`}
+        className={`text-2xl font-bold mt-1 tabular-nums truncate ${accent ? "text-blue-700" : "text-gray-900"}`}
       >
         {value}
       </div>

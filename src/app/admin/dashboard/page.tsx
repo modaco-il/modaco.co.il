@@ -95,38 +95,84 @@ export default async function AdminDashboard() {
           {recentOrders.length === 0 ? (
             <div className="p-8 text-center text-gray-400 text-sm">אין הזמנות עדיין</div>
           ) : (
-            <table className="w-full text-sm">
-              <thead className="bg-gray-50 text-xs uppercase text-gray-500">
-                <tr>
-                  <th className="px-4 py-3 text-right">מס׳</th>
-                  <th className="px-4 py-3 text-right">לקוח</th>
-                  <th className="px-4 py-3 text-right">סכום</th>
-                  <th className="px-4 py-3 text-right">סטטוס</th>
-                  <th className="px-4 py-3 text-right">תאריך</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-gray-100">
+            <>
+              {/* Mobile — card list, no horizontal scroll */}
+              <ul className="lg:hidden divide-y divide-gray-100">
                 {recentOrders.map((o) => (
-                  <tr key={o.id} className="hover:bg-gray-50">
-                    <td className="px-4 py-3">
-                      <Link href={`/admin/orders/${o.id}`} className="text-blue-600 hover:underline">
-                        {o.orderNumber}
-                      </Link>
-                    </td>
-                    <td className="px-4 py-3">{o.customer?.user?.name || o.customer?.user?.email || "—"}</td>
-                    <td className="px-4 py-3 font-medium">₪{o.total.toLocaleString()}</td>
-                    <td className="px-4 py-3">
-                      <span className="px-2 py-0.5 rounded text-xs bg-gray-100">
-                        {statusLabels[o.status] || o.status}
-                      </span>
-                    </td>
-                    <td className="px-4 py-3 text-gray-500 text-xs">
-                      {new Date(o.createdAt).toLocaleDateString("he-IL")}
-                    </td>
-                  </tr>
+                  <li key={o.id}>
+                    <Link
+                      href={`/admin/orders/${o.id}`}
+                      className="block p-4 hover:bg-gray-50"
+                    >
+                      <div className="flex items-center justify-between gap-2">
+                        <span className="font-bold text-blue-600">
+                          {o.orderNumber}
+                        </span>
+                        <span className="font-medium tabular-nums">
+                          ₪{o.total.toLocaleString()}
+                        </span>
+                      </div>
+                      <div className="text-sm text-gray-700 mt-1 truncate">
+                        {o.customer?.user?.name ||
+                          o.customer?.user?.email ||
+                          "—"}
+                      </div>
+                      <div className="flex items-center justify-between gap-2 mt-1">
+                        <span className="px-2 py-0.5 rounded text-[10px] bg-gray-100">
+                          {statusLabels[o.status] || o.status}
+                        </span>
+                        <span className="text-xs text-gray-400">
+                          {new Date(o.createdAt).toLocaleDateString("he-IL")}
+                        </span>
+                      </div>
+                    </Link>
+                  </li>
                 ))}
-              </tbody>
-            </table>
+              </ul>
+
+              {/* Desktop — full table */}
+              <table className="hidden lg:table w-full text-sm">
+                <thead className="bg-gray-50 text-xs uppercase text-gray-500">
+                  <tr>
+                    <th className="px-4 py-3 text-right">מס׳</th>
+                    <th className="px-4 py-3 text-right">לקוח</th>
+                    <th className="px-4 py-3 text-right">סכום</th>
+                    <th className="px-4 py-3 text-right">סטטוס</th>
+                    <th className="px-4 py-3 text-right">תאריך</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-gray-100">
+                  {recentOrders.map((o) => (
+                    <tr key={o.id} className="hover:bg-gray-50">
+                      <td className="px-4 py-3">
+                        <Link
+                          href={`/admin/orders/${o.id}`}
+                          className="text-blue-600 hover:underline"
+                        >
+                          {o.orderNumber}
+                        </Link>
+                      </td>
+                      <td className="px-4 py-3">
+                        {o.customer?.user?.name ||
+                          o.customer?.user?.email ||
+                          "—"}
+                      </td>
+                      <td className="px-4 py-3 font-medium">
+                        ₪{o.total.toLocaleString()}
+                      </td>
+                      <td className="px-4 py-3">
+                        <span className="px-2 py-0.5 rounded text-xs bg-gray-100">
+                          {statusLabels[o.status] || o.status}
+                        </span>
+                      </td>
+                      <td className="px-4 py-3 text-gray-500 text-xs">
+                        {new Date(o.createdAt).toLocaleDateString("he-IL")}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </>
           )}
         </div>
       </div>
@@ -159,7 +205,7 @@ function Kpi({ label, value, warning }: { label: string; value: string | number;
   return (
     <div className={`bg-white border rounded-lg p-4 ${warning ? "border-amber-300 bg-amber-50" : "border-gray-200"}`}>
       <div className="text-xs text-gray-500 tracking-wide uppercase">{label}</div>
-      <div className={`text-2xl font-bold mt-1 ${warning ? "text-amber-700" : "text-gray-900"}`}>{value}</div>
+      <div className={`text-2xl font-bold mt-1 tabular-nums truncate ${warning ? "text-amber-700" : "text-gray-900"}`}>{value}</div>
     </div>
   );
 }
