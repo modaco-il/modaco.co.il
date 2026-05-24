@@ -4,6 +4,37 @@ import Google from "next-auth/providers/google";
 import { db } from "@/lib/db";
 import bcrypt from "bcryptjs";
 
+/**
+ * Whitelist of emails that get role=ADMIN automatically on Google
+ * sign-in. Yarin's account doesn't have a password yet — he logs in
+ * via Google — so without this, his first sign-in would create a
+ * CUSTOMER row and bounce him out of /admin.
+ *
+ * Existing CUSTOMER rows whose email matches the list also get
+ * promoted to ADMIN on next sign-in (lets us recover from a wrong
+ * historical seed without touching the DB).
+ *
+ * Override with ADMIN_EMAILS env var (comma-separated, lowercased).
+ */
+const ADMIN_EMAILS_DEFAULT = [
+  "yarin@modaco.co.il",
+  "ozkaballa@gmail.com",
+];
+
+function getAdminEmails(): string[] {
+  const raw = process.env.ADMIN_EMAILS;
+  if (!raw) return ADMIN_EMAILS_DEFAULT;
+  return raw
+    .split(",")
+    .map((e) => e.trim().toLowerCase())
+    .filter(Boolean);
+}
+
+function isAdminEmail(email: string | null | undefined): boolean {
+  if (!email) return false;
+  return getAdminEmails().includes(email.toLowerCase());
+}
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Google({
@@ -48,19 +79,33 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   callbacks: {
     async signIn({ user, account }) {
       if (account?.provider === "google" && user.email) {
-        const existing = await db.user.findUnique({ where: { email: user.email } });
+        const promoteToAdmin = isAdminEmail(user.email);
+        const targetRole = promoteToAdmin ? "ADMIN" : "CUSTOMER";
+
+        const existing = await db.user.findUnique({
+          where: { email: user.email },
+        });
         if (!existing) {
           const created = await db.user.create({
             data: {
               email: user.email,
               name: user.name,
               image: user.image,
-              role: "CUSTOMER",
+              role: targetRole,
               emailVerified: new Date(),
             },
           });
-          await db.customer.create({
-            data: { userId: created.id },
+          // Customers get a Customer row for orders/addresses; admins
+          // don't need one unless they happen to also buy as themselves.
+          if (!promoteToAdmin) {
+            await db.customer.create({ data: { userId: created.id } });
+          }
+        } else if (promoteToAdmin && existing.role !== "ADMIN") {
+          // Email is in the admin whitelist but the row sits as CUSTOMER
+          // (legacy seed, prior environment, etc.) — promote it.
+          await db.user.update({
+            where: { id: existing.id },
+            data: { role: "ADMIN" },
           });
         }
       }
@@ -68,8 +113,25 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
     async jwt({ token, user }) {
       if (user) {
-        token.role = (user as Record<string, unknown>).role;
-        token.customerGroupId = (user as Record<string, unknown>).customerGroupId;
+        // Credentials flow already attaches role/customerGroupId in
+        // authorize(). Google flow doesn't — the OAuth profile has no
+        // notion of our role. Fall back to a DB lookup so the JWT
+        // always carries the canonical values.
+        const userRole = (user as Record<string, unknown>).role;
+        const userGroup = (user as Record<string, unknown>).customerGroupId;
+        if (userRole) {
+          token.role = userRole;
+          token.customerGroupId = userGroup;
+        } else if (user.email) {
+          const dbUser = await db.user.findUnique({
+            where: { email: user.email },
+            include: { customer: { select: { groupId: true } } },
+          });
+          if (dbUser) {
+            token.role = dbUser.role;
+            token.customerGroupId = dbUser.customer?.groupId || null;
+          }
+        }
       }
       return token;
     },
