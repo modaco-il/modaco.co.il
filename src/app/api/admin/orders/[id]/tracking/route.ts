@@ -25,5 +25,17 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     },
   });
 
+  await db.auditLog
+    .create({
+      data: {
+        actor: (session.user as any).email || "admin",
+        action: "order.tracking_updated",
+        entityType: "Order",
+        entityId: id,
+        data: { trackingNumber },
+      },
+    })
+    .catch((e) => console.warn("[orders.tracking] audit failed:", e));
+
   return NextResponse.json({ ok: true });
 }

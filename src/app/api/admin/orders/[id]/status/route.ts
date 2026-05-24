@@ -25,6 +25,10 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     return NextResponse.json({ error: "invalid status" }, { status: 400 });
   }
 
+  const previous = await db.order.findUnique({
+    where: { id },
+    select: { status: true, orderNumber: true },
+  });
   const order = await db.order.update({
     where: { id },
     data: { status },
@@ -37,6 +41,22 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
       data: { to: status, by: (session.user as any).email },
     },
   });
+
+  await db.auditLog
+    .create({
+      data: {
+        actor: (session.user as any).email || "admin",
+        action: "order.status_changed",
+        entityType: "Order",
+        entityId: id,
+        data: {
+          orderNumber: previous?.orderNumber,
+          from: previous?.status,
+          to: status,
+        },
+      },
+    })
+    .catch((e) => console.warn("[orders.status] audit failed:", e));
 
   return NextResponse.json({ ok: true, order });
 }
