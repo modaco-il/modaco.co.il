@@ -42,7 +42,13 @@ const secondary = [
   { href: "/admin/audit", label: "היסטוריית פעולות", icon: ScrollText },
 ];
 
-export function AdminSidebar() {
+interface SidebarProps {
+  superAdmin: boolean;
+  displayName: string;
+  email: string;
+}
+
+export function AdminSidebar({ superAdmin, displayName, email }: SidebarProps) {
   const pathname = usePathname();
 
   return (
@@ -52,8 +58,14 @@ export function AdminSidebar() {
         <Link href="/admin/dashboard" className="text-xl font-bold">
           Modaco
         </Link>
-        <span className="mr-2 text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full">
-          ניהול
+        <span
+          className={`mr-2 text-xs px-2 py-0.5 rounded-full ${
+            superAdmin
+              ? "bg-amber-100 text-amber-800"
+              : "bg-blue-100 text-blue-700"
+          }`}
+        >
+          {superAdmin ? "בעלים" : "ניהול"}
         </span>
       </div>
 
@@ -103,8 +115,8 @@ export function AdminSidebar() {
         </div>
       </nav>
 
-      {/* Settings — pinned bottom */}
-      <div className="p-4 border-t border-gray-200">
+      {/* Settings + user identity — pinned bottom */}
+      <div className="p-4 border-t border-gray-200 space-y-2">
         <Link
           href="/admin/settings"
           className={`flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm transition-colors ${
@@ -116,6 +128,16 @@ export function AdminSidebar() {
           <Settings className="w-5 h-5" />
           הגדרות
         </Link>
+        <div className="px-3 py-2 text-[11px] text-gray-400 border-t border-gray-100">
+          <div className="truncate font-medium text-gray-600">
+            {displayName}
+          </div>
+          {email && (
+            <div className="truncate font-mono text-[10px]" dir="ltr">
+              {email}
+            </div>
+          )}
+        </div>
       </div>
     </aside>
   );

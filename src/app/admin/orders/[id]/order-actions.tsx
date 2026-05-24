@@ -18,6 +18,9 @@ interface Props {
   total: number;
   /** B2B quote-mode orders never need a Morning payment link. */
   isB2BQuote: boolean;
+  /** True only for superAdmin (Oz). Reveals destructive controls like
+   *  "free-form status pick" that include backward transitions. */
+  canGoBackward: boolean;
 }
 
 const NEXT_STATUS: Record<string, string | null> = {
@@ -40,6 +43,16 @@ function toWaPhone(p: string): string {
   return clean.startsWith("0") ? "972" + clean.slice(1) : clean;
 }
 
+const ALL_STATUSES: { key: string; label: string }[] = [
+  { key: "PENDING", label: "ממתינה" },
+  { key: "PAID", label: "שולמה" },
+  { key: "PROCESSING", label: "בטיפול" },
+  { key: "SHIPPED", label: "נשלחה" },
+  { key: "DELIVERED", label: "הגיעה" },
+  { key: "CANCELLED", label: "בוטלה" },
+  { key: "REFUNDED", label: "הוחזרה" },
+];
+
 export function OrderActions({
   orderId,
   orderNumber,
@@ -50,6 +63,7 @@ export function OrderActions({
   customerPhone,
   total,
   isB2BQuote,
+  canGoBackward,
 }: Props) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
@@ -65,15 +79,29 @@ export function OrderActions({
 
   async function advance() {
     if (!next) return;
+    await setStatus(next);
+  }
+
+  async function setStatus(target: string) {
+    if (target === currentStatus) return;
     startTransition(async () => {
       const res = await fetch(`/api/admin/orders/${orderId}/status`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: next }),
+        body: JSON.stringify({ status: target }),
       });
-      if (res.ok) router.refresh();
-      else alert("שגיאה בעדכון סטטוס");
+      if (res.ok) {
+        router.refresh();
+      } else {
+        const j = await res.json().catch(() => ({}));
+        alert(j.error || "שגיאה בעדכון סטטוס");
+      }
     });
+  }
+
+  async function cancelOrder() {
+    if (!confirm(`לבטל את הזמנה ${orderNumber}?`)) return;
+    await setStatus("CANCELLED");
   }
 
   async function saveTracking() {
@@ -147,6 +175,16 @@ export function OrderActions({
           </button>
         )}
 
+        {currentStatus !== "CANCELLED" && currentStatus !== "REFUNDED" && (
+          <button
+            onClick={cancelOrder}
+            disabled={pending}
+            className="h-11 px-4 border border-red-200 hover:bg-red-50 disabled:opacity-50 text-red-700 text-sm rounded-lg"
+          >
+            בטל הזמנה
+          </button>
+        )}
+
         <div className="flex items-center gap-2 flex-1 min-w-[260px]">
           <input
             type="text"
@@ -165,6 +203,31 @@ export function OrderActions({
           </button>
         </div>
       </div>
+
+      {canGoBackward && (
+        <div className="border-t border-gray-100 pt-4">
+          <div className="flex items-center gap-2 mb-2">
+            <span className="text-[10px] uppercase tracking-wider text-gray-500">
+              סטטוס ישיר (בעלים)
+            </span>
+            <span className="text-[10px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-800">
+              גם אחורה
+            </span>
+          </div>
+          <select
+            value={currentStatus}
+            disabled={pending}
+            onChange={(e) => setStatus(e.target.value)}
+            className="h-10 px-3 border border-gray-300 rounded-lg text-sm"
+          >
+            {ALL_STATUSES.map((s) => (
+              <option key={s.key} value={s.key}>
+                {s.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
 
       {showPaymentBlock && (
         <div className="border-t border-gray-100 pt-4 space-y-3">

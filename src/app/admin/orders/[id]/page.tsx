@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic";
 
 import { db } from "@/lib/db";
 import { auth } from "@/lib/auth";
+import { isSuperAdmin } from "@/lib/auth/permissions";
 import { redirect, notFound } from "next/navigation";
 import Link from "next/link";
 import { OrderActions } from "./order-actions";
@@ -150,6 +151,7 @@ export default async function OrderDetailPage({ params }: Props) {
         customerPhone={customerPhone}
         total={order.total}
         isB2BQuote={(order.notes || "").includes("[B2B_QUOTE_REQUEST]")}
+        canGoBackward={isSuperAdmin(session)}
       />
 
       {/* Customer card */}

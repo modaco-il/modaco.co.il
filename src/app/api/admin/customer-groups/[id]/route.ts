@@ -3,6 +3,7 @@
  */
 import { db } from "@/lib/db";
 import { auth } from "@/lib/auth";
+import { isSuperAdmin } from "@/lib/auth/permissions";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function PATCH(
@@ -12,6 +13,12 @@ export async function PATCH(
   const session = await auth();
   if (!session?.user || (session.user as any).role !== "ADMIN") {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  }
+  if (!isSuperAdmin(session)) {
+    return NextResponse.json(
+      { error: "עריכת קבוצות לקוחות זמינה רק לבעלים" },
+      { status: 403 },
+    );
   }
 
   const { id } = await params;
@@ -59,6 +66,12 @@ export async function DELETE(
   const session = await auth();
   if (!session?.user || (session.user as any).role !== "ADMIN") {
     return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  }
+  if (!isSuperAdmin(session)) {
+    return NextResponse.json(
+      { error: "מחיקת קבוצות לקוחות זמינה רק לבעלים" },
+      { status: 403 },
+    );
   }
 
   const { id } = await params;

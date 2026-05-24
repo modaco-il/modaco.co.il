@@ -19,6 +19,7 @@ export const dynamic = "force-dynamic";
 import Link from "next/link";
 import { db } from "@/lib/db";
 import { auth } from "@/lib/auth";
+import { isSuperAdmin } from "@/lib/auth/permissions";
 import { redirect } from "next/navigation";
 import { CustomerGroupsManager } from "./customer-groups-manager";
 
@@ -27,6 +28,7 @@ export default async function SettingsPage() {
   if (!session?.user || (session.user as any).role !== "ADMIN") {
     redirect("/login");
   }
+  const superAdmin = isSuperAdmin(session);
 
   const groups = await db.customerGroup.findMany({
     include: { _count: { select: { customers: true } } },
@@ -82,8 +84,51 @@ export default async function SettingsPage() {
         </p>
       </section>
 
-      {/* Customer groups */}
-      <CustomerGroupsManager initialGroups={groups} />
+      {/* Customer groups — owner only. Yarin sees a read-only summary. */}
+      {superAdmin ? (
+        <CustomerGroupsManager initialGroups={groups} />
+      ) : (
+        <section className="bg-white border border-gray-200 rounded-lg p-5">
+          <div className="flex items-center justify-between mb-3">
+            <div className="text-xs uppercase tracking-wider text-gray-500">
+              קבוצות לקוחות (B2B)
+            </div>
+            <span className="text-[10px] px-1.5 py-0.5 rounded bg-gray-100 text-gray-600">
+              לצפייה בלבד · בעלים
+            </span>
+          </div>
+          {groups.length === 0 ? (
+            <div className="text-sm text-gray-400">אין קבוצות עדיין</div>
+          ) : (
+            <ul className="divide-y divide-gray-100">
+              {groups.map((g) => (
+                <li
+                  key={g.id}
+                  className="py-2 flex items-center justify-between gap-3"
+                >
+                  <div>
+                    <div className="font-medium text-sm">
+                      {g.displayName}{" "}
+                      <span className="font-mono text-[11px] text-gray-400">
+                        {g.name}
+                      </span>
+                    </div>
+                    <div className="text-xs text-gray-500">
+                      {g._count.customers} לקוחות
+                      {g.paymentTerms && <> · {g.paymentTerms}</>}
+                    </div>
+                  </div>
+                  {g.discountPercent > 0 && (
+                    <span className="px-2 py-0.5 rounded text-xs bg-purple-100 text-purple-700">
+                      -{g.discountPercent}%
+                    </span>
+                  )}
+                </li>
+              ))}
+            </ul>
+          )}
+        </section>
+      )}
 
       {/* Integrations */}
       <section className="bg-white border border-gray-200 rounded-lg p-5 space-y-3">

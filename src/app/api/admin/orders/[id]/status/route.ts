@@ -1,5 +1,9 @@
 import { db } from "@/lib/db";
 import { auth } from "@/lib/auth";
+import {
+  canTransitionOrderStatus,
+  isSuperAdmin,
+} from "@/lib/auth/permissions";
 import { NextRequest, NextResponse } from "next/server";
 
 const ALLOWED = new Set([
@@ -29,6 +33,19 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
     where: { id },
     select: { status: true, orderNumber: true },
   });
+  if (!previous) {
+    return NextResponse.json({ error: "not found" }, { status: 404 });
+  }
+
+  // Non-superadmin (Yarin) can move forward + cancel/refund only.
+  // Going backward or reviving a cancelled order requires Oz.
+  if (!isSuperAdmin(session)) {
+    const check = canTransitionOrderStatus(previous.status, status);
+    if (!check.ok) {
+      return NextResponse.json({ error: check.reason }, { status: 403 });
+    }
+  }
+
   const order = await db.order.update({
     where: { id },
     data: { status },
@@ -50,8 +67,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ id:
         entityType: "Order",
         entityId: id,
         data: {
-          orderNumber: previous?.orderNumber,
-          from: previous?.status,
+          orderNumber: previous.orderNumber,
+          from: previous.status,
           to: status,
         },
       },

@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
+import { isSuperAdmin } from "@/lib/auth/permissions";
 import { AdminSidebar } from "@/components/admin/sidebar";
 import { AdminMobileNav } from "@/components/admin/mobile-nav";
 
@@ -24,10 +25,18 @@ export default async function AdminLayout({
     redirect("/");
   }
 
+  const superAdmin = isSuperAdmin(session);
+  const displayName =
+    session.user.name || session.user.email || "מנהל";
+
   return (
     <div className="min-h-screen bg-gray-50" dir="rtl">
       {/* Desktop sidebar */}
-      <AdminSidebar />
+      <AdminSidebar
+        superAdmin={superAdmin}
+        displayName={displayName}
+        email={session.user.email || ""}
+      />
 
       {/* Mobile bottom nav */}
       <AdminMobileNav />
