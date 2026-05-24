@@ -4,6 +4,7 @@ import Link from "next/link";
 import { db } from "@/lib/db";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
+import { PaymentsHealthCard } from "@/components/admin/payments-health-card";
 
 const statusLabels: Record<string, string> = {
   PENDING: "ממתינה",
@@ -69,6 +70,8 @@ export default async function AdminDashboard() {
           ברוך הבא, {session.user.name || session.user.email}
         </p>
       </div>
+
+      <PaymentsHealthCard />
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Kpi label="הזמנות היום" value={todayOrders.length} />
