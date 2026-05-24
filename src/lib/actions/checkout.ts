@@ -21,7 +21,8 @@
  * transaction rolls back.
  */
 import { db } from "@/lib/db";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
+import { createPaymentForm } from "@/lib/morning/payments";
 
 const CART_COOKIE = "modaco_cart_session";
 const ADMIN_NOTIFY_EMAIL = "yarin@modaco.co.il";
@@ -55,6 +56,12 @@ export type CheckoutResult =
       total: number;
       mode: "online" | "quote";
       whatsappLink?: string;
+      /** Morning hosted-checkout URL. Present in `online` mode when payment
+       *  link generation succeeded. Storefront should redirect here. */
+      paymentUrl?: string;
+      /** If payment-link generation failed (e.g. clearing not yet approved
+       *  by Grow), surface a friendly note. The order is still created. */
+      paymentLinkError?: string;
     }
   | { ok: false; error: string };
 
@@ -207,6 +214,54 @@ export async function submitCheckout(input: CheckoutInput): Promise<CheckoutResu
     notes: input.notes,
   });
 
+  // ── For online mode, generate a Morning hosted-checkout URL.
+  //    If the call fails (e.g. Grow clearing pending approval), we keep the
+  //    order alive and surface a friendly note so the customer can still see
+  //    the order number and reach Yarin via WhatsApp.
+  let paymentUrl: string | undefined;
+  let paymentLinkError: string | undefined;
+  if (input.mode === "online" && process.env.MORNING_API_KEY_ID) {
+    try {
+      const origin = await detectOrigin();
+      const form = await createPaymentForm({
+        type: 305, // חשבונית מס קבלה
+        description: `הזמנה ${orderNumber} · Modaco`,
+        amount: total,
+        vatType: 0, // VAT included in prices
+        client: {
+          name: `${input.firstName} ${input.lastName}`.trim(),
+          emails: [email],
+          phone: input.phone,
+          address: input.street,
+          city: input.city,
+          zip: input.zipCode,
+          country: "IL",
+        },
+        income: cart.items.map((it) => ({
+          description: `${it.variant.product.name} – ${it.variant.name}`,
+          price: it.variant.priceOverride ?? it.variant.product.basePrice,
+          quantity: it.quantity,
+        })),
+        successUrl: `${origin}/checkout/success?o=${orderId}`,
+        failureUrl: `${origin}/checkout/failed?o=${orderId}`,
+        notifyUrl: `${origin}/api/checkout/morning-webhook`,
+        custom: orderId,
+      });
+      paymentUrl = form.url;
+
+      // Persist the form URL on the order so admin can re-link the customer
+      await db.order.update({
+        where: { id: orderId },
+        data: { paymentRef: paymentUrl },
+      });
+    } catch (err) {
+      // Most common path here: errorCode 2600 (clearing not yet approved).
+      // Order stays PENDING; admin will see it and follow up manually.
+      paymentLinkError = (err as Error).message;
+      console.warn(`[checkout] Morning payment-link failed for ${orderNumber}:`, paymentLinkError);
+    }
+  }
+
   // ── Build WhatsApp link for quote-mode customer
   let whatsappLink: string | undefined;
   if (input.mode === "quote") {
@@ -233,7 +288,22 @@ export async function submitCheckout(input: CheckoutInput): Promise<CheckoutResu
     total,
     mode: input.mode,
     whatsappLink,
+    paymentUrl,
+    paymentLinkError,
   };
+}
+
+/** Build an absolute origin from request headers, falling back to env. */
+async function detectOrigin(): Promise<string> {
+  try {
+    const h = await headers();
+    const host = h.get("x-forwarded-host") || h.get("host");
+    const proto = h.get("x-forwarded-proto") || "https";
+    if (host) return `${proto}://${host}`;
+  } catch {
+    // headers() unavailable in some contexts — fall through
+  }
+  return process.env.NEXT_PUBLIC_SITE_URL || "https://modaco.co.il";
 }
 
 // ─────────────────────────────────────────────────────────────────────────

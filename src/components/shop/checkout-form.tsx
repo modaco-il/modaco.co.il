@@ -63,9 +63,15 @@ export function CheckoutForm({ items, subtotal }: CheckoutFormProps) {
       const r = await submitCheckout(input);
       if ("ok" in r && r.ok) {
         setResult(r);
-        // Open WhatsApp pre-filled chat in a new tab for quote mode
+        // B2B: pop WhatsApp with order summary so the customer can ping Yarin
         if (r.mode === "quote" && r.whatsappLink) {
           window.open(r.whatsappLink, "_blank", "noopener,noreferrer");
+        }
+        // B2C: if Morning generated a hosted-checkout URL, redirect there
+        // to actually take payment. If it failed (e.g. clearing pending),
+        // we stay on the success screen and the order remains PENDING.
+        if (r.mode === "online" && r.paymentUrl) {
+          window.location.href = r.paymentUrl;
         }
       } else if ("ok" in r && r.ok === false) {
         setError(r.error);
