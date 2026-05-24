@@ -30,6 +30,15 @@ const statusLabels: Record<string, string> = {
   REFUNDED: "הוחזרה",
 };
 
+const eventTypeLabels: Record<string, string> = {
+  created: "נוצרה הזמנה",
+  paid: "תשלום אושר",
+  cancelled: "בוטלה",
+  status_changed: "סטטוס עודכן ידנית",
+  payment_link_generated: "נוצר קישור תשלום",
+  payment_link_failed: "כשל ביצירת קישור תשלום",
+};
+
 export default async function OrderDetailPage({ params }: Props) {
   const session = await auth();
   if (!session?.user || (session.user as any).role !== "ADMIN") {
@@ -133,8 +142,14 @@ export default async function OrderDetailPage({ params }: Props) {
 
       <OrderActions
         orderId={order.id}
+        orderNumber={order.orderNumber}
         currentStatus={order.status}
         currentTracking={order.trackingNumber}
+        paymentRef={order.paymentRef}
+        invoiceRef={order.invoiceRef}
+        customerPhone={customerPhone}
+        total={order.total}
+        isB2BQuote={(order.notes || "").includes("[B2B_QUOTE_REQUEST]")}
       />
 
       {/* Customer card */}
@@ -225,7 +240,7 @@ ${itemsText}
           <ul className="space-y-2 text-sm">
             {order.events.map((e) => (
               <li key={e.id} className="flex justify-between text-gray-600">
-                <span>{e.type}</span>
+                <span>{eventTypeLabels[e.type] || e.type}</span>
                 <span className="text-xs text-gray-400">
                   {new Date(e.createdAt).toLocaleString("he-IL")}
                 </span>

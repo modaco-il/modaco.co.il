@@ -40,9 +40,16 @@ export default async function OrdersPage({ searchParams }: Props) {
 
   const orders = await db.order.findMany({
     where,
-    include: {
-      customer: { include: { user: true } },
-      items: true,
+    select: {
+      id: true,
+      orderNumber: true,
+      status: true,
+      total: true,
+      createdAt: true,
+      paymentRef: true,
+      notes: true,
+      customer: { select: { user: { select: { name: true, email: true } } } },
+      items: { select: { id: true } },
     },
     orderBy: { createdAt: "desc" },
     take: 100,
@@ -80,31 +87,50 @@ export default async function OrdersPage({ searchParams }: Props) {
         {orders.length === 0 ? (
           <div className="text-center py-16 text-gray-400 text-sm">אין הזמנות להצגה</div>
         ) : (
-          orders.map((order) => (
-            <Link
-              key={order.id}
-              href={`/admin/orders/${order.id}`}
-              className="block bg-white border border-gray-200 rounded-lg p-4 hover:border-blue-500"
-            >
-              <div className="flex items-center justify-between flex-wrap gap-3">
-                <div>
-                  <div className="font-bold">{order.orderNumber}</div>
-                  <div className="text-sm text-gray-600 mt-0.5">
-                    {order.customer?.user?.name || order.customer?.user?.email || "—"}
+          orders.map((order) => {
+            const isB2BQuote = (order.notes || "").includes("[B2B_QUOTE_REQUEST]");
+            const needsPaymentLink =
+              order.status === "PENDING" && !isB2BQuote && !order.paymentRef;
+            return (
+              <Link
+                key={order.id}
+                href={`/admin/orders/${order.id}`}
+                className={`block bg-white border rounded-lg p-4 hover:border-blue-500 ${
+                  needsPaymentLink ? "border-amber-400" : "border-gray-200"
+                }`}
+              >
+                <div className="flex items-center justify-between flex-wrap gap-3">
+                  <div>
+                    <div className="flex items-center gap-2 flex-wrap">
+                      <span className="font-bold">{order.orderNumber}</span>
+                      {isB2BQuote && (
+                        <span className="px-1.5 py-0.5 rounded text-[10px] bg-emerald-100 text-emerald-800">
+                          B2B
+                        </span>
+                      )}
+                      {needsPaymentLink && (
+                        <span className="px-1.5 py-0.5 rounded text-[10px] bg-amber-100 text-amber-900">
+                          ⚠ אין קישור תשלום
+                        </span>
+                      )}
+                    </div>
+                    <div className="text-sm text-gray-600 mt-0.5">
+                      {order.customer?.user?.name || order.customer?.user?.email || "—"}
+                    </div>
+                    <div className="text-xs text-gray-400 mt-0.5">
+                      {new Date(order.createdAt).toLocaleString("he-IL")} · {order.items.length} פריטים
+                    </div>
                   </div>
-                  <div className="text-xs text-gray-400 mt-0.5">
-                    {new Date(order.createdAt).toLocaleString("he-IL")} · {order.items.length} פריטים
+                  <div className="text-left">
+                    <span className={`px-2 py-0.5 rounded text-xs ${statusColors[order.status]}`}>
+                      {statusLabels[order.status] || order.status}
+                    </span>
+                    <div className="font-bold mt-1">₪{order.total.toLocaleString()}</div>
                   </div>
                 </div>
-                <div className="text-left">
-                  <span className={`px-2 py-0.5 rounded text-xs ${statusColors[order.status]}`}>
-                    {statusLabels[order.status] || order.status}
-                  </span>
-                  <div className="font-bold mt-1">₪{order.total.toLocaleString()}</div>
-                </div>
-              </div>
-            </Link>
-          ))
+              </Link>
+            );
+          })
         )}
       </div>
     </div>
