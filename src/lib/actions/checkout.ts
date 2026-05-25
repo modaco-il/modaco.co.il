@@ -23,6 +23,7 @@
 import { db } from "@/lib/db";
 import { cookies, headers } from "next/headers";
 import { createPaymentForm } from "@/lib/morning/payments";
+import { orderTrackingUrl } from "@/lib/order-token";
 
 const CART_COOKIE = "modaco_cart_session";
 const ADMIN_NOTIFY_EMAIL = "yarin@modaco.co.il";
@@ -193,6 +194,10 @@ export async function submitCheckout(input: CheckoutInput): Promise<CheckoutResu
     return { ok: false, error: `שגיאה ביצירת ההזמנה: ${(err as Error).message}` };
   }
 
+  // ── Build customer-facing tracking URL (used in confirmation email)
+  const trackingOrigin = await detectOrigin();
+  const trackingUrl = orderTrackingUrl(trackingOrigin, orderId);
+
   // ── Fire-and-forget emails (don't fail the order if email fails)
   void sendOrderEmails({
     orderNumber,
@@ -212,6 +217,7 @@ export async function submitCheckout(input: CheckoutInput): Promise<CheckoutResu
     total,
     mode: input.mode,
     notes: input.notes,
+    trackingUrl,
   });
 
   // ── For online mode, generate a Morning hosted-checkout URL.
@@ -323,6 +329,8 @@ interface EmailPayload {
   total: number;
   mode: "online" | "quote";
   notes?: string;
+  /** Signed link the customer can use to track the order anytime. */
+  trackingUrl?: string;
 }
 
 async function sendOrderEmails(p: EmailPayload) {
@@ -449,6 +457,11 @@ function renderCustomerHtml(p: EmailPayload): string {
       <tr><td style="padding:8px 0;font-weight:700;border-top:1px solid #0A0908">סה״כ</td><td style="text-align:left;padding:8px 0;font-weight:700;border-top:1px solid #0A0908">₪${p.total.toLocaleString()}</td></tr>
     </table>
   </div>
+
+  ${p.trackingUrl && p.mode === "online" ? `<div style="text-align:center;margin-top:24px">
+    <a href="${escape(p.trackingUrl)}" style="display:inline-block;background:#0A0908;color:#FAF6F0;padding:14px 28px;text-decoration:none;font-size:14px;letter-spacing:.04em">מעקב הזמנה</a>
+  </div>
+  <p style="text-align:center;margin-top:8px;color:#8B6F4E;font-size:11px">שמרו את הקישור — לא נדרש חשבון</p>` : ""}
 
   <p style="margin-top:24px;color:#8B6F4E;font-size:13px">
     יש שאלה? כתבו לנו ב-<a href="https://wa.me/${WHATSAPP_NUMBER}" style="color:#8B6F4E">וואטסאפ</a> או חייגו <a href="tel:0526804945" style="color:#8B6F4E">052-680-4945</a>.

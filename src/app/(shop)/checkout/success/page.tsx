@@ -9,6 +9,7 @@
 import { db } from "@/lib/db";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { makeOrderToken } from "@/lib/order-token";
 
 export const metadata = {
   title: "תודה — Modaco",
@@ -64,8 +65,14 @@ export default async function CheckoutSuccessPage({ searchParams }: Props) {
         </p>
         <div className="flex flex-col sm:flex-row gap-3 justify-center">
           <Link
-            href="/"
+            href={`/orders/${order.id}?token=${makeOrderToken(order.id)}`}
             className="inline-flex items-center justify-center h-12 px-8 bg-ink text-cream text-sm tracking-wide hover:bg-mocha transition-colors"
+          >
+            מעקב הזמנה
+          </Link>
+          <Link
+            href="/"
+            className="inline-flex items-center justify-center h-12 px-8 border border-ink text-ink text-sm tracking-wide hover:bg-ink hover:text-cream transition-colors"
           >
             חזרה לאתר
           </Link>
@@ -73,9 +80,9 @@ export default async function CheckoutSuccessPage({ searchParams }: Props) {
             href="https://wa.me/972526804945"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center justify-center h-12 px-8 border border-ink text-ink text-sm tracking-wide hover:bg-ink hover:text-cream transition-colors"
+            className="inline-flex items-center justify-center h-12 px-8 border border-bone text-ink-soft text-sm tracking-wide hover:bg-cream-deep transition-colors"
           >
-            יש שאלה? וואטסאפ
+            וואטסאפ
           </a>
         </div>
       </div>

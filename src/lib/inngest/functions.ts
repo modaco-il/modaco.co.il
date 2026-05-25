@@ -272,21 +272,126 @@ export const dailySummary = inngest.createFunction(
       };
     });
 
-    await step.run("send-summary", async () => {
-      const msg = [
-        `סיכום יומי — ${yesterday.toLocaleDateString("he-IL")}`,
-        ``,
-        `הזמנות חדשות: ${stats.newOrders}`,
-        `הכנסות: ${stats.revenue.toLocaleString()} שח`,
-        `עגלות נטושות: ${stats.abandonedCarts}`,
-        `מוצרים אזלו: ${stats.lowStockItems}`,
-        `צפיות באתר: ${stats.pageViews}`,
-      ].join("\n");
-
-      console.log(`[WA→Admin]\n${msg}`);
-      // TODO: integrate with Meta Cloud API
+    // Pull a bit more context — work queue Yarin should see first thing
+    const queues = await step.run("gather-queues", async () => {
+      const [pendingOrders, newMessages, freshAbandoned] = await Promise.all([
+        db.order.findMany({
+          where: { status: "PENDING" },
+          select: { orderNumber: true, total: true, createdAt: true },
+          orderBy: { createdAt: "desc" },
+          take: 5,
+        }),
+        db.contactMessage.count({ where: { status: "NEW" } }),
+        db.cart.count({
+          where: {
+            convertedAt: null,
+            abandonedAt: {
+              gte: new Date(Date.now() - 7 * 24 * 60 * 60 * 1000),
+            },
+            recoverySentAt: null,
+          },
+        }),
+      ]);
+      return { pendingOrders, newMessages, freshAbandoned };
     });
 
-    return stats;
+    await step.run("send-summary", async () => {
+      const dateStr = yesterday.toLocaleDateString("he-IL", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+      });
+
+      const pendingList = queues.pendingOrders
+        .map(
+          (o) =>
+            `• ${o.orderNumber} · ₪${o.total.toLocaleString()} (${new Date(o.createdAt).toLocaleDateString("he-IL")})`,
+        )
+        .join("\n");
+
+      const text = [
+        `סיכום יום ${dateStr} · Modaco`,
+        ``,
+        `── אתמול ──`,
+        `הזמנות חדשות: ${stats.newOrders}`,
+        `הכנסות (לא כולל ביטולים): ₪${stats.revenue.toLocaleString()}`,
+        `עגלות נטושות: ${stats.abandonedCarts}`,
+        `צפיות באתר: ${stats.pageViews}`,
+        ``,
+        `── דורש טיפול ──`,
+        `הודעות יצירת קשר חדשות: ${queues.newMessages}`,
+        `עגלות נטושות לשחזור (7 ימים): ${queues.freshAbandoned}`,
+        `מוצרים שאזלו: ${stats.lowStockItems}`,
+        ``,
+        queues.pendingOrders.length > 0
+          ? `הזמנות שעדיין PENDING:\n${pendingList}`
+          : `אין הזמנות שממתינות לתשלום`,
+        ``,
+        `פתח דשבורד: https://modaco.co.il/admin/dashboard`,
+        `הזמנות פתוחות: https://modaco.co.il/admin/orders?status=PENDING`,
+        `הודעות: https://modaco.co.il/admin/messages?status=NEW`,
+      ].join("\n");
+
+      const html = `<!DOCTYPE html><html lang="he" dir="rtl"><head><meta charset="UTF-8"></head>
+<body style="font-family:Heebo,Arial,sans-serif;max-width:560px;margin:0 auto;padding:32px;color:#0A0908;background:#FAF6F0">
+  <div style="color:#8B6F4E;font-size:11px;letter-spacing:.32em;text-transform:uppercase;margin-bottom:8px">Modaco · סיכום יומי</div>
+  <h1 style="font-size:22px;margin:0 0 24px">${dateStr}</h1>
+
+  <table style="width:100%;margin-bottom:24px">
+    <tr><td style="padding:6px 0;color:#5B4D40">הזמנות אתמול</td><td style="text-align:left;font-weight:700">${stats.newOrders}</td></tr>
+    <tr><td style="padding:6px 0;color:#5B4D40">הכנסות</td><td style="text-align:left;font-weight:700">₪${stats.revenue.toLocaleString()}</td></tr>
+    <tr><td style="padding:6px 0;color:#5B4D40">עגלות נטושות אתמול</td><td style="text-align:left;font-weight:700">${stats.abandonedCarts}</td></tr>
+    <tr><td style="padding:6px 0;color:#5B4D40">צפיות באתר</td><td style="text-align:left;font-weight:700">${stats.pageViews}</td></tr>
+  </table>
+
+  <h2 style="font-size:14px;margin:0 0 8px;border-bottom:1px solid #D9C3A5;padding-bottom:6px">דורש טיפול</h2>
+  <table style="width:100%;margin-bottom:24px">
+    <tr><td style="padding:6px 0;color:#5B4D40">הודעות יצירת קשר חדשות</td><td style="text-align:left;font-weight:700">${queues.newMessages}</td></tr>
+    <tr><td style="padding:6px 0;color:#5B4D40">עגלות לשחזור (7 ימים)</td><td style="text-align:left;font-weight:700">${queues.freshAbandoned}</td></tr>
+    <tr><td style="padding:6px 0;color:#5B4D40">מוצרים שאזלו</td><td style="text-align:left;font-weight:700">${stats.lowStockItems}</td></tr>
+  </table>
+
+  ${queues.pendingOrders.length > 0 ? `
+  <h2 style="font-size:14px;margin:0 0 8px;border-bottom:1px solid #D9C3A5;padding-bottom:6px">הזמנות שממתינות לתשלום</h2>
+  <ul style="margin:0 0 24px;padding:0;list-style:none">
+    ${queues.pendingOrders.map((o) => `<li style="padding:6px 0;font-size:13px"><strong>${o.orderNumber}</strong> · ₪${o.total.toLocaleString()} · ${new Date(o.createdAt).toLocaleDateString("he-IL")}</li>`).join("")}
+  </ul>` : ""}
+
+  <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:24px">
+    <a href="https://modaco.co.il/admin/dashboard" style="background:#0A0908;color:#FAF6F0;padding:10px 18px;text-decoration:none;font-size:13px">פתח דשבורד</a>
+    <a href="https://modaco.co.il/admin/orders?status=PENDING" style="border:1px solid #0A0908;color:#0A0908;padding:10px 18px;text-decoration:none;font-size:13px">הזמנות פתוחות</a>
+    <a href="https://modaco.co.il/admin/messages?status=NEW" style="border:1px solid #0A0908;color:#0A0908;padding:10px 18px;text-decoration:none;font-size:13px">הודעות חדשות</a>
+  </div>
+
+  <p style="margin-top:32px;color:#8B6F4E;font-size:11px">נשלח אוטומטית מ-Inngest cron · 08:00 בכל יום</p>
+</body></html>`;
+
+      if (!process.env.RESEND_API_KEY) {
+        console.warn("[daily-summary] RESEND_API_KEY missing — logging only");
+        console.log(text);
+        return;
+      }
+
+      const r = await fetch("https://api.resend.com/emails", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
+          "Content-Type": "application/json; charset=utf-8",
+        },
+        body: JSON.stringify({
+          from: "Modaco <orders@modaco.co.il>",
+          to: ["yarin@modaco.co.il"],
+          subject: `סיכום יומי · ${stats.newOrders} הזמנות · ₪${stats.revenue.toLocaleString()}`,
+          text,
+          html,
+        }),
+      });
+      if (!r.ok) {
+        const body = await r.text().catch(() => "");
+        console.error(`[daily-summary] Resend failed (${r.status}): ${body.slice(0, 200)}`);
+      }
+    });
+
+    return { ...stats, ...queues };
   }
 );
