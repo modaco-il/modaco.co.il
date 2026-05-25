@@ -6,6 +6,7 @@ import { db } from "@/lib/db";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { logout } from "@/lib/actions/auth";
+import { makeOrderToken } from "@/lib/order-token";
 
 const statusLabels: Record<string, string> = {
   PENDING: "ממתינה",
@@ -143,9 +144,17 @@ export default async function AccountPage() {
                   </div>
                 ))}
               </div>
-              <div className="border-t border-bone mt-4 pt-4 flex justify-between font-bold text-ink">
-                <span>סה״כ</span>
-                <span>₪{order.total.toLocaleString()}</span>
+              <div className="border-t border-bone mt-4 pt-4 flex items-center justify-between gap-3 flex-wrap">
+                <Link
+                  href={`/orders/${order.id}?token=${makeOrderToken(order.id)}`}
+                  className="text-sm text-ink underline-offset-4 hover:underline"
+                >
+                  מעקב מלא →
+                </Link>
+                <div className="font-bold text-ink">
+                  <span>סה״כ </span>
+                  <span className="tabular-nums">₪{order.total.toLocaleString()}</span>
+                </div>
               </div>
             </div>
           ))}
