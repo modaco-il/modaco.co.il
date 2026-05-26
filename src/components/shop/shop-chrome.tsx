@@ -60,13 +60,25 @@ function SearchIcon({ className }: { className?: string }) {
   );
 }
 
+function CartIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+      <circle cx="9" cy="21" r="1" />
+      <circle cx="20" cy="21" r="1" />
+      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+    </svg>
+  );
+}
+
 const HERO_PATHS = ["/", "/categories/aluminum", "/categories/carpentry"];
 
 export function ShopChrome({
   categories,
+  cartCount = 0,
   children,
 }: {
   categories: Category[];
+  cartCount?: number;
   children: React.ReactNode;
 }) {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -145,6 +157,21 @@ export function ShopChrome({
                 aria-label="הרשמה / התחברות"
               >
                 <UserIcon />
+              </Link>
+              <Link
+                href="/cart"
+                className={`relative transition-colors ${linkColor}`}
+                aria-label={`עגלת קניות${cartCount > 0 ? ` (${cartCount} פריטים)` : ""}`}
+              >
+                <CartIcon />
+                {cartCount > 0 && (
+                  <span
+                    className="absolute -top-1.5 -right-1.5 min-w-[18px] h-[18px] px-1 rounded-full bg-mocha text-cream text-[10px] font-medium leading-[18px] text-center tabular-nums"
+                    dir="ltr"
+                  >
+                    {cartCount > 99 ? "99+" : cartCount}
+                  </span>
+                )}
               </Link>
               <button
                 className={`lg:hidden transition-colors ${linkColor}`}

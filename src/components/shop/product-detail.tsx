@@ -1,10 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import NextImage from "next/image";
 import { SafeImage } from "./safe-image";
 import { ProductCard } from "./product-card";
+import { addToCart } from "@/lib/actions/cart";
 
 interface Variant {
   id: string;
@@ -77,11 +79,40 @@ function SpecRow({ label, value, valueColor }: { label: string; value: string; v
 }
 
 export function ProductDetail({ product }: ProductDetailProps) {
+  const router = useRouter();
   const [selectedVariant, setSelectedVariant] = useState<Variant | null>(
     product.variants[0] || null
   );
   const [quantity, setQuantity] = useState(1);
   const [mainImageIdx, setMainImageIdx] = useState(0);
+  const [cartState, setCartState] = useState<"idle" | "adding" | "added" | "error">("idle");
+  const [cartError, setCartError] = useState<string | null>(null);
+  const [, startCartTransition] = useTransition();
+
+  function handleAddToCart() {
+    if (!selectedVariant || cartState === "adding") return;
+    setCartError(null);
+    setCartState("adding");
+    startCartTransition(async () => {
+      try {
+        const res = await addToCart(selectedVariant.id, quantity);
+        if (res?.success) {
+          setCartState("added");
+          // Refresh server-rendered cart-count badges in the header.
+          router.refresh();
+          // Briefly show "✓ נוסף לסל" then return to idle so the user
+          // can add again without re-clicking.
+          setTimeout(() => setCartState("idle"), 2200);
+        } else {
+          throw new Error("הוספה נכשלה");
+        }
+      } catch (err) {
+        setCartState("error");
+        setCartError((err as Error).message || "שגיאה בהוספה לסל");
+        setTimeout(() => setCartState("idle"), 3500);
+      }
+    });
+  }
 
   const currentPrice = selectedVariant?.priceOverride ?? product.basePrice;
   const stock = selectedVariant ? stockStatus[selectedVariant.stockStatus] : null;
@@ -271,10 +302,27 @@ export function ProductDetail({ product }: ProductDetailProps) {
                 </a>
               ) : (
                 <button
-                  disabled={selectedVariant?.stockStatus === "OUT_OF_STOCK"}
-                  className="flex-1 h-11 bg-ink text-cream text-sm tracking-wide hover:bg-mocha transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                  type="button"
+                  onClick={handleAddToCart}
+                  disabled={
+                    selectedVariant?.stockStatus === "OUT_OF_STOCK" ||
+                    cartState === "adding"
+                  }
+                  className={`flex-1 h-11 text-sm tracking-wide transition-colors disabled:opacity-50 disabled:cursor-not-allowed ${
+                    cartState === "added"
+                      ? "bg-emerald-700 text-cream"
+                      : cartState === "error"
+                        ? "bg-red-700 text-cream"
+                        : "bg-ink text-cream hover:bg-mocha"
+                  }`}
                 >
-                  הוסף לסל — ₪{(currentPrice * quantity).toLocaleString()}
+                  {cartState === "adding"
+                    ? "מוסיף..."
+                    : cartState === "added"
+                      ? "✓ נוסף לסל"
+                      : cartState === "error"
+                        ? cartError || "שגיאה — נסה שוב"
+                        : `הוסף לסל — ₪${(currentPrice * quantity).toLocaleString()}`}
                 </button>
               )}
             </div>
