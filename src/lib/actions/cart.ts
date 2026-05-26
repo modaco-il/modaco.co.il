@@ -101,11 +101,13 @@ export async function addToCart(variantId: string, quantity: number = 1) {
     });
   }
 
-  // Trigger abandoned cart check
-  await inngest.send({
-    name: "cart/updated",
-    data: { cartId: cart.id },
-  });
+  // Trigger abandoned cart check — fire-and-forget, never block the
+  // cart-add UX on Inngest. If INNGEST_EVENT_KEY is missing (e.g. early
+  // production where we haven't set it yet) inngest.send throws; we
+  // swallow that since cart recovery is a nice-to-have, not the path.
+  inngest
+    .send({ name: "cart/updated", data: { cartId: cart.id } })
+    .catch((e) => console.warn("[cart] inngest send failed:", e));
 
   return { success: true };
 }
