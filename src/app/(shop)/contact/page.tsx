@@ -48,6 +48,17 @@ export default function ContactPage() {
                   yarin@modaco.co.il
                 </a>
               </Info>
+              <Info label="כתובת">
+                <a
+                  href="https://waze.com/ul?q=האומן%201%20בית%20שמש&navigate=yes"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-base text-ink hover:text-mocha transition-colors leading-relaxed"
+                >
+                  האומן 1, בית שמש<br />
+                  <span className="text-ink-soft text-sm">מיקוד 9906101</span>
+                </a>
+              </Info>
               <Info label="שעות פעילות">
                 <div className="text-base text-ink-soft font-light leading-relaxed">
                   א׳–ה׳: 08:00–18:00<br />

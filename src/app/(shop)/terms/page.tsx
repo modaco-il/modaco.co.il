@@ -15,7 +15,7 @@ export default function TermsPage() {
         תנאי שימוש
       </h1>
       <p className="text-sm text-ink-soft font-light mb-12">
-        עדכון אחרון: 16 באפריל 2026 · תוקף: מיום הפרסום
+        עדכון אחרון: 28 במאי 2026 · תוקף: מיום הפרסום
       </p>
 
       <div className="prose prose-lg max-w-none space-y-8 text-ink-soft font-light leading-loose text-[15px]">
@@ -55,6 +55,7 @@ export default function TermsPage() {
               <li><strong>שם העוסק:</strong> מודקו פרזול ואקססוריז</li>
               <li><strong>שם מותג:</strong> Modaco</li>
               <li><strong>אחראי תפעול:</strong> ירין מויאל, מנכ&quot;ל</li>
+              <li><strong>כתובת אולם תצוגה ומשרד:</strong> האומן 1, בית שמש, מיקוד 9906101</li>
               <li><strong>טלפון:</strong> <a href="tel:0526804945" className="text-mocha" dir="ltr">052-680-4945</a></li>
               <li><strong>דוא&quot;ל:</strong> <a href="mailto:yarin@modaco.co.il" className="text-mocha" dir="ltr">yarin@modaco.co.il</a></li>
               <li><strong>שעות פעילות שירות לקוחות:</strong> א&apos;–ה&apos; 08:00–18:00 · ו&apos; 08:00–13:00</li>
@@ -171,15 +172,42 @@ export default function TermsPage() {
             המוצרים הנמכרים באתר נהנים מאחריות יצרן בהתאם לתנאי היצרן/ספק. האחריות כוללת פגמים בייצור בלבד
             ואינה מכסה בלאי טבעי, שימוש לא נכון, נזק מכני, התקנה פגומה על ידי גורם שאינו מורשה, או נזק ממקור חיצוני.
           </p>
+
+          <div className="bg-cream-deep border border-bone p-6 not-prose font-normal my-6">
+            <p className="mb-4"><strong>תקופות אחריות לפי יצרן:</strong></p>
+            <ul className="space-y-3">
+              <li>
+                <strong>Blum (פרזול אוסטרי — צירים, מנגנוני הרמה Aventos, מסילות Movento וטנדם):</strong>
+                <span className="block text-sm mt-1">אחריות יצרן ל-10 שנים על פגמים בייצור ותקלות מכניות בתפעול שגרתי.</span>
+              </li>
+              <li>
+                <strong>Domicile (ידיות, אקססוריז, פרזול, סדרות אמבטיה):</strong>
+                <span className="block text-sm mt-1">אחריות יצרן ל-5 שנים על פגמים בייצור.</span>
+              </li>
+              <li>
+                <strong>יתר המוצרים (Nyga, Floralis, פרופיל 19, מוצרי אמבטיה ושאר הקטגוריות):</strong>
+                <span className="block text-sm mt-1">
+                  אחריות תקינות במשלוח — אם המוצר מגיע פגום, שבור או חסר רכיב, יש לדווח לשירות הלקוחות
+                  בתוך <strong>48 שעות</strong> מקבלת המשלוח, והמוצר יוחלף או יוחזר תמורת זיכוי מלא.
+                </span>
+              </li>
+            </ul>
+          </div>
+
           <p>
-            משך האחריות משתנה לפי יצרן ומוצר. תנאי האחריות הספציפיים יצוינו בעת הרכישה או באישור ההזמנה.
-            המוצרים של Blum, Domicile, Movento, Floralis ויתר המותגים נהנים מתנאי האחריות של היצרן הרלוונטי.
+            תקופת האחריות נמדדת מיום קבלת המוצר על ידי הלקוח (לפי תאריך אישור המסירה).
+            לצורך הפעלת האחריות — יש לפנות לשירות הלקוחות של Modaco בטלפון, בדוא&quot;ל או דרך
+            <Link href="/contact" className="text-mocha underline mx-1">טופס יצירת קשר</Link>,
+            ולצרף: מספר הזמנה, תיאור התקלה ותמונות (במידת האפשר). Modaco תפעל מול הספק/יצרן הרלוונטי
+            ותחזיר תשובה תוך 7 ימי עסקים.
           </p>
           <p>
-            לצורך הפעלת האחריות — יש לפנות לשירות הלקוחות של Modaco, אשר יפעל מול הספק/יצרן הרלוונטי.
+            <strong>מקרים שאינם מכוסים באחריות:</strong> בלאי טבעי משימוש, נזק מהתקנה לא נכונה,
+            שימוש בכוח מופרז, שינוי או שיפוץ המוצר על ידי גורם לא מורשה, נזק מחומרי ניקוי לא מתאימים,
+            או נזק שמקורו בכוח עליון (נזילה, שריפה, רעידת אדמה וכד&apos;).
           </p>
           <p>
-            אין באמור כדי לגרוע מזכויות המשתמש לפי חוק המכר, התשכ&quot;ח-1968, וחוק הגנת הצרכן.
+            אין באמור כדי לגרוע מזכויות המשתמש לפי חוק המכר, התשכ&quot;ח-1968, וחוק הגנת הצרכן, התשמ&quot;א-1981.
           </p>
         </Section>
 
