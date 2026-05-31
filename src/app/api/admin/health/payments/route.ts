@@ -74,7 +74,7 @@ export async function GET() {
   // errorCode 2600 (clearing pending).
   try {
     const form = await createPaymentForm({
-      type: 305,
+      type: 320,
       description: "[health-check] payment form probe",
       amount: 1,
       vatType: 0,

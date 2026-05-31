@@ -70,7 +70,7 @@ export async function POST(
 
   try {
     const form = await createPaymentForm({
-      type: 305,
+      type: 320,
       description: `הזמנה ${order.orderNumber} · Modaco`,
       amount: order.total,
       vatType: 0,

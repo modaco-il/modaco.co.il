@@ -16,7 +16,7 @@ import { morningRequest } from "./client";
 
 export type MorningDocType =
   | 305 // חשבונית מס קבלה (combined invoice + receipt — best for online)
-  | 320 // חשבונית מס (tax invoice only)
+  | 320 // חשבונית מס (tax invoice only — default for עוסק מורשה)
   | 400; // קבלה (receipt only)
 
 export interface MorningLineItem {
@@ -28,7 +28,7 @@ export interface MorningLineItem {
 }
 
 export interface CreatePaymentFormInput {
-  /** Document type — default 305 = invoice+receipt combined */
+  /** Document type — default 320 = חשבונית מס (matches the plugin's docType setting) */
   type?: MorningDocType;
   /** Free-text purpose, e.g. "הזמנה MOD-00001 - מודקו" */
   description: string;
@@ -83,7 +83,7 @@ export async function createPaymentForm(
   input: CreatePaymentFormInput,
 ): Promise<PaymentFormResponse> {
   const body = {
-    type: input.type ?? 305,
+    type: input.type ?? 320,
     description: input.description,
     amount: round2(input.amount),
     currency: input.currency ?? "ILS",

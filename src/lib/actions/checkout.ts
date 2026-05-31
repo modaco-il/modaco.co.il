@@ -230,7 +230,7 @@ export async function submitCheckout(input: CheckoutInput): Promise<CheckoutResu
     try {
       const origin = await detectOrigin();
       const form = await createPaymentForm({
-        type: 305, // חשבונית מס קבלה
+        type: 320, // חשבונית מס — matches the Morning plugin's docType setting
         description: `הזמנה ${orderNumber} · Modaco`,
         amount: total,
         vatType: 0, // VAT included in prices
