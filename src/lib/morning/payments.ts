@@ -40,6 +40,10 @@ export interface CreatePaymentFormInput {
   lang?: "he" | "en";
   /** Max installments (1 = pay-in-full). */
   maxPayments?: number;
+  /** Optional plugin override. Defaults to MORNING_PLUGIN_ID env var. */
+  pluginId?: string;
+  /** Optional payment group (100=credit card, 120=Bit). Defaults to MORNING_GROUP env var. */
+  groupId?: number;
   /** Customer details — Morning uses these to fill the invoice */
   client?: {
     name?: string;
@@ -82,20 +86,44 @@ export interface PaymentFormResponse {
 export async function createPaymentForm(
   input: CreatePaymentFormInput,
 ): Promise<PaymentFormResponse> {
+  const pluginId = input.pluginId ?? process.env.MORNING_PLUGIN_ID;
+  if (!pluginId) {
+    throw new Error(
+      "MORNING_PLUGIN_ID is required — set it in env (Morning Digital Payments plugin id)",
+    );
+  }
+  const groupId = input.groupId ?? Number(process.env.MORNING_GROUP ?? 100);
+
+  // VAT handling — Morning's API requires amount-vs-income reconciliation:
+  //   when vatType=1 (VAT added on top), amount + every income.price must be
+  //   the *net* (pre-VAT) value, and Morning adds VAT automatically on top.
+  //   Any other combination returns errorCode 2422 "חוסר התאמה בין סכום
+  //   התקבולים לסכום התשלומים". Verified against /payments/form on
+  //   2026-06-03 against plugin 8b584ecc-... (verified URL returned).
+  //
+  // Our input.amount is the order's gross total (what the customer sees in
+  // the cart, including VAT). Israeli VAT is currently 17%. We compute net
+  // and split it across income lines proportionally to keep the math
+  // self-consistent.
+  const VAT_RATE = 0.17;
+  const grossTotal = round2(input.amount);
+  const netTotal = round2(grossTotal / (1 + VAT_RATE));
+  const incomeLines = input.income?.length
+    ? scaleIncomeToNet(input.income, netTotal)
+    : undefined;
+
   const body = {
     type: input.type ?? 320,
     description: input.description,
-    amount: round2(input.amount),
+    amount: netTotal,
     currency: input.currency ?? "ILS",
     lang: input.lang ?? "he",
     maxPayments: input.maxPayments ?? 1,
-    vatType: input.vatType ?? 0,
+    vatType: 1,
+    pluginId,
+    groupId,
     client: input.client,
-    income: input.income?.map((it) => ({
-      description: it.description,
-      price: round2(it.price),
-      quantity: it.quantity,
-    })),
+    income: incomeLines,
     successUrl: input.successUrl,
     failureUrl: input.failureUrl,
     notifyUrl: input.notifyUrl,
@@ -103,6 +131,34 @@ export async function createPaymentForm(
   };
 
   return morningRequest<PaymentFormResponse>("POST", "/payments/form", body);
+}
+
+/**
+ * Rescale gross-price income lines to net values that sum to netTotal.
+ * Caller passes prices already including VAT (storefront prices); Morning
+ * wants net prices because we set vatType=1. We scale by netTotal/grossSum
+ * to keep proportions intact, and absorb any rounding drift on the last line.
+ */
+function scaleIncomeToNet(
+  lines: MorningLineItem[],
+  netTotal: number,
+): MorningLineItem[] {
+  const grossSum = lines.reduce((s, it) => s + it.price * it.quantity, 0);
+  if (grossSum === 0) return lines;
+  const factor = netTotal / grossSum;
+  const scaled = lines.map((it) => ({
+    description: it.description,
+    price: round2(it.price * factor),
+    quantity: it.quantity,
+    vatType: 1 as const,
+  }));
+  const sumAfter = scaled.reduce((s, it) => s + it.price * it.quantity, 0);
+  const drift = round2(netTotal - sumAfter);
+  if (drift !== 0 && scaled.length > 0) {
+    const last = scaled[scaled.length - 1];
+    last.price = round2(last.price + drift / last.quantity);
+  }
+  return scaled;
 }
 
 function round2(n: number): number {
