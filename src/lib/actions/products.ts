@@ -159,13 +159,84 @@ export async function updateProduct(id: string, formData: FormData) {
   return { success: true };
 }
 
+/**
+ * Soft delete a product. Sets status to ARCHIVED instead of removing from DB,
+ * so that:
+ *   - Past orders that reference variants of this product continue to show the
+ *     product name + price (we never cascade-delete OrderItems).
+ *   - An "oops" can be undone by toggling status back to ACTIVE/DRAFT.
+ *   - Storefront queries that filter `status: ACTIVE` will naturally hide the
+ *     product (verified in src/lib/db/products.ts).
+ *
+ * Hard delete is left for the rare cleanup case via `purgeProduct` below.
+ */
 export async function deleteProduct(id: string) {
-  const product = await db.product.delete({ where: { id } });
+  const product = await db.product.update({
+    where: { id },
+    data: { status: "ARCHIVED" },
+  });
 
   await db.auditLog.create({
     data: {
       actor: "admin",
-      action: "product.deleted",
+      action: "product.archived",
+      entityType: "product",
+      entityId: id,
+      data: { name: product.name, previousStatus: product.status },
+    },
+  });
+
+  revalidatePath("/admin/products");
+  revalidatePath(`/admin/products/${id}`);
+  revalidatePath(`/products/${product.slug}`);
+  return { success: true };
+}
+
+/**
+ * Restore an archived product back to DRAFT (admin can then re-activate).
+ */
+export async function restoreProduct(id: string) {
+  const product = await db.product.update({
+    where: { id },
+    data: { status: "DRAFT" },
+  });
+
+  await db.auditLog.create({
+    data: {
+      actor: "admin",
+      action: "product.restored",
+      entityType: "product",
+      entityId: id,
+      data: { name: product.name },
+    },
+  });
+
+  revalidatePath("/admin/products");
+  revalidatePath(`/admin/products/${id}`);
+  return { success: true };
+}
+
+/**
+ * Hard delete — only for products that have NEVER been ordered. Throws if any
+ * OrderItem references one of the variants. Superadmin should be the only one
+ * to call this; UI exposes it behind a confirmation in the archived view.
+ */
+export async function purgeProduct(id: string) {
+  const orderCount = await db.orderItem.count({
+    where: { variant: { productId: id } },
+  });
+  if (orderCount > 0) {
+    throw new Error(
+      `Cannot purge product with ${orderCount} order items. Archive instead.`,
+    );
+  }
+
+  const product = await db.product.delete({ where: { id } });
+
+  await db.auditLog.create({
+    data: {
+      actor: "superadmin",
+      action: "product.purged",
       entityType: "product",
       entityId: id,
       data: { name: product.name },

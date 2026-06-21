@@ -3,11 +3,14 @@
  * Lets Yarin flip stock + archive + edit price without opening the product
  * page or chatting with the agent. POST body shape:
  *
- *   { action: "toggle_out_of_stock" }      → flips every variant between
- *                                            OUT_OF_STOCK and AT_SUPPLIER
- *   { action: "archive" }                   → status → ARCHIVED (hides from shop)
- *   { action: "restore" }                   → status → ACTIVE
- *   { action: "set_price", price: number }  → basePrice = price
+ *   { action: "toggle_out_of_stock" }              → flips every variant between
+ *                                                    OUT_OF_STOCK and AT_SUPPLIER
+ *   { action: "set_variant_stock", variantId, status }
+ *                                                  → sets one variant's stockStatus
+ *                                                    (status ∈ IN_STOCK|AT_SUPPLIER|ON_ORDER|OUT_OF_STOCK)
+ *   { action: "archive" }                           → status → ARCHIVED (hides from shop)
+ *   { action: "restore" }                           → status → ACTIVE
+ *   { action: "set_price", price: number }          → basePrice = price
  *
  * ADMIN-only. Revalidates the storefront so the change shows up immediately.
  */
@@ -16,8 +19,21 @@ import { auth } from "@/lib/auth";
 import { revalidatePath } from "next/cache";
 import { NextRequest, NextResponse } from "next/server";
 
-type Action = "toggle_out_of_stock" | "archive" | "restore" | "set_price";
-const ALLOWED: Action[] = ["toggle_out_of_stock", "archive", "restore", "set_price"];
+type Action =
+  | "toggle_out_of_stock"
+  | "set_variant_stock"
+  | "archive"
+  | "restore"
+  | "set_price";
+const ALLOWED: Action[] = [
+  "toggle_out_of_stock",
+  "set_variant_stock",
+  "archive",
+  "restore",
+  "set_price",
+];
+const STOCK_STATUSES = ["IN_STOCK", "AT_SUPPLIER", "ON_ORDER", "OUT_OF_STOCK"] as const;
+type StockStatus = (typeof STOCK_STATUSES)[number];
 
 export async function POST(
   req: NextRequest,
@@ -61,6 +77,30 @@ export async function POST(
     });
     revalidatePath("/", "layout");
     return NextResponse.json({ ok: true, newStockStatus: next });
+  }
+
+  if (action === "set_variant_stock") {
+    const variantId = String(body?.variantId ?? "");
+    const status = String(body?.status ?? "") as StockStatus;
+    if (!variantId || !STOCK_STATUSES.includes(status)) {
+      return NextResponse.json(
+        { error: "variantId and valid status required" },
+        { status: 400 },
+      );
+    }
+    const variant = product.variants.find((v) => v.id === variantId);
+    if (!variant) {
+      return NextResponse.json(
+        { error: "variant not found on this product" },
+        { status: 404 },
+      );
+    }
+    await db.variant.update({
+      where: { id: variantId },
+      data: { stockStatus: status },
+    });
+    revalidatePath("/", "layout");
+    return NextResponse.json({ ok: true, variantId, stockStatus: status });
   }
 
   if (action === "archive") {

@@ -34,7 +34,7 @@ export interface PreviewResult {
   images: string[];
   sku: string | undefined;
   detectedCategory: string | undefined;
-  supplier: "domicile" | "nyga" | "floralis" | null;
+  supplier: "domicile" | "nyga" | "floralis" | "generic";
   variantCount: number;
 }
 

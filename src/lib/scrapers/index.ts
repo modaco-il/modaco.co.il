@@ -1,9 +1,11 @@
 import { scrapeNygaProduct, scrapeNygaCollection } from "./nyga";
 import { scrapeFloralProduct, scrapeFloralCollection } from "./floralis";
 import { scrapeDomicileProduct, scrapeDomicileCategory } from "./domicile";
+import { scrapeGenericProduct } from "./generic";
 import type { ScrapedProduct } from "./types";
 
 export type { ScrapedProduct };
+export { scrapeGenericProduct };
 
 // Map supplier domains to their scrapers
 const supplierMap: Record<
@@ -32,8 +34,12 @@ const supplierMap: Record<
 };
 
 /**
- * Auto-detect supplier from URL and scrape product.
- * Used by WhatsApp agent when Yarin sends a URL.
+ * Auto-detect supplier from URL and scrape product. Falls back to a generic
+ * OG/JSON-LD scraper for unknown hosts, so any URL with a product page can be
+ * imported — Yarin then fills in the category/variants in the preview step.
+ *
+ * Returns { supplier: "Generic" } when the fallback was used; supplier names
+ * for known scrapers ("Nyga", "Floralis", "Domicile") otherwise.
  */
 export async function scrapeProductFromUrl(
   url: string
@@ -41,12 +47,16 @@ export async function scrapeProductFromUrl(
   const hostname = new URL(url).hostname.replace("www.", "");
   const supplier = supplierMap[hostname];
 
-  if (!supplier) {
-    return null;
+  if (supplier) {
+    const product = await supplier.scrapeProduct(url);
+    return { product, supplier: supplier.name };
   }
 
-  const product = await supplier.scrapeProduct(url);
-  return { product, supplier: supplier.name };
+  // Fallback: try to extract product data from OG/JSON-LD on any URL.
+  // The generic scraper throws if it can't find a name; we let that bubble up
+  // so the caller can show a meaningful error.
+  const product = await scrapeGenericProduct(url);
+  return { product, supplier: "Generic" };
 }
 
 /**

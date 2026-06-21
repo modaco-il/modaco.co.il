@@ -43,7 +43,10 @@ export default async function ProductsPage({ searchParams }: Props) {
         // Take all variants for the row so we can detect OOS even if the
         // default variant isn't the one that's out of stock — typical case
         // is when only one size is out.
-        variants: { select: { priceOverride: true, stockStatus: true, isDefault: true } },
+        variants: {
+          select: { id: true, name: true, priceOverride: true, stockStatus: true, isDefault: true },
+          orderBy: { sortOrder: "asc" },
+        },
         images: { take: 1, orderBy: { sortOrder: "asc" } },
       },
       orderBy: { updatedAt: "desc" },
@@ -166,6 +169,15 @@ export default async function ProductsPage({ searchParams }: Props) {
                   productId={p.id}
                   status={p.status as "ACTIVE" | "DRAFT" | "ARCHIVED"}
                   isOutOfStock={isOutOfStock}
+                  variants={p.variants.map((v) => ({
+                    id: v.id,
+                    name: v.name,
+                    stockStatus: v.stockStatus as
+                      | "IN_STOCK"
+                      | "AT_SUPPLIER"
+                      | "ON_ORDER"
+                      | "OUT_OF_STOCK",
+                  }))}
                 />
               </div>
             </div>

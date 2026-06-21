@@ -8,33 +8,39 @@ import { revalidatePath } from "next/cache";
 import { scrapeNygaProduct, scrapeNygaCollection } from "@/lib/scrapers/nyga";
 import { scrapeFloralProduct, scrapeFloralCollection } from "@/lib/scrapers/floralis";
 import { scrapeDomicileProduct, scrapeDomicileCategory } from "@/lib/scrapers/domicile";
+import { scrapeGenericProduct } from "@/lib/scrapers/generic";
 import type { ScrapedProduct } from "@/lib/scrapers/types";
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                             */
 /* ------------------------------------------------------------------ */
 
-function detectSupplier(url: string): "domicile" | "nyga" | "floralis" | null {
+function detectSupplier(url: string): "domicile" | "nyga" | "floralis" | "generic" {
   if (url.includes("domicile.co.il")) return "domicile";
   if (url.includes("nyga.co.il")) return "nyga";
   if (url.includes("floralis")) return "floralis";
-  return null;
+  return "generic";
 }
 
 async function scrapeAnyProduct(url: string): Promise<ScrapedProduct> {
   const supplier = detectSupplier(url);
-  if (!supplier) throw new Error(`Unsupported supplier for URL: ${url}`);
   if (supplier === "domicile") return scrapeDomicileProduct(url);
   if (supplier === "nyga") return scrapeNygaProduct(url);
-  return scrapeFloralProduct(url);
+  if (supplier === "floralis") return scrapeFloralProduct(url);
+  // Generic OG/JSON-LD fallback. Throws if the page isn't a recognizable
+  // product page; caller surfaces the error to the user.
+  return scrapeGenericProduct(url);
 }
 
 async function scrapeAnyCollection(url: string): Promise<{ name: string; url: string }[]> {
   const supplier = detectSupplier(url);
-  if (!supplier) throw new Error(`Unsupported supplier for URL: ${url}`);
   if (supplier === "domicile") return scrapeDomicileCategory(url);
   if (supplier === "nyga") return scrapeNygaCollection(url);
-  return scrapeFloralCollection(url);
+  if (supplier === "floralis") return scrapeFloralCollection(url);
+  // No generic category-page scraper — collections vary too much by site.
+  throw new Error(
+    `אין סורק קטגוריה כללי. כתובת מוצר בודד תעבוד מכל אתר; קטגוריה רק מ-domicile/nyga/floralis.`,
+  );
 }
 
 /* ------------------------------------------------------------------ */
@@ -131,13 +137,24 @@ export async function add_product_from_url(args: {
   if (!category) throw new Error(`Category not found: ${args.categorySlug}`);
 
   const supplier = detectSupplier(args.url);
-  const supplierRow = supplier
-    ? await db.supplier.upsert({
-        where: { name: supplier },
-        update: {},
-        create: { name: supplier, website: `https://${supplier}.co.il` },
-      })
-    : null;
+  let supplierRow;
+  if (supplier === "generic") {
+    // Use the URL's hostname as the supplier name so each new external store
+    // becomes its own supplier in the directory (instead of all lumping into
+    // "generic"). Yarin can later rename.
+    const host = new URL(args.url).hostname.replace(/^www\./, "");
+    supplierRow = await db.supplier.upsert({
+      where: { name: host },
+      update: {},
+      create: { name: host, website: `https://${host}` },
+    });
+  } else {
+    supplierRow = await db.supplier.upsert({
+      where: { name: supplier },
+      update: {},
+      create: { name: supplier, website: `https://${supplier}.co.il` },
+    });
+  }
 
   const name = args.customName ?? scraped.name;
   const price = args.customPrice ?? scraped.price ?? 0;
@@ -159,7 +176,7 @@ export async function add_product_from_url(args: {
       slug,
       description: scraped.description?.slice(0, 2000) || null,
       categoryId: category.id,
-      supplierId: supplierRow?.id,
+      supplierId: supplierRow.id,
       supplierUrl: args.url,
       supplierSku: scraped.supplierSku,
       basePrice: price,
