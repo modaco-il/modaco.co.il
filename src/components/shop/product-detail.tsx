@@ -52,8 +52,8 @@ interface ProductDetailProps {
 }
 
 const stockStatus: Record<string, { label: string; color: string }> = {
-  IN_STOCK: { label: "במלאי — משלוח מהיר", color: "text-emerald-700" },
-  AT_SUPPLIER: { label: "במלאי הספק — 3-5 ימי עסקים", color: "text-mocha" },
+  IN_STOCK: { label: "במלאי — 3-7 ימי עסקים", color: "text-emerald-700" },
+  AT_SUPPLIER: { label: "במלאי הספק — 3-7 ימי עסקים", color: "text-mocha" },
   ON_ORDER: { label: "בהזמנה — צרו קשר לזמן אספקה", color: "text-amber-700" },
   OUT_OF_STOCK: { label: "אזל מהמלאי", color: "text-red-700" },
 };

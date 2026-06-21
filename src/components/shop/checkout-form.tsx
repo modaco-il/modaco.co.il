@@ -37,7 +37,7 @@ export function CheckoutForm({ items, subtotal }: CheckoutFormProps) {
   const [error, setError] = useState<string | null>(null);
 
   // Shipping is waived for B2B quotes (the rep will set final shipping in the quote)
-  const shippingCost = mode === "quote" ? 0 : subtotal >= 500 ? 0 : 39;
+  const shippingCost = mode === "quote" ? 0 : 49;
   const total = subtotal + shippingCost;
 
   function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -438,19 +438,8 @@ export function CheckoutForm({ items, subtotal }: CheckoutFormProps) {
               <>
                 <div className="flex justify-between text-sm">
                   <span>משלוח</span>
-                  <span>
-                    {shippingCost === 0 ? (
-                      <span className="text-green-600">חינם!</span>
-                    ) : (
-                      `₪${shippingCost}`
-                    )}
-                  </span>
+                  <span>₪{shippingCost}</span>
                 </div>
-                {shippingCost > 0 && (
-                  <p className="text-xs text-gray-400">
-                    משלוח חינם בהזמנה מעל ₪500
-                  </p>
-                )}
               </>
             ) : (
               <div className="flex justify-between text-sm text-mocha">

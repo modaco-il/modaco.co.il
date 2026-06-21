@@ -94,7 +94,7 @@ export async function submitCheckout(input: CheckoutInput): Promise<CheckoutResu
     const price = it.variant.priceOverride ?? it.variant.product.basePrice;
     return s + price * it.quantity;
   }, 0);
-  const shippingCost = input.mode === "quote" ? 0 : subtotal >= 500 ? 0 : 39;
+  const shippingCost = input.mode === "quote" ? 0 : 49;
   const total = subtotal + shippingCost;
 
   // ── Generate order number — count existing orders + 1, zero-padded.
