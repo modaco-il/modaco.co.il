@@ -157,7 +157,7 @@ export default async function HomePage() {
         <div className="absolute inset-0 hero-base-mobile" />
         <div className="absolute inset-0 hero-overlay" />
 
-        <div className="relative z-10 h-full flex flex-col justify-center pt-20 pb-12 lg:pt-0 lg:pb-0">
+        <div className="relative z-10 h-full flex flex-col justify-center pt-28 pb-12 lg:pt-0 lg:pb-0">
           <div className="max-w-[1400px] mx-auto px-6 lg:px-12 w-full">
             <div className="max-w-2xl lg:max-w-4xl lg:mx-auto hero-text lg:text-center">
               <div className="eyebrow text-mocha-soft mb-6">Modaco · מודקו · מאז 1985</div>
