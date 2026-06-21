@@ -1,5 +1,18 @@
+/**
+ * WhatsApp Cloud API webhook for Modaco's business number.
+ *
+ * GET  /api/webhooks/whatsapp — verification handshake (Meta calls this once
+ *      when you wire the webhook in Meta Business Manager; it must echo back
+ *      the hub.challenge string when hub.verify_token matches the env var).
+ *
+ * POST /api/webhooks/whatsapp — incoming message events. Meta posts here
+ *      every time a customer sends a message to +972 53-347-8737. We hand
+ *      the text to the admin agent for parsing (Hebrew + commands), then
+ *      reply back via the same Graph API using `sendWhatsAppMessage()`.
+ */
 import { NextRequest, NextResponse } from "next/server";
 import { handleAdminMessage } from "@/lib/whatsapp/agent";
+import { sendWhatsAppMessage } from "@/lib/whatsapp/send";
 
 const VERIFY_TOKEN = process.env.WHATSAPP_VERIFY_TOKEN || "";
 
@@ -38,10 +51,10 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ status: "non-text message ignored" });
     }
 
-    // Process with admin agent
+    // Process with admin agent (parses Hebrew commands, calls DB tools)
     const response = await handleAdminMessage(text, senderPhone);
 
-    // Send reply via WhatsApp Cloud API
+    // Reply back via WhatsApp Cloud API
     await sendWhatsAppMessage(senderPhone, response.text);
 
     return NextResponse.json({ status: "ok" });
@@ -49,31 +62,4 @@ export async function POST(req: NextRequest) {
     console.error("WhatsApp webhook error:", error);
     return NextResponse.json({ status: "error" }, { status: 500 });
   }
-}
-
-async function sendWhatsAppMessage(to: string, text: string) {
-  const token = process.env.WHATSAPP_TOKEN;
-  const phoneNumberId = process.env.WHATSAPP_PHONE_NUMBER_ID;
-
-  if (!token || !phoneNumberId) {
-    console.log(`[WA Mock] To: ${to}\n${text}`);
-    return;
-  }
-
-  await fetch(
-    `https://graph.facebook.com/v21.0/${phoneNumberId}/messages`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        messaging_product: "whatsapp",
-        to,
-        type: "text",
-        text: { body: text },
-      }),
-    }
-  );
 }

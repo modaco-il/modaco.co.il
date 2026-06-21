@@ -1,5 +1,6 @@
 import { inngest } from "./client";
 import { db } from "@/lib/db";
+import { sendWhatsAppMessage, notifyAdmin } from "@/lib/whatsapp/send";
 
 // ==================== ABANDONED CART RECOVERY ====================
 
@@ -46,8 +47,12 @@ export const abandonedCartCheck = inngest.createFunction(
     const phone = cart.customer?.user?.phone;
     if (phone) {
       await step.run("send-whatsapp-recovery", async () => {
-        // TODO: integrate with Meta Cloud API
-        console.log(`[WA] Sending cart recovery to ${phone}`);
+        const text =
+          `שלום מ-Modaco 👋\n\n` +
+          `שמנו לב שהשארת מוצרים בסל הקניות. אם נתקלת בקושי או שיש לך שאלה — אנחנו כאן.\n` +
+          `https://modaco.co.il/cart\n\n` +
+          `מודקו · פרזול ואקססוריז לבית`;
+        await sendWhatsAppMessage(phone, text);
         await db.cart.update({
           where: { id: cartId },
           data: { recoverySentAt: new Date() },
@@ -147,11 +152,16 @@ export const orderCreatedNotify = inngest.createFunction(
       }
     });
 
-    // WhatsApp alert to Yarin (placeholder — Meta Cloud API verification pending)
+    // WhatsApp alert to Yarin. Until WHATSAPP_ADMIN_PHONE is set the helper
+    // logs to stdout; once Meta verification completes and the env var lands
+    // in Vercel, this fires for real with no code change.
     await step.run("notify-admin-whatsapp", async () => {
-      const summary = `הזמנה חדשה ${order.orderNumber}\n${customerName}\nסה"כ ₪${order.total.toLocaleString()}\nhttps://modaco.co.il/admin/orders/${order.id}`;
-      console.log(`[WA→Admin pending Meta]\n${summary}`);
-      // TODO: integrate with Meta Cloud API once Business verified
+      const summary =
+        `📦 הזמנה חדשה ${order.orderNumber}\n` +
+        `${customerName}\n` +
+        `סה"כ ₪${order.total.toLocaleString()}\n` +
+        `https://modaco.co.il/admin/orders/${order.id}`;
+      await notifyAdmin(summary);
     });
 
     // Email confirmation to customer
@@ -205,10 +215,11 @@ export const lowStockAlert = inngest.createFunction(
 
     if (totalStock <= LOW_STOCK_THRESHOLD) {
       await step.run("alert-admin", async () => {
-        console.log(
-          `[WA→Admin] מלאי נמוך: ${variant.product.name} (${variant.name}) — נשארו ${totalStock}`
-        );
-        // TODO: integrate with Meta Cloud API
+        const msg =
+          totalStock === 0
+            ? `⛔ אזל מהמלאי: ${variant.product.name} (${variant.name})`
+            : `⚠️ מלאי נמוך: ${variant.product.name} (${variant.name}) — נשארו ${totalStock}`;
+        await notifyAdmin(msg);
       });
 
       if (totalStock === 0) {
