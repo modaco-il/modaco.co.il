@@ -23,7 +23,7 @@ export default function AluminumPage() {
         <div className="absolute inset-0 hero-base-mobile" />
         <div className="absolute inset-0 hero-overlay" />
 
-        <div className="relative z-10 h-full flex items-end pt-24 pb-24 lg:pt-0 lg:pb-32">
+        <div className="relative z-10 h-full flex items-center lg:items-end pt-20 pb-12 lg:pt-0 lg:pb-32">
           <div className="max-w-[1400px] mx-auto px-6 lg:px-12 w-full">
             <div className="max-w-2xl hero-text">
               <div className="eyebrow text-mocha-soft mb-6">אלומיניום וזכוכית</div>
